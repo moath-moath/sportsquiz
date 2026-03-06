@@ -1,0 +1,50 @@
+from django.shortcuts import render
+from .models import Visitor
+from django.utils import timezone
+from datetime import timedelta
+
+
+def get_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+def home(request):
+    return render(request, 'home.html')
+
+
+def beginner(request):
+    return render(request, 'beginner.html')
+
+
+def amateur(request):
+    return render(request, 'amateur.html')
+
+
+def medium(request):
+    return render(request, 'medium.html')
+
+
+def hard(request):
+    ip = get_ip(request)
+
+    visitor, created = Visitor.objects.get_or_create(ip_address=ip)
+
+    online_time = timezone.now() - timedelta(minutes=5)
+
+    online_users = Visitor.objects.filter(last_seen__gte=online_time).count()
+
+    visitors = Visitor.objects.count()
+
+    return render(request, "hard.html", {
+        "visitors": visitors,
+        "online_users": online_users
+    })
+
+
+def legendary(request):
+    return render(request, 'legendary.html')

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>المستوى الهاوي</title>
+
+<style>
+body {
+    background-color: #0d1b2a;
+    font-family: Arial;
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+
+.container {
+    width: 80%;
+    max-width: 600px;
+    margin: 80px auto;
+    background-color: #1b263b;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+button {
+    display: block;
+    width: 80%;
+    margin: 12px auto;
+    padding: 14px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#timer{
+    font-size: 22px;
+    color: #ffd60a;
+    margin-bottom: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⚽ المستوى الهاوي</h1>
+
+<div id="timer">⏳ الوقت: 10</div>
+
+<h2 id="question"></h2>
+
+<div id="answers"></div>
+
+<h3 id="result"></h3>
+
+</div>
+
+<script>
+
+// ⏳ المؤقت
+let time = 10;
+let timer;
+
+let currentQuestion = 0;
+
+// 🔀 خلط
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// ⚽ الأسئلة
+let questions = [
+{q:"كم عدد بطولات كأس العالم التي فازت بها إيطاليا؟",a:["2","3","4","5"],correct:2},
+{q:"من فاز بكأس العالم 2014؟",a:["الأرجنتين","ألمانيا","البرازيل","فرنسا"],correct:1},
+{q:"من سجل هدف فوز إسبانيا في نهائي كأس العالم 2010؟",a:["تشافي","إنييستا","فيلا","توريس"],correct:1},
+{q:"في أي دولة أقيم كأس العالم 2018؟",a:["روسيا","قطر","البرازيل","ألمانيا"],correct:0},
+{q:"أي منتخب فاز بكأس العالم 2010؟",a:["إسبانيا","هولندا","ألمانيا","الأرجنتين"],correct:0},
+
+{q:"من هو اللاعب الأرجنتيني الذي فاز بكأس العالم 1986؟",a:["ميسي","مارادونا","باتيستوتا","تيفيز"],correct:1},
+{q:"أي منتخب فاز بكأس العالم 2002؟",a:["ألمانيا","البرازيل","فرنسا","إيطاليا"],correct:1},
+{q:"في أي قارة تقع دولة البرازيل؟",a:["أوروبا","آسيا","أمريكا الجنوبية","إفريقيا"],correct:2},
+{q:"أي منتخب فاز بكأس العالم 1998؟",a:["البرازيل","إيطاليا","فرنسا","ألمانيا"],correct:2},
+{q:"من اللاعب الذي فاز بالكرة الذهبية 2010؟",a:["ميسي","رونالدو","تشافي","إنييستا"],correct:0},
+
+{q:"أي نادي يلعب له ليونيل ميسي حالياً (2023)؟",a:["برشلونة","باريس سان جيرمان","إنتر ميامي","مانشستر سيتي"],correct:2},
+{q:"من اللاعب البرتغالي الشهير الملقب بالدون؟",a:["بيبي","رونالدو","برونو فرنانديز","ديكو"],correct:1},
+{q:"أي نادي إنجليزي يلقب بالشياطين الحمر؟",a:["ليفربول","تشيلسي","مانشستر يونايتد","أرسنال"],correct:2},
+{q:"في أي دولة يلعب نادي ريال مدريد؟",a:["إيطاليا","إسبانيا","فرنسا","ألمانيا"],correct:1},
+{q:"في أي دولة يلعب نادي بايرن ميونخ؟",a:["فرنسا","ألمانيا","إيطاليا","هولندا"],correct:1},
+
+{q:"من اللاعب المصري الشهير الذي يلعب في ليفربول؟",a:["محمد صلاح","محمد النني","تريزيغيه","حجازي"],correct:0},
+{q:"كم مرة فازت فرنسا بكأس العالم؟",a:["1","2","3","4"],correct:1},
+{q:"أي منتخب فاز بكأس العالم 2006؟",a:["فرنسا","إيطاليا","ألمانيا","البرازيل"],correct:1},
+{q:"ما لقب منتخب البرازيل؟",a:["السيليساو","الأسود","النسور","الماتادور"],correct:0},
+{q:"ما لقب منتخب إسبانيا؟",a:["الماتادور","الديوك","السامبا","المانشافت"],correct:0},
+
+{q:"من اللاعب الفرنسي الذي قاد فرنسا للفوز بكأس العالم 1998؟",a:["هنري","زيدان","بلان","ديشان"],correct:1},
+{q:"أي نادي فاز بدوري أبطال أوروبا 2022؟",a:["ليفربول","ريال مدريد","مانشستر سيتي","تشيلسي"],correct:1},
+{q:"من اللاعب الذي سجل هدف نهائي كأس العالم 2014؟",a:["مولر","غوتزه","كلوزه","كروس"],correct:1},
+{q:"في أي دولة أقيم كأس العالم 2014؟",a:["روسيا","البرازيل","جنوب أفريقيا","ألمانيا"],correct:1},
+{q:"من اللاعب الذي سجل أكثر أهداف في تاريخ كأس العالم؟",a:["رونالدو","كلوزه","بيليه","ميسي"],correct:1},
+
+{q:"أي منتخب فاز بكأس العالم 1994؟",a:["البرازيل","إيطاليا","ألمانيا","الأرجنتين"],correct:0},
+{q:"في أي دولة أقيم كأس العالم 2022؟",a:["قطر","الإمارات","السعودية","مصر"],correct:0},
+{q:"من فاز بكأس العالم 2022؟",a:["فرنسا","الأرجنتين","البرازيل","كرواتيا"],correct:1},
+{q:"من اللاعب الذي قاد الأرجنتين للفوز بكأس العالم 2022؟",a:["دي ماريا","ميسي","ألفاريز","ديبالا"],correct:1},
+{q:"أي منتخب وصل نهائي كأس العالم 2022 وخسر؟",a:["فرنسا","كرواتيا","المغرب","البرازيل"],correct:0},
+
+{q:"ما لقب منتخب ألمانيا؟",a:["المانشافت","الديوك","السامبا","التانغو"],correct:0},
+{q:"في أي دولة يلعب نادي باريس سان جيرمان؟",a:["فرنسا","إيطاليا","إسبانيا","ألمانيا"],correct:0},
+{q:"أي لاعب برازيلي فاز بكأس العالم 2002؟",a:["نيمار","رونالدو","كاكا","رونالدينيو"],correct:1},
+{q:"أي لاعب كان يرتدي الرقم 10 في برشلونة لسنوات طويلة؟",a:["ميسي","تشافي","إنييستا","سواريز"],correct:0},
+{q:"في أي دولة يلعب نادي يوفنتوس؟",a:["إسبانيا","إيطاليا","فرنسا","البرتغال"],correct:1},
+
+{q:"ما لقب منتخب فرنسا؟",a:["الديوك","السامبا","الماتادور","المانشافت"],correct:0},
+{q:"من اللاعب البرتغالي الذي لعب لريال مدريد سنوات طويلة؟",a:["بيبي","رونالدو","ناني","ديكو"],correct:1},
+{q:"أي نادي إنجليزي يلعب في ملعب أنفيلد؟",a:["ليفربول","تشيلسي","أرسنال","توتنهام"],correct:0},
+{q:"أي نادي إسباني يلعب في ملعب كامب نو؟",a:["ريال مدريد","برشلونة","فالنسيا","إشبيلية"],correct:1},
+{q:"في أي دولة يلعب نادي أياكس؟",a:["هولندا","بلجيكا","فرنسا","البرتغال"],correct:0},
+
+{q:"أي لاعب برازيلي كان يلقب بالساحر؟",a:["رونالدينيو","نيمار","رونالدو","كاكا"],correct:0},
+{q:"من اللاعب الكرواتي الذي قاد منتخب بلاده لنهائي كأس العالم 2018؟",a:["مودريتش","راكيتيتش","بيريسيتش","ماندزوكيتش"],correct:0},
+{q:"أي منتخب خسر نهائي كأس العالم 2018؟",a:["كرواتيا","فرنسا","بلجيكا","إنجلترا"],correct:0},
+{q:"في أي دولة يلعب نادي مانشستر سيتي؟",a:["إنجلترا","إسبانيا","فرنسا","إيطاليا"],correct:0},
+{q:"أي لاعب نرويجي يلعب مع مانشستر سيتي؟",a:["هالاند","أوديغارد","كافاني","دي بروين"],correct:0},
+
+{q:"أي لاعب بلجيكي مشهور بصناعة الأهداف في مانشستر سيتي؟",a:["هازارد","دي بروين","لوكاكو","ميرتنز"],correct:1},
+{q:"أي منتخب إفريقي وصل نصف نهائي كأس العالم 2022؟",a:["المغرب","مصر","السنغال","الجزائر"],correct:0},
+{q:"من اللاعب المغربي الذي لعب في باريس سان جيرمان؟",a:["حكيمي","زياش","بوفال","أمرابط"],correct:0},
+{q:"في أي قارة تقع دولة ألمانيا؟",a:["أوروبا","آسيا","إفريقيا","أمريكا"],correct:0},
+{q:"في أي قارة تقع دولة الأرجنتين؟",a:["أوروبا","آسيا","أمريكا الجنوبية","إفريقيا"],correct:2}
+];
+
+shuffle(questions);
+
+// ⏳ بدء المؤقت
+function startTimer(){
+
+    clearInterval(timer);
+
+    time = 10;
+
+    document.getElementById("timer").innerText = "⏳ الوقت: " + time;
+
+    timer = setInterval(() => {
+
+        time--;
+
+        document.getElementById("timer").innerText = "⏳ الوقت: " + time;
+
+        if(time <= 0){
+
+            clearInterval(timer);
+
+            document.getElementById("result").innerText = "⏰ انتهى الوقت!";
+
+            setTimeout(nextQuestion,1200);
+        }
+
+    },1000);
+}
+
+// عرض السؤال
+function showQuestion(){
+
+    startTimer();
+
+    let q = questions[currentQuestion];
+
+    document.getElementById("question").innerText = q.q;
+
+    let answersDiv = document.getElementById("answers");
+
+    answersDiv.innerHTML = "";
+
+    let answers = q.a.map((text,i)=>{
+        return {text:text,correct:i===q.correct};
+    });
+
+    shuffle(answers);
+
+    answers.forEach(answer => {
+
+        let btn = document.createElement("button");
+
+        btn.innerText = answer.text;
+
+        btn.onclick = function(){
+
+            clearInterval(timer);
+
+            let buttons = document.querySelectorAll("#answers button");
+
+            buttons.forEach(b => b.disabled = true);
+
+            if(answer.correct){
+
+                btn.style.backgroundColor="#00c853";
+                btn.style.color="white";
+
+                document.getElementById("result").innerText="✅ إجابة صحيحة!";
+
+            }else{
+
+                btn.style.backgroundColor="#d50000";
+                btn.style.color="white";
+
+                // إظهار الجواب الصحيح بالأخضر
+                answers.forEach((a,i)=>{
+                    if(a.correct){
+                        buttons[i].style.backgroundColor="#00c853";
+                        buttons[i].style.color="white";
+                    }
+                });
+
+                document.getElementById("result").innerText="❌ إجابة خاطئة";
+            }
+
+            setTimeout(nextQuestion,1200);
+
+        };
+
+        answersDiv.appendChild(btn);
+
+    });
+
+}
+
+// السؤال التالي
+function nextQuestion(){
+
+    currentQuestion++;
+
+    document.getElementById("result").innerText="";
+
+    if(currentQuestion < questions.length){
+
+        showQuestion();
+
+    }else{
+
+        document.getElementById("question").innerText="🎉 انتهت الأسئلة!";
+
+        document.getElementById("answers").innerHTML="";
+
+        document.getElementById("timer").innerText="";
+
+    }
+
+}
+
+showQuestion();
+
+</script>
+
+</body>
+</html>

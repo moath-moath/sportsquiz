@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>المستوى الصعب</title>
+
+<style>
+
+body{
+background:#0d1b2a;
+font-family:Arial;
+color:white;
+text-align:center;
+}
+
+.container{
+width:80%;
+max-width:650px;
+margin:80px auto;
+background:#1b263b;
+padding:30px;
+border-radius:15px;
+}
+
+button{
+display:block;
+width:85%;
+margin:12px auto;
+padding:15px;
+font-size:22px;
+font-weight:bold;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+#timer{
+font-size:24px;
+color:#ffd60a;
+margin-bottom:20px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>🔥 المستوى الصعب</h1>
+<button onclick="openAdmin()">لوحة المدير</button> 
+
+<div id="adminPanel" style="display:none; margin-bottom:20px;">  
+<h3>📊 لوحة المدير</h3>
+<div>👥 المستخدمون النشطون: <span id="onlineUsers">{{ online_users }}</span></div>
+<div>📈 إجمالي الزوار: <span id="totalVisitors">{{ visitors }}</span></div>
+</div>
+
+<div id="timer"></div>
+
+<h2 id="question"></h2>
+
+<div id="answers"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+let questions = [
+{q:"في أي سنة أقيم أول كأس عالم لكرة القدم؟",a:["1928","1930","1932","1934"],correct:1},
+{q:"من سجل أول هدف في تاريخ كأس العالم 1930؟",a:["لوسيان لوران","غييرمو ستابيلي","خوسيه ناسازي","بيدرو سي"],correct:0},
+{q:"أي منتخب فاز بأول كأس عالم في التاريخ؟",a:["الأوروغواي","الأرجنتين","البرازيل","إيطاليا"],correct:0},
+{q:"كم عدد المنتخبات التي شاركت في كأس العالم 1930؟",a:["16","13","15","12"],correct:1},
+{q:"في أي مدينة أقيم نهائي كأس العالم 1930؟",a:["بوينس آيرس","مونتيفيديو","ريو دي جانيرو","سانتياغو"],correct:1},
+
+{q:"من هو هداف كأس العالم 1930؟",a:["ستابيلي","ناسا زي","لوران","سكاروني"],correct:0},
+{q:"كم هدف سجل غييرمو ستابيلي في مونديال 1930؟",a:["7","8","6","9"],correct:1},
+{q:"أي منتخب فاز بكأس العالم 1934؟",a:["إيطاليا","ألمانيا","تشيكوسلوفاكيا","النمسا"],correct:0},
+{q:"في أي دولة أقيم كأس العالم 1934؟",a:["فرنسا","إيطاليا","إسبانيا","ألمانيا"],correct:1},
+{q:"أي منتخب فاز بكأس العالم 1938؟",a:["إيطاليا","البرازيل","المجر","فرنسا"],correct:0},
+
+{q:"من سجل هدف الفوز للأوروغواي في نهائي كأس العالم 1930؟",a:["هيكتور كاسترو","سكاروني","ناسازي","سيه"],correct:0},
+{q:"كم انتهت نتيجة نهائي كأس العالم 1930؟",a:["4-2","3-2","4-3","2-1"],correct:0},
+{q:"أي منتخب كان وصيف كأس العالم 1934؟",a:["تشيكوسلوفاكيا","ألمانيا","إيطاليا","النمسا"],correct:0},
+{q:"كم هدف سجل فيتوريو بوتسو مع إيطاليا في نهائي 1934؟",a:["0","1","2","3"],correct:0},
+{q:"من كان مدرب إيطاليا الفائزة بمونديال 1934 و1938؟",a:["فيتوريو بوتسو","هيلينيو هيريرا","إنزو بيرزوت","ترااباتوني"],correct:0},
+
+{q:"كم بلغ عدد أهداف كأس العالم 1930؟",a:["70","68","72","75"],correct:0},
+{q:"كم بلغ عدد أهداف كأس العالم 1934؟",a:["70","80","85","90"],correct:0},
+{q:"كم بلغ عدد أهداف كأس العالم 1938؟",a:["84","90","88","82"],correct:0},
+{q:"من هو هداف كأس العالم 1938؟",a:["ليونيداس","بيازا","ساروسي","ماتيوس"],correct:0},
+{q:"كم هدف سجل ليونيداس في مونديال 1938؟",a:["7","8","6","9"],correct:0},
+
+{q:"أي منتخب فاز بكأس العالم 1950؟",a:["الأوروغواي","البرازيل","إسبانيا","السويد"],correct:0},
+{q:"في أي دولة أقيم كأس العالم 1950؟",a:["البرازيل","الأرجنتين","الأوروغواي","تشيلي"],correct:0},
+{q:"ما اسم المباراة الشهيرة التي فازت فيها الأوروغواي على البرازيل في 1950؟",a:["ماراكانازو","الكلاسيكو","المعجزة","ليلة ريو"],correct:0},
+{q:"كم انتهت مباراة الأوروغواي والبرازيل في نهائي 1950؟",a:["2-1","3-2","1-0","2-0"],correct:0},
+{q:"في أي ملعب أقيمت مباراة ماراكانازو؟",a:["ماراكانا","كامب نو","ويمبلي","سان سيرو"],correct:0},
+
+{q:"أي منتخب فاز بكأس العالم 1954؟",a:["ألمانيا الغربية","المجر","البرازيل","إيطاليا"],correct:0},
+{q:"ما لقب نهائي كأس العالم 1954؟",a:["معجزة برن","ليلة برن","النهائي العظيم","مباراة القرن"],correct:0},
+{q:"كم انتهت نتيجة نهائي مونديال 1954؟",a:["3-2","4-2","3-1","2-1"],correct:0},
+{q:"أي منتخب كان المرشح الأقوى وخسر نهائي 1954؟",a:["المجر","البرازيل","إيطاليا","الأوروغواي"],correct:0},
+{q:"من كان هداف كأس العالم 1954؟",a:["ساندور كوتشيس","بوشكاش","هيديكوتي","كوبالا"],correct:0},
+
+{q:"كم هدف سجل ساندور كوتشيس في مونديال 1954؟",a:["11","10","12","9"],correct:0},
+{q:"أي منتخب فاز بكأس العالم 1958؟",a:["البرازيل","السويد","فرنسا","ألمانيا"],correct:0},
+{q:"في أي دولة أقيم مونديال 1958؟",a:["السويد","البرازيل","سويسرا","النمسا"],correct:0},
+{q:"من كان هداف كأس العالم 1958؟",a:["جاست فونتين","بيليه","فلافيو","جارينشا"],correct:0},
+{q:"كم هدف سجل جاست فونتين في مونديال 1958؟",a:["13","12","14","11"],correct:0},
+
+{q:"أي منتخب خسر نهائي كأس العالم 1958؟",a:["السويد","فرنسا","ألمانيا","المجر"],correct:0},
+{q:"كم انتهت نتيجة نهائي مونديال 1958؟",a:["5-2","4-2","3-1","3-2"],correct:0},
+{q:"كم كان عمر بيليه عندما فاز بكأس العالم 1958؟",a:["17","18","19","20"],correct:0},
+{q:"كم هدف سجل بيليه في نهائي مونديال 1958؟",a:["2","1","3","4"],correct:0},
+{q:"أي منتخب فاز بكأس العالم 1962؟",a:["البرازيل","تشيلي","تشيكوسلوفاكيا","إيطاليا"],correct:0},
+
+{q:"في أي دولة أقيم كأس العالم 1962؟",a:["تشيلي","البرازيل","الأرجنتين","المكسيك"],correct:0},
+{q:"أي منتخب خسر نهائي كأس العالم 1962؟",a:["تشيكوسلوفاكيا","البرازيل","تشيلي","إيطاليا"],correct:0},
+{q:"كم انتهت نتيجة نهائي مونديال 1962؟",a:["3-1","2-1","3-2","4-2"],correct:0},
+{q:"من سجل هدف البرازيل الأول في نهائي 1962؟",a:["أماريلدو","بيليه","جارينشا","فلافيو"],correct:0},
+{q:"أي منتخب استضاف كأس العالم 1966؟",a:["إنجلترا","ألمانيا","فرنسا","إيطاليا"],correct:0},
+
+{q:"أي منتخب فاز بكأس العالم 1966؟",a:["إنجلترا","ألمانيا","البرازيل","الأرجنتين"],correct:0},
+{q:"كم انتهت نتيجة نهائي كأس العالم 1966؟",a:["4-2","3-2","2-1","3-1"],correct:0},
+{q:"من سجل هاتريك إنجلترا في نهائي 1966؟",a:["جيف هيرست","بوبي تشارلتون","روجر هنت","آلان بول"],correct:0},
+{q:"في أي ملعب أقيم نهائي مونديال 1966؟",a:["ويمبلي","أولد ترافورد","أنفيلد","هايبري"],correct:0},
+{q:"من كان هداف كأس العالم 1966؟",a:["أوزيبيو","بيليه","تشارلتون","هيرست"],correct:0}
+];
+
+let currentQuestion = 0;
+let time = 8;
+let timer;
+
+function shuffle(array){
+for(let i=array.length-1;i>0;i--){
+let j=Math.floor(Math.random()*(i+1));
+[array[i],array[j]]=[array[j],array[i]];
+}
+}
+
+shuffle(questions);
+
+function startTimer(){
+
+clearInterval(timer);
+
+time=8;
+
+document.getElementById("timer").innerText="⏳ الوقت: "+time;
+
+timer=setInterval(()=>{
+
+time--;
+
+document.getElementById("timer").innerText="⏳ الوقت: "+time;
+if(time<=0){
+
+clearInterval(timer);
+
+let q = questions[currentQuestion];
+let correctAnswer = q.a[q.correct];
+
+document.getElementById("result").innerText =
+"⏰ انتهى الوقت! الإجابة الصحيحة: " + correctAnswer;
+
+let buttons=document.querySelectorAll("#answers button");
+buttons.forEach(b=>b.disabled=true);
+
+setTimeout(()=>{
+
+currentQuestion++;
+
+document.getElementById("result").innerText="";
+
+if(currentQuestion<questions.length){
+showQuestion();
+}else{
+endGame();
+}
+},1500);
+
+}
+
+},1000);
+
+}
+
+function showQuestion(){
+
+startTimer();
+
+let q=questions[currentQuestion];
+
+document.getElementById("question").innerText=q.q;
+
+let answersDiv=document.getElementById("answers");
+answersDiv.innerHTML="";
+
+let answers = q.a.map((ans,i)=>({text:ans,correct:i===q.correct}));
+
+shuffle(answers);
+
+answers.forEach((answer)=>{
+
+let btn=document.createElement("button");
+btn.innerText=answer.text;
+
+btn.onclick=function(){
+
+clearInterval(timer);
+
+let buttons=document.querySelectorAll("#answers button");
+buttons.forEach(b=>b.disabled=true);
+
+if(answer.correct){
+
+btn.style.backgroundColor="#00c853";
+document.getElementById("result").innerText="✅ إجابة صحيحة";
+
+}else{
+
+btn.style.backgroundColor="#d50000";
+
+answers.forEach((a,i)=>{
+if(a.correct){
+buttons[i].style.backgroundColor="#00c853";
+}
+});
+
+document.getElementById("result").innerText="❌ الإجابة الصحيحة: " + answers.find(a=>a.correct).text;
+
+}
+
+currentQuestion++;
+
+setTimeout(()=>{
+
+document.getElementById("result").innerText="";
+
+if(currentQuestion<questions.length){
+showQuestion();
+}else{
+endGame();
+}
+
+},1200)
+
+}
+
+answersDiv.appendChild(btn);
+
+})
+
+}
+
+function endGame(){
+
+document.getElementById("question").innerText="🎉 انتهت الأسئلة";
+document.getElementById("answers").innerHTML="";
+document.getElementById("timer").innerText="";
+
+}
+
+showQuestion();
+function openAdmin(){
+
+let adminPassword = "1234";
+
+let pass = prompt("ادخل كلمة مرور المدير");
+
+if(pass === adminPassword){
+document.getElementById("adminPanel").style.display="block";
+}
+else{
+alert("كلمة المرور خاطئة");
+}
+
+}
+
+</script>
+
+</body>
+</html>

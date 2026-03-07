@@ -16,14 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.http import HttpResponse
 from quiz.views import home, beginner, amateur, medium, hard, legendary
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', home),
     path('beginner/', beginner),
     path('amateur/', amateur),
     path('medium/', medium),
     path('hard/', hard),
     path('legendary/', legendary),
+
+    path('google088b0de6aac36d11.html',
+         lambda request: HttpResponse("google-site-verification: google088b0de6aac36d11.html")),
 ]

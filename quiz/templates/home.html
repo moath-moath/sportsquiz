@@ -37,7 +37,15 @@ margin-bottom:10px;
 
 .subtitle{
 font-size:18px;
-margin-bottom:30px;
+margin-bottom:25px;
+opacity:0.9;
+}
+
+/* العداد */
+
+.stats{
+margin-bottom:20px;
+font-size:16px;
 opacity:0.9;
 }
 
@@ -117,14 +125,15 @@ background:#0056b3;
 
 <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
+<div class="stats">
+👥 عدد الزوار: {{ visitors }} <br>
+🟢 المتواجدون الآن: {{ online_users }}
+</div>
+
 <a href="/beginner/"><button class="level-btn">المستوى المبتدئ</button></a>
-
 <a href="/amateur/"><button class="level-btn">المستوى الهاوي</button></a>
-
 <a href="/medium/"><button class="level-btn">المستوى المتوسط</button></a>
-
 <a href="/hard/"><button class="level-btn">المستوى الصعب</button></a>
-
 <a href="/legendary/"><button class="level-btn">المستوى الأسطوري</button></a>
 
 </div>
@@ -155,7 +164,6 @@ background:#0056b3;
 </div>
 
 </div>
-
 
 <script>
 

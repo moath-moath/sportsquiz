@@ -14,7 +14,26 @@ def get_ip(request):
 
 
 def home(request):
-    return render(request, 'home.html')
+
+    ip = get_ip(request)
+
+    visitor, created = Visitor.objects.get_or_create(ip_address=ip)
+
+    # تحديث آخر ظهور
+    visitor.last_seen = timezone.now()
+    visitor.save()
+
+    # المتواجدون الآن (آخر 5 دقائق)
+    online_time = timezone.now() - timedelta(minutes=5)
+    online_users = Visitor.objects.filter(last_seen__gte=online_time).count()
+
+    # إجمالي الزوار
+    visitors = Visitor.objects.count()
+
+    return render(request, "home.html", {
+        "visitors": visitors,
+        "online_users": online_users
+    })
 
 
 def beginner(request):
@@ -30,20 +49,7 @@ def medium(request):
 
 
 def hard(request):
-    ip = get_ip(request)
-
-    visitor, created = Visitor.objects.get_or_create(ip_address=ip)
-
-    online_time = timezone.now() - timedelta(minutes=5)
-
-    online_users = Visitor.objects.filter(last_seen__gte=online_time).count()
-
-    visitors = Visitor.objects.count()
-
-    return render(request, "hard.html", {
-        "visitors": visitors,
-        "online_users": online_users
-    })
+    return render(request, 'hard.html')
 
 
 def legendary(request):

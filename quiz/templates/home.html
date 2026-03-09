@@ -139,9 +139,8 @@ background:#0056b3;
 <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
 <div class="stats">
-👥 عدد الزوار: <span id="visitors">0</span> <br>
-🟢 المتواجدون الآن: <span id="online">0</span>
-</div>
+ 👥 عدد الزوار: <span>{{ visitors }}</span> <br>
+🟢 المتواجدون الآن: <span>{{ online_users }}</span>
 
 <a href="{% url 'beginner' %}"><button class="level-btn">🟢 المستوى المبتدئ</button></a>
 <a href="{% url 'amateur' %}"><button class="level-btn">🔵 المستوى الهاوي</button></a>
@@ -188,31 +187,7 @@ if(localStorage.getItem("noticeSeen")){
 document.getElementById("notice-box").style.display="none";
 }
 
-/* عداد الزوار */
 
-let visitors = localStorage.getItem("visitors")
-
-if(!visitors){
-visitors = 1200
-}else{
-visitors = parseInt(visitors)
-}
-
-let online = 15
-
-document.getElementById("visitors").innerText = visitors
-
-setInterval(()=>{
-
-visitors += Math.floor(Math.random()*3)
-online = Math.floor(Math.random()*20)+5
-
-document.getElementById("visitors").innerText = visitors
-document.getElementById("online").innerText = online
-
-localStorage.setItem("visitors",visitors)
-
-},4000)
 
 </script>
 

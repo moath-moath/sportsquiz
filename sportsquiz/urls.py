@@ -20,20 +20,27 @@ def google_verification(request):
 
 urlpatterns = [
 
-    # لوحة الإدارة
+
     path('admin/', admin.site.urls),
 
-    # الصفحة الرئيسية
+
     path('', views.home, name="home"),
 
-    # مستويات الكويز
-    path('beginner/', views.beginner, name="beginner"),
-    path('amateur/', views.amateur, name="amateur"),
-    path('medium/', views.medium, name="medium"),
-    path('hard/', views.hard, name="hard"),
-    path('legendary/', views.legendary, name="legendary"),
 
-    # تحقق Google
+    path('beginner/', views.beginner, name="beginner"),
+    path('beginner.html', views.beginner),   # هذا الجديد
+
+    path('amateur/', views.amateur, name="amateur"),
+    path('amateur.html', views.amateur),
+
+    path('medium/', views.medium, name="medium"),
+    path('medium.html', views.medium),
+
+    path('hard/', views.hard, name="hard"),
+    path('hard.html', views.hard),
+
+    path('legendary/', views.legendary, name="legendary"),
+    path('legendary.html', views.legendary),
     path(
         'google088b0de6aac36d11.html',
         google_verification,

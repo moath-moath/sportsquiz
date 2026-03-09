@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -138,15 +139,15 @@ background:#0056b3;
 <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
 <div class="stats">
-👥 عدد الزوار: <span id="visitors">1200</span> <br>
-🟢 المتواجدون الآن: <span id="online">15</span>
+👥 عدد الزوار: <span id="visitors">0</span> <br>
+🟢 المتواجدون الآن: <span id="online">0</span>
 </div>
 
-<a href="beginner.html"><button class="level-btn">🟢 المستوى المبتدئ</button></a>
-<a href="amateur.html"><button class="level-btn">🔵 المستوى الهاوي</button></a>
-<a href="medium.html"><button class="level-btn">🟡 المستوى المتوسط</button></a>
-<a href="hard.html"><button class="level-btn">🔴 المستوى الصعب</button></a>
-<a href="legendary.html"><button class="level-btn">👑 المستوى الأسطوري</button></a>
+<a href="{% url 'beginner' %}"><button class="level-btn">🟢 المستوى المبتدئ</button></a>
+<a href="{% url 'amateur' %}"><button class="level-btn">🔵 المستوى الهاوي</button></a>
+<a href="{% url 'medium' %}"><button class="level-btn">🟡 المستوى المتوسط</button></a>
+<a href="{% url 'hard' %}"><button class="level-btn">🔴 المستوى الصعب</button></a>
+<a href="{% url 'legendary' %}"><button class="level-btn">👑 المستوى الأسطوري</button></a>
 
 </div>
 

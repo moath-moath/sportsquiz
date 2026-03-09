@@ -17,18 +17,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
-from quiz.views import home, beginner, amateur, medium, hard, legendary
+from quiz import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', home),
-    path('beginner/', beginner),
-    path('amateur/', amateur),
-    path('medium/', medium),
-    path('hard/', hard),
-    path('legendary/', legendary),
+    path('', views.home, name="home"),
+    path('beginner/', views.beginner, name="beginner"),
+    path('amateur/', views.amateur, name="amateur"),
+    path('medium/', views.medium, name="medium"),
+    path('hard/', views.hard, name="hard"),
+    path('legendary/', views.legendary, name="legendary"),
 
-    path('google088b0de6aac36d11.html',
-         lambda request: HttpResponse("google-site-verification: google088b0de6aac36d11.html")),
+    path(
+        'google088b0de6aac36d11.html',
+        lambda request: HttpResponse(
+            "google-site-verification: google088b0de6aac36d11.html"
+        ),
+        name="google_verification"
+    ),
 ]

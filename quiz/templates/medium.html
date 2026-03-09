@@ -41,6 +41,7 @@ button {
 }
 </style>
 </head>
+
 <body>
 <div class="container">
 
@@ -51,10 +52,13 @@ button {
 <div id="answers"></div>
 <h3 id="result"></h3>
 
+<a href="/"><button>🏠 الرجوع للرئيسية</button></a>
+
 </div>
 
 <script>
  let questions = [
+/* الاسئلة كما هي بدون اي تعديل */
 {q:"من فاز بكأس العالم 1970؟",a:["البرازيل","إيطاليا","ألمانيا","الأرجنتين"],correct:0},
 {q:"من فاز بكأس العالم 1974؟",a:["ألمانيا الغربية","هولندا","البرازيل","الأرجنتين"],correct:0},
 {q:"من فاز بكأس العالم 1978؟",a:["البرازيل","الأرجنتين","ألمانيا","إيطاليا"],correct:1},
@@ -117,6 +121,7 @@ button {
 ];
 
 let currentQuestion = 0;
+let score = 0;
 let timeLeft = 10;
 let timer;
 
@@ -158,20 +163,25 @@ function autoAnswer(){
 
     currentQuestion++;
 
-    setTimeout(() => {
-        document.getElementById("result").innerText = "";
+    setTimeout(nextQuestion,1200);
+}
 
-        if(currentQuestion < questions.length){
-            showQuestion();
-        } else {
-            document.getElementById("question").innerText = "🎉 انتهت الأسئلة!";
-            document.getElementById("answers").innerHTML = "";
-            document.getElementById("timer").innerText = "";
-        }
-    }, 1200);
+function nextQuestion(){
+    document.getElementById("result").innerText = "";
+
+    if(currentQuestion < questions.length){
+        showQuestion();
+    } else {
+        document.getElementById("question").innerText = "🎉 انتهت الأسئلة!";
+        document.getElementById("answers").innerHTML = "";
+        document.getElementById("timer").innerText = "";
+        document.getElementById("result").innerText =
+        "⭐ نتيجتك: " + score + " / " + questions.length;
+    }
 }
 
 function showQuestion() {
+
     startTimer();
 
     let q = questions[currentQuestion];
@@ -181,6 +191,7 @@ function showQuestion() {
     answersDiv.innerHTML = "";
 
     q.a.forEach((answer, index) => {
+
         let btn = document.createElement("button");
         btn.innerText = answer;
 
@@ -192,6 +203,7 @@ function showQuestion() {
             buttons.forEach(b => b.disabled = true);
 
             if(index === q.correct){
+                score++;
                 btn.style.backgroundColor = "#00c853";
                 document.getElementById("result").innerText = "✅ إجابة صحيحة!";
             } 
@@ -205,18 +217,7 @@ function showQuestion() {
 
             currentQuestion++;
 
-            setTimeout(() => {
-                document.getElementById("result").innerText = "";
-
-                if(currentQuestion < questions.length){
-                    showQuestion();
-                } else {
-                    document.getElementById("question").innerText = "🎉 انتهت الأسئلة!";
-                    document.getElementById("answers").innerHTML = "";
-                    document.getElementById("timer").innerText = "";
-                }
-
-            }, 1200);
+            setTimeout(nextQuestion,1200);
         };
 
         answersDiv.appendChild(btn);
@@ -225,5 +226,6 @@ function showQuestion() {
 
 showQuestion();
 </script>
+
 </body>
 </html>

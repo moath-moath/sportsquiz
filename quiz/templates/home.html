@@ -130,11 +130,27 @@ background:#0056b3;
 🟢 المتواجدون الآن: {{ online_users }}
 </div>
 
-<a href="/beginner/"><button class="level-btn">المستوى المبتدئ</button></a>
-<a href="/amateur/"><button class="level-btn">المستوى الهاوي</button></a>
-<a href="/medium/"><button class="level-btn">المستوى المتوسط</button></a>
-<a href="/hard/"><button class="level-btn">المستوى الصعب</button></a>
-<a href="/legendary/"><button class="level-btn">المستوى الأسطوري</button></a>
+<!-- أزرار المستويات -->
+
+<a href="{% url 'beginner' %}">
+<button class="level-btn">المستوى المبتدئ</button>
+</a>
+
+<a href="{% url 'amateur' %}">
+<button class="level-btn">المستوى الهاوي</button>
+</a>
+
+<a href="{% url 'medium' %}">
+<button class="level-btn">المستوى المتوسط</button>
+</a>
+
+<a href="{% url 'hard' %}">
+<button class="level-btn">المستوى الصعب</button>
+</a>
+
+<a href="{% url 'legendary' %}">
+<button class="level-btn">المستوى الأسطوري</button>
+</a>
 
 </div>
 
@@ -151,7 +167,7 @@ background:#0056b3;
 
 هذا الموقع نسخة تجريبية من مشروع <b>Sports Quiz</b>.<br><br>
 
-قد تواجه بعض الأخطاء أو الميزات غير المكتملة أثناء الاستخدام.<br><br>
+قد تواجه بعض الأخطاء أو ميزات غير مكتملة أثناء الاستخدام.<br><br>
 
 نعمل حالياً على تطوير الموقع وتحسينه باستمرار.<br><br>
 

@@ -56,17 +56,18 @@ button {
 
 <h3 id="result"></h3>
 
+<a href="/"><button>🏠 الرجوع للرئيسية</button></a>
+
 </div>
 
 <script>
 
-// ⏳ المؤقت
 let time = 10;
 let timer;
 
 let currentQuestion = 0;
+let score = 0; // ⭐ السكور
 
-// 🔀 خلط
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -74,7 +75,6 @@ function shuffle(array) {
     }
 }
 
-// ⚽ الأسئلة
 let questions = [
 {q:"كم عدد بطولات كأس العالم التي فازت بها إيطاليا؟",a:["2","3","4","5"],correct:2},
 {q:"من فاز بكأس العالم 2014؟",a:["الأرجنتين","ألمانيا","البرازيل","فرنسا"],correct:1},
@@ -139,119 +139,117 @@ let questions = [
 
 shuffle(questions);
 
-// ⏳ بدء المؤقت
 function startTimer(){
 
-    clearInterval(timer);
+clearInterval(timer);
 
-    time = 10;
+time = 10;
 
-    document.getElementById("timer").innerText = "⏳ الوقت: " + time;
+document.getElementById("timer").innerText = "⏳ الوقت: " + time;
 
-    timer = setInterval(() => {
+timer = setInterval(() => {
 
-        time--;
+time--;
 
-        document.getElementById("timer").innerText = "⏳ الوقت: " + time;
+document.getElementById("timer").innerText = "⏳ الوقت: " + time;
 
-        if(time <= 0){
+if(time <= 0){
 
-            clearInterval(timer);
+clearInterval(timer);
 
-            document.getElementById("result").innerText = "⏰ انتهى الوقت!";
+document.getElementById("result").innerText = "⏰ انتهى الوقت!";
 
-            setTimeout(nextQuestion,1200);
-        }
-
-    },1000);
+setTimeout(nextQuestion,1200);
 }
 
-// عرض السؤال
+},1000);
+}
+
 function showQuestion(){
 
-    startTimer();
+startTimer();
 
-    let q = questions[currentQuestion];
+let q = questions[currentQuestion];
 
-    document.getElementById("question").innerText = q.q;
+document.getElementById("question").innerText = q.q;
 
-    let answersDiv = document.getElementById("answers");
+let answersDiv = document.getElementById("answers");
 
-    answersDiv.innerHTML = "";
+answersDiv.innerHTML = "";
 
-    let answers = q.a.map((text,i)=>{
-        return {text:text,correct:i===q.correct};
-    });
+let answers = q.a.map((text,i)=>{
+return {text:text,correct:i===q.correct};
+});
 
-    shuffle(answers);
+shuffle(answers);
 
-    answers.forEach(answer => {
+answers.forEach(answer => {
 
-        let btn = document.createElement("button");
+let btn = document.createElement("button");
 
-        btn.innerText = answer.text;
+btn.innerText = answer.text;
 
-        btn.onclick = function(){
+btn.onclick = function(){
 
-            clearInterval(timer);
+clearInterval(timer);
 
-            let buttons = document.querySelectorAll("#answers button");
+let buttons = document.querySelectorAll("#answers button");
 
-            buttons.forEach(b => b.disabled = true);
+buttons.forEach(b => b.disabled = true);
 
-            if(answer.correct){
+if(answer.correct){
 
-                btn.style.backgroundColor="#00c853";
-                btn.style.color="white";
+score++;
 
-                document.getElementById("result").innerText="✅ إجابة صحيحة!";
+btn.style.backgroundColor="#00c853";
 
-            }else{
+document.getElementById("result").innerText="✅ إجابة صحيحة!";
 
-                btn.style.backgroundColor="#d50000";
-                btn.style.color="white";
+}else{
 
-                // إظهار الجواب الصحيح بالأخضر
-                answers.forEach((a,i)=>{
-                    if(a.correct){
-                        buttons[i].style.backgroundColor="#00c853";
-                        buttons[i].style.color="white";
-                    }
-                });
+btn.style.backgroundColor="#d50000";
 
-                document.getElementById("result").innerText="❌ إجابة خاطئة";
-            }
+answers.forEach((a,i)=>{
+if(a.correct){
+buttons[i].style.backgroundColor="#00c853";
+}
+});
 
-            setTimeout(nextQuestion,1200);
+document.getElementById("result").innerText="❌ إجابة خاطئة";
+}
 
-        };
+setTimeout(nextQuestion,1200);
 
-        answersDiv.appendChild(btn);
+};
 
-    });
+answersDiv.appendChild(btn);
+
+});
 
 }
 
-// السؤال التالي
 function nextQuestion(){
 
-    currentQuestion++;
+currentQuestion++;
 
-    document.getElementById("result").innerText="";
+document.getElementById("result").innerText="";
 
-    if(currentQuestion < questions.length){
+if(currentQuestion < questions.length){
 
-        showQuestion();
+showQuestion();
 
-    }else{
+}else{
 
-        document.getElementById("question").innerText="🎉 انتهت الأسئلة!";
+document.getElementById("question").innerText="🎉 انتهت الأسئلة!";
 
-        document.getElementById("answers").innerHTML="";
+document.getElementById("answers").innerHTML="";
 
-        document.getElementById("timer").innerText="";
+document.getElementById("timer").innerText="";
 
-    }
+document.getElementById("result").innerText =
+"⭐ نتيجتك: " + score + " / " + questions.length;
+
+}
 
 }
 

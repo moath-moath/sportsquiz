@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -48,7 +47,8 @@ margin-bottom:20px;
 <div class="container">
 
 <h1>🔥 المستوى الصعب</h1>
-<button onclick="openAdmin()">لوحة المدير</button> 
+
+<button onclick="openAdmin()">لوحة المدير</button>
 
 <div id="adminPanel" style="display:none; margin-bottom:20px;">  
 <h3>📊 لوحة المدير</h3>
@@ -64,11 +64,16 @@ margin-bottom:20px;
 
 <div id="result"></div>
 
+<a href="/"><button>🏠 الرجوع للرئيسية</button></a>
+
 </div>
 
 <script>
 
+let score = 0;
+
 let questions = [
+/* الاسئلة كما هي بدون اي تغيير */
 {q:"في أي سنة أقيم أول كأس عالم لكرة القدم؟",a:["1928","1930","1932","1934"],correct:1},
 {q:"من سجل أول هدف في تاريخ كأس العالم 1930؟",a:["لوسيان لوران","غييرمو ستابيلي","خوسيه ناسازي","بيدرو سي"],correct:0},
 {q:"أي منتخب فاز بأول كأس عالم في التاريخ؟",a:["الأوروغواي","الأرجنتين","البرازيل","إيطاليا"],correct:0},
@@ -146,7 +151,6 @@ shuffle(questions);
 function startTimer(){
 
 clearInterval(timer);
-
 time=8;
 
 document.getElementById("timer").innerText="⏳ الوقت: "+time;
@@ -156,6 +160,7 @@ timer=setInterval(()=>{
 time--;
 
 document.getElementById("timer").innerText="⏳ الوقت: "+time;
+
 if(time<=0){
 
 clearInterval(timer);
@@ -180,6 +185,7 @@ showQuestion();
 }else{
 endGame();
 }
+
 },1500);
 
 }
@@ -217,6 +223,7 @@ buttons.forEach(b=>b.disabled=true);
 
 if(answer.correct){
 
+score++;
 btn.style.backgroundColor="#00c853";
 document.getElementById("result").innerText="✅ إجابة صحيحة";
 
@@ -261,10 +268,13 @@ function endGame(){
 document.getElementById("question").innerText="🎉 انتهت الأسئلة";
 document.getElementById("answers").innerHTML="";
 document.getElementById("timer").innerText="";
+document.getElementById("result").innerText =
+"⭐ نتيجتك: " + score + " / " + questions.length;
 
 }
 
 showQuestion();
+
 function openAdmin(){
 
 let adminPassword = "1234";

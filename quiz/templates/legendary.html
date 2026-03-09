@@ -36,6 +36,12 @@ cursor:pointer;
 #timer{
 font-size:22px;
 color:#ffd60a;
+margin-bottom:10px;
+}
+
+#score{
+font-size:22px;
+color:#00e5ff;
 margin-bottom:15px;
 }
 </style>
@@ -54,6 +60,8 @@ margin-bottom:15px;
 <div>👥 المستخدمون النشطون: <span id="onlineUsers">0</span></div>
 <div>📈 إجمالي الزوار: <span id="totalVisitors">0</span></div>
 </div>
+
+<div id="score">⭐ السكور: 0</div>
 
 <div id="timer">⏳ الوقت: 8</div>
 
@@ -75,7 +83,7 @@ let questions = [
 {q:"في أي سنة لعبت أول مباراة دولية في تاريخ كرة القدم؟",a:["1868","1870","1872","1875"],correct:2},
 {q:"من كان طرفا أول مباراة دولية رسمية؟",a:["إنجلترا واسكتلندا","إنجلترا وويلز","اسكتلندا وأيرلندا","إنجلترا وفرنسا"],correct:0},
 {q:"كم انتهت أول مباراة دولية في التاريخ؟",a:["1-0","2-1","0-0","3-0"],correct:2},
-{q:"في أي ملعب أقيمت أول مباراة دولية؟",a:["هامبدن بارك","أولد ترافورد","ويمبلي","كنسينغتون"],correct:0},
+{q:"في أي ملعب أقيمت أول مباراة دولية؟",a:["هامبدن بارك","أولد ترافورد","ويمبلي","كنسينغتون"],correct:0}
 
 /* باقي الاسئلة نفسها تماما */
 ];
@@ -174,6 +182,8 @@ if(answer.correct){
 
 score++;
 
+document.getElementById("score").innerText="⭐ السكور: "+score;
+
 btn.style.background="#00c853";
 document.getElementById("result").innerText="✅ إجابة صحيحة";
 
@@ -220,8 +230,23 @@ function endGame(){
 document.getElementById("question").innerText="🏁 انتهت اللعبة";
 document.getElementById("answers").innerHTML="";
 document.getElementById("timer").innerText="";
-document.getElementById("result").innerText=
-"⭐ نتيجتك: "+score+" / "+questions.length;
+
+document.getElementById("result").innerHTML=
+"⭐ نتيجتك: "+score+" / "+questions.length+
+"<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
+
+}
+
+function restartGame(){
+
+score=0;
+currentQuestion=0;
+
+document.getElementById("score").innerText="⭐ السكور: 0";
+
+shuffle(questions);
+
+showQuestion();
 
 }
 

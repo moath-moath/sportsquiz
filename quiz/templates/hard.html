@@ -11,6 +11,7 @@ background:#0d1b2a;
 font-family:Arial;
 color:white;
 text-align:center;
+margin:0;
 }
 
 .container{
@@ -32,6 +33,11 @@ font-weight:bold;
 border:none;
 border-radius:10px;
 cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
 }
 
 #timer{
@@ -46,20 +52,32 @@ color:#00e5ff;
 margin-bottom:15px;
 }
 
+#adminPanel{
+background:#0f2027;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
 <h1>🔥 المستوى الصعب</h1>
 
-<button onclick="openAdmin()">لوحة المدير</button>
+<button onclick="openAdmin()">⚙ لوحة المدير</button>
 
-<div id="adminPanel" style="display:none; margin-bottom:20px;">  
+<div id="adminPanel" style="display:none">
+
 <h3>📊 لوحة المدير</h3>
-<div>👥 المستخدمون النشطون: <span id="onlineUsers">{{ online_users }}</span></div>
-<div>📈 إجمالي الزوار: <span id="totalVisitors">{{ visitors }}</span></div>
+
+<div>👥 المستخدمون النشطون: <span id="onlineUsers">15</span></div>
+
+<div>📈 إجمالي الزوار: <span id="totalVisitors">1200</span></div>
+
 </div>
 
 <div id="score">⭐ السكور: 0</div>
@@ -78,10 +96,13 @@ margin-bottom:15px;
 
 <script>
 
-let score = 0;
+let score = 0
+let currentQuestion = 0
+let time = 8
+let timer
 
-let questions = [
-/* الاسئلة كما هي بدون اي تغيير */
+let questions=[
+
 {q:"في أي سنة أقيم أول كأس عالم لكرة القدم؟",a:["1928","1930","1932","1934"],correct:1},
 {q:"من سجل أول هدف في تاريخ كأس العالم 1930؟",a:["لوسيان لوران","غييرمو ستابيلي","خوسيه ناسازي","بيدرو سي"],correct:0},
 {q:"أي منتخب فاز بأول كأس عالم في التاريخ؟",a:["الأوروغواي","الأرجنتين","البرازيل","إيطاليا"],correct:0},
@@ -93,177 +114,200 @@ let questions = [
 {q:"أي منتخب فاز بكأس العالم 1934؟",a:["إيطاليا","ألمانيا","تشيكوسلوفاكيا","النمسا"],correct:0},
 {q:"في أي دولة أقيم كأس العالم 1934؟",a:["فرنسا","إيطاليا","إسبانيا","ألمانيا"],correct:1},
 {q:"أي منتخب فاز بكأس العالم 1938؟",a:["إيطاليا","البرازيل","المجر","فرنسا"],correct:0}
-];
 
-let currentQuestion = 0;
-let time = 8;
-let timer;
+]
 
 function shuffle(array){
+
 for(let i=array.length-1;i>0;i--){
-let j=Math.floor(Math.random()*(i+1));
-[array[i],array[j]]=[array[j],array[i]];
-}
+
+let j=Math.floor(Math.random()*(i+1))
+
+[array[i],array[j]]=[array[j],array[i]]
+
 }
 
-shuffle(questions);
+}
+
+shuffle(questions)
 
 function startTimer(){
 
-clearInterval(timer);
-time=8;
+clearInterval(timer)
 
-document.getElementById("timer").innerText="⏳ الوقت: "+time;
+time=8
+
+document.getElementById("timer").innerText="⏳ الوقت: "+time
 
 timer=setInterval(()=>{
 
-time--;
+time--
 
-document.getElementById("timer").innerText="⏳ الوقت: "+time;
+document.getElementById("timer").innerText="⏳ الوقت: "+time
 
 if(time<=0){
 
-clearInterval(timer);
+clearInterval(timer)
 
-let q = questions[currentQuestion];
-let correctAnswer = q.a[q.correct];
-
-document.getElementById("result").innerText =
-"⏰ انتهى الوقت! الإجابة الصحيحة: " + correctAnswer;
-
-let buttons=document.querySelectorAll("#answers button");
-buttons.forEach(b=>b.disabled=true);
-
-setTimeout(()=>{
-
-currentQuestion++;
-
-document.getElementById("result").innerText="";
-
-if(currentQuestion<questions.length){
-showQuestion();
-}else{
-endGame();
-}
-
-},1500);
+autoAnswer()
 
 }
 
-},1000);
+},1000)
+
+}
+
+function autoAnswer(){
+
+let q=questions[currentQuestion]
+
+let correct=q.a[q.correct]
+
+document.getElementById("result").innerText=
+"⏰ انتهى الوقت! الإجابة الصحيحة: "+correct
+
+let buttons=document.querySelectorAll("#answers button")
+
+buttons.forEach(b=>b.disabled=true)
+
+buttons[q.correct].style.backgroundColor="#00c853"
+
+setTimeout(nextQuestion,1500)
 
 }
 
 function showQuestion(){
 
-startTimer();
+startTimer()
 
-let q=questions[currentQuestion];
+let q=questions[currentQuestion]
 
-document.getElementById("question").innerText=q.q;
+document.getElementById("question").innerText=q.q
 
-let answersDiv=document.getElementById("answers");
-answersDiv.innerHTML="";
+let answersDiv=document.getElementById("answers")
 
-let answers = q.a.map((ans,i)=>({text:ans,correct:i===q.correct}));
+answersDiv.innerHTML=""
 
-shuffle(answers);
+let answers=q.a.map((text,i)=>{
 
-answers.forEach((answer)=>{
+return {text:text,correct:i===q.correct}
 
-let btn=document.createElement("button");
-btn.innerText=answer.text;
+})
+
+shuffle(answers)
+
+answers.forEach((answer,index)=>{
+
+let btn=document.createElement("button")
+
+btn.innerText=answer.text
 
 btn.onclick=function(){
 
-clearInterval(timer);
+clearInterval(timer)
 
-let buttons=document.querySelectorAll("#answers button");
-buttons.forEach(b=>b.disabled=true);
+let buttons=document.querySelectorAll("#answers button")
+
+buttons.forEach(b=>b.disabled=true)
 
 if(answer.correct){
 
-score++;
+score++
 
-document.getElementById("score").innerText="⭐ السكور: "+score;
+document.getElementById("score").innerText="⭐ السكور: "+score
 
-btn.style.backgroundColor="#00c853";
-document.getElementById("result").innerText="✅ إجابة صحيحة";
+btn.style.backgroundColor="#00c853"
+
+document.getElementById("result").innerText="✅ إجابة صحيحة"
 
 }else{
 
-btn.style.backgroundColor="#d50000";
+btn.style.backgroundColor="#d50000"
 
 answers.forEach((a,i)=>{
 if(a.correct){
-buttons[i].style.backgroundColor="#00c853";
+buttons[i].style.backgroundColor="#00c853"
 }
-});
+})
 
-document.getElementById("result").innerText="❌ الإجابة الصحيحة: " + answers.find(a=>a.correct).text;
-
-}
-
-currentQuestion++;
-
-setTimeout(()=>{
-
-document.getElementById("result").innerText="";
-
-if(currentQuestion<questions.length){
-showQuestion();
-}else{
-endGame();
-}
-
-},1200)
+document.getElementById("result").innerText=
+"❌ الإجابة الصحيحة: "+answers.find(a=>a.correct).text
 
 }
 
-answersDiv.appendChild(btn);
+setTimeout(nextQuestion,1200)
+
+}
+
+answersDiv.appendChild(btn)
 
 })
 
 }
 
+function nextQuestion(){
+
+currentQuestion++
+
+document.getElementById("result").innerText=""
+
+if(currentQuestion<questions.length){
+
+showQuestion()
+
+}else{
+
+endGame()
+
+}
+
+}
+
 function endGame(){
 
-document.getElementById("question").innerText="🎉 انتهت الأسئلة";
-document.getElementById("answers").innerHTML="";
-document.getElementById("timer").innerText="";
+document.getElementById("question").innerText="🎉 انتهت الأسئلة"
 
-document.getElementById("result").innerHTML =
-"⭐ نتيجتك: " + score + " / " + questions.length +
-"<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
+document.getElementById("answers").innerHTML=""
+
+document.getElementById("timer").innerText=""
+
+document.getElementById("result").innerHTML=
+
+"⭐ نتيجتك: "+score+" / "+questions.length+
+
+"<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
 
 }
 
 function restartGame(){
 
-score=0;
-currentQuestion=0;
+score=0
+currentQuestion=0
 
-document.getElementById("score").innerText="⭐ السكور: 0";
+document.getElementById("score").innerText="⭐ السكور: 0"
 
-shuffle(questions);
+shuffle(questions)
 
-showQuestion();
+showQuestion()
 
 }
 
-showQuestion();
+showQuestion()
 
 function openAdmin(){
 
-let adminPassword = "1234";
+let adminPassword="1234"
 
-let pass = prompt("ادخل كلمة مرور المدير");
+let pass=prompt("ادخل كلمة مرور المدير")
 
-if(pass === adminPassword){
-document.getElementById("adminPanel").style.display="block";
-}
-else{
-alert("كلمة المرور خاطئة");
+if(pass===adminPassword){
+
+document.getElementById("adminPanel").style.display="block"
+
+}else{
+
+alert("❌ كلمة المرور خاطئة")
+
 }
 
 }

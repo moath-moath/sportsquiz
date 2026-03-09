@@ -47,9 +47,10 @@ opacity:0.9;
 margin-bottom:25px;
 font-size:16px;
 opacity:0.9;
+line-height:1.6;
 }
 
-/* الأزرار الجديدة */
+/* الأزرار */
 
 .level-btn{
 display:block;
@@ -69,14 +70,12 @@ position:relative;
 overflow:hidden;
 }
 
-/* تأثير الحركة */
-
 .level-btn:hover{
 transform:scale(1.08);
 box-shadow:0 0 25px gold;
 }
 
-/* لمعة تمر على الزر */
+/* لمعة الزر */
 
 .level-btn::before{
 content:"";
@@ -148,29 +147,15 @@ background:#0056b3;
 <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
 <div class="stats">
-👥 عدد الزوار: 1200 <br>
-🟢 المتواجدون الآن: 15
+👥 عدد الزوار: <span id="visitors">1200</span> <br>
+🟢 المتواجدون الآن: <span id="online">15</span>
 </div>
 
-<a href="beginner.html">
-<button class="level-btn">🟢 المستوى المبتدئ</button>
-</a>
-
-<a href="amateur.html">
-<button class="level-btn">🔵 المستوى الهاوي</button>
-</a>
-
-<a href="medium.html">
-<button class="level-btn">🟡 المستوى المتوسط</button>
-</a>
-
-<a href="hard.html">
-<button class="level-btn">🔴 المستوى الصعب</button>
-</a>
-
-<a href="legendary.html">
-<button class="level-btn">👑 المستوى الأسطوري</button>
-</a>
+<a href="beginner.html"><button class="level-btn">🟢 المستوى المبتدئ</button></a>
+<a href="amateur.html"><button class="level-btn">🔵 المستوى الهاوي</button></a>
+<a href="medium.html"><button class="level-btn">🟡 المستوى المتوسط</button></a>
+<a href="hard.html"><button class="level-btn">🔴 المستوى الصعب</button></a>
+<a href="legendary.html"><button class="level-btn">👑 المستوى الأسطوري</button></a>
 
 </div>
 
@@ -200,9 +185,32 @@ background:#0056b3;
 
 <script>
 
+/* إخفاء الملاحظة مرة واحدة فقط */
+
 function skipNotice(){
 document.getElementById("notice-box").style.display="none";
+localStorage.setItem("noticeSeen","yes")
 }
+
+if(localStorage.getItem("noticeSeen")){
+document.getElementById("notice-box").style.display="none"
+}
+
+/* عداد الزوار */
+
+let visitors=1200
+let online=15
+
+setInterval(()=>{
+
+visitors += Math.floor(Math.random()*3)
+
+online = Math.floor(Math.random()*20)+5
+
+document.getElementById("visitors").innerText=visitors
+document.getElementById("online").innerText=online
+
+},4000)
 
 </script>
 

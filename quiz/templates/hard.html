@@ -2,6 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المستوى الصعب</title>
 
 <style>
@@ -15,9 +16,9 @@ margin:0;
 }
 
 .container{
-width:80%;
+width:90%;
 max-width:650px;
-margin:80px auto;
+margin:60px auto;
 background:#1b263b;
 padding:30px;
 border-radius:15px;
@@ -28,12 +29,14 @@ display:block;
 width:85%;
 margin:12px auto;
 padding:15px;
-font-size:22px;
+font-size:20px;
 font-weight:bold;
 border:none;
 border-radius:10px;
 cursor:pointer;
-transition:0.3s;
+background:#415a77;
+color:white;
+transition:0.2s;
 }
 
 button:hover{
@@ -57,6 +60,14 @@ background:#0f2027;
 padding:15px;
 border-radius:10px;
 margin-bottom:20px;
+}
+
+.correct{
+background:#00c853 !important;
+}
+
+.wrong{
+background:#d50000 !important;
 }
 
 </style>
@@ -96,9 +107,9 @@ margin-bottom:20px;
 
 <script>
 
-let score = 0
-let currentQuestion = 0
-let time = 8
+let score=0
+let currentQuestion=0
+let time=8
 let timer
 
 let questions=[
@@ -118,15 +129,10 @@ let questions=[
 ]
 
 function shuffle(array){
-
 for(let i=array.length-1;i>0;i--){
-
 let j=Math.floor(Math.random()*(i+1))
-
 [array[i],array[j]]=[array[j],array[i]]
-
 }
-
 }
 
 shuffle(questions)
@@ -148,7 +154,6 @@ document.getElementById("timer").innerText="⏳ الوقت: "+time
 if(time<=0){
 
 clearInterval(timer)
-
 autoAnswer()
 
 }
@@ -161,22 +166,25 @@ function autoAnswer(){
 
 let q=questions[currentQuestion]
 
-let correct=q.a[q.correct]
-
-document.getElementById("result").innerText=
-"⏰ انتهى الوقت! الإجابة الصحيحة: "+correct
-
 let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
-buttons[q.correct].style.backgroundColor="#00c853"
+buttons[q.correct].classList.add("correct")
+
+document.getElementById("result").innerText=
+"⏰ انتهى الوقت! الإجابة الصحيحة: "+q.a[q.correct]
 
 setTimeout(nextQuestion,1500)
 
 }
 
 function showQuestion(){
+
+if(currentQuestion>=questions.length){
+endGame()
+return
+}
 
 startTimer()
 
@@ -188,19 +196,11 @@ let answersDiv=document.getElementById("answers")
 
 answersDiv.innerHTML=""
 
-let answers=q.a.map((text,i)=>{
-
-return {text:text,correct:i===q.correct}
-
-})
-
-shuffle(answers)
-
-answers.forEach((answer,index)=>{
+q.a.forEach((answer,index)=>{
 
 let btn=document.createElement("button")
 
-btn.innerText=answer.text
+btn.innerText=answer
 
 btn.onclick=function(){
 
@@ -210,28 +210,24 @@ let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
-if(answer.correct){
+if(index===q.correct){
 
 score++
 
 document.getElementById("score").innerText="⭐ السكور: "+score
 
-btn.style.backgroundColor="#00c853"
+btn.classList.add("correct")
 
 document.getElementById("result").innerText="✅ إجابة صحيحة"
 
 }else{
 
-btn.style.backgroundColor="#d50000"
+btn.classList.add("wrong")
 
-answers.forEach((a,i)=>{
-if(a.correct){
-buttons[i].style.backgroundColor="#00c853"
-}
-})
+buttons[q.correct].classList.add("correct")
 
 document.getElementById("result").innerText=
-"❌ الإجابة الصحيحة: "+answers.find(a=>a.correct).text
+"❌ الإجابة الصحيحة: "+q.a[q.correct]
 
 }
 
@@ -251,19 +247,13 @@ currentQuestion++
 
 document.getElementById("result").innerText=""
 
-if(currentQuestion<questions.length){
-
 showQuestion()
-
-}else{
-
-endGame()
-
-}
 
 }
 
 function endGame(){
+
+clearInterval(timer)
 
 document.getElementById("question").innerText="🎉 انتهت الأسئلة"
 

@@ -2,6 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sports Quiz</title>
 
 <style>
@@ -12,23 +13,20 @@ font-family:Tahoma;
 background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 text-align:center;
-height:100vh;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
-/* الصندوق الرئيسي */
-
 .container{
 background:rgba(0,0,0,0.45);
 padding:40px;
 border-radius:18px;
-width:420px;
+width:90%;
+max-width:420px;
 box-shadow:0 0 30px rgba(0,0,0,0.7);
 }
-
-/* العنوان */
 
 h1{
 font-size:42px;
@@ -41,16 +39,12 @@ margin-bottom:25px;
 opacity:0.9;
 }
 
-/* العداد */
-
 .stats{
 margin-bottom:25px;
 font-size:16px;
 opacity:0.9;
 line-height:1.6;
 }
-
-/* الأزرار */
 
 .level-btn{
 display:block;
@@ -75,8 +69,6 @@ transform:scale(1.08);
 box-shadow:0 0 25px gold;
 }
 
-/* لمعة الزر */
-
 .level-btn::before{
 content:"";
 position:absolute;
@@ -91,8 +83,6 @@ transition:0.5s;
 .level-btn:hover::before{
 left:100%;
 }
-
-/* نافذة الملاحظة */
 
 #notice-box{
 position:fixed;
@@ -112,7 +102,8 @@ background:white;
 color:black;
 padding:35px;
 border-radius:12px;
-width:420px;
+width:90%;
+max-width:420px;
 box-shadow:0 0 20px black;
 }
 
@@ -185,30 +176,40 @@ background:#0056b3;
 
 <script>
 
-/* إخفاء الملاحظة مرة واحدة فقط */
+/* الملاحظة */
 
 function skipNotice(){
 document.getElementById("notice-box").style.display="none";
-localStorage.setItem("noticeSeen","yes")
+localStorage.setItem("noticeSeen","yes");
 }
 
 if(localStorage.getItem("noticeSeen")){
-document.getElementById("notice-box").style.display="none"
+document.getElementById("notice-box").style.display="none";
 }
 
 /* عداد الزوار */
 
-let visitors=1200
-let online=15
+let visitors = localStorage.getItem("visitors")
+
+if(!visitors){
+visitors = 1200
+}else{
+visitors = parseInt(visitors)
+}
+
+let online = 15
+
+document.getElementById("visitors").innerText = visitors
 
 setInterval(()=>{
 
 visitors += Math.floor(Math.random()*3)
-
 online = Math.floor(Math.random()*20)+5
 
-document.getElementById("visitors").innerText=visitors
-document.getElementById("online").innerText=online
+document.getElementById("visitors").innerText = visitors
+document.getElementById("online").innerText = online
+
+localStorage.setItem("visitors",visitors)
 
 },4000)
 

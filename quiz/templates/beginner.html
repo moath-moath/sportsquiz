@@ -89,34 +89,19 @@ color:#00e676;
 
 <script>
 
-let questions=[]
-[
+let questions=[
+
 {"q":"كم لاعب في فريق كرة القدم؟","a":["9","10","11","12"],"correct":2},
 {"q":"كم مدة المباراة؟","a":["80","90","100","120"],"correct":1},
 {"q":"لون بطاقة الطرد؟","a":["أصفر","أحمر","أزرق","أخضر"],"correct":1},
 {"q":"كم شوط في المباراة؟","a":["1","2","3","4"],"correct":1}
+
 ]
+
 let currentQuestion=0
 let timeLeft=10
 let timer
 let score=0
-
-async function loadQuestions(){
-
-let res=await fetch("questions_beginner.json")
-questions=await res.json()
-
-startQuiz()
-
-}
-
-function startQuiz(){
-
-shuffle(questions)
-
-showQuestion()
-
-}
 
 function shuffle(array){
 
@@ -129,6 +114,8 @@ let j=Math.floor(Math.random()*(i+1))
 }
 
 }
+
+shuffle(questions)
 
 function startTimer(){
 
@@ -260,13 +247,14 @@ document.getElementById("score").innerText="⭐ نتيجتك: "+score+" / "+ques
 
 }
 
-loadQuestions()
+showQuestion()
 
-/* زوار عشوائيين (شكل حقيقي) */
+/* زوار عشوائيين */
 
 setInterval(()=>{
 
 let online=Math.floor(Math.random()*40)+10
+
 document.getElementById("online").innerText=online
 
 },3000)

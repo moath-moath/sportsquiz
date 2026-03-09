@@ -2,6 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>👑 المستوى الأسطوري</title>
 
 <style>
@@ -15,9 +16,9 @@ margin:0;
 }
 
 .container{
-width:80%;
+width:90%;
 max-width:600px;
-margin:80px auto;
+margin:60px auto;
 background:#1b263b;
 padding:30px;
 border-radius:15px;
@@ -25,7 +26,7 @@ border-radius:15px;
 
 button{
 display:block;
-width:80%;
+width:85%;
 margin:12px auto;
 padding:14px;
 font-size:20px;
@@ -33,7 +34,9 @@ font-weight:bold;
 border-radius:10px;
 border:none;
 cursor:pointer;
-transition:0.3s;
+background:#415a77;
+color:white;
+transition:0.2s;
 }
 
 button:hover{
@@ -59,6 +62,14 @@ border-radius:10px;
 margin-bottom:20px;
 }
 
+.correct{
+background:#00c853 !important;
+}
+
+.wrong{
+background:#d50000 !important;
+}
+
 </style>
 </head>
 
@@ -82,7 +93,7 @@ margin-bottom:20px;
 
 <div id="score">⭐ السكور: 0</div>
 
-<div id="timer">⏳ الوقت: 8</div>
+<div id="timer"></div>
 
 <h2 id="question"></h2>
 
@@ -96,12 +107,12 @@ margin-bottom:20px;
 
 <script>
 
-let score = 0
-let currentQuestion = 0
-let time = 8
+let score=0
+let currentQuestion=0
+let time=8
 let timer
 
-let questions = [
+let questions=[
 
 {q:"من سجل أول هدف في تاريخ تصفيات كأس العالم؟",a:["يوهانس كروغر","جوزيف بروين","ويليام كينيدي","كارلوس ستيب"],correct:2},
 {q:"في أي سنة لعبت أول مباراة دولية في تاريخ كرة القدم؟",a:["1868","1870","1872","1875"],correct:2},
@@ -112,15 +123,10 @@ let questions = [
 ]
 
 function shuffle(array){
-
 for(let i=array.length-1;i>0;i--){
-
 let j=Math.floor(Math.random()*(i+1))
-
 [array[i],array[j]]=[array[j],array[i]]
-
 }
-
 }
 
 shuffle(questions)
@@ -129,7 +135,7 @@ function startTimer(){
 
 clearInterval(timer)
 
-time = 8
+time=8
 
 document.getElementById("timer").innerText="⏳ الوقت: "+time
 
@@ -155,22 +161,25 @@ function autoAnswer(){
 
 let q=questions[currentQuestion]
 
-let correct=q.a[q.correct]
-
 let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
-buttons[q.correct].style.background="#00c853"
+buttons[q.correct].classList.add("correct")
 
 document.getElementById("result").innerText=
-"⏰ انتهى الوقت! الإجابة الصحيحة: "+correct
+"⏰ انتهى الوقت! الإجابة الصحيحة: "+q.a[q.correct]
 
 setTimeout(nextQuestion,1500)
 
 }
 
 function showQuestion(){
+
+if(currentQuestion>=questions.length){
+endGame()
+return
+}
 
 startTimer()
 
@@ -182,19 +191,11 @@ let answersDiv=document.getElementById("answers")
 
 answersDiv.innerHTML=""
 
-let answers=q.a.map((text,i)=>{
-
-return {text:text,correct:i===q.correct}
-
-})
-
-shuffle(answers)
-
-answers.forEach((answer,index)=>{
+q.a.forEach((answer,index)=>{
 
 let btn=document.createElement("button")
 
-btn.innerText=answer.text
+btn.innerText=answer
 
 btn.onclick=function(){
 
@@ -204,28 +205,24 @@ let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
-if(answer.correct){
+if(index===q.correct){
 
 score++
 
 document.getElementById("score").innerText="⭐ السكور: "+score
 
-btn.style.background="#00c853"
+btn.classList.add("correct")
 
 document.getElementById("result").innerText="✅ إجابة صحيحة"
 
 }else{
 
-btn.style.background="#d50000"
+btn.classList.add("wrong")
 
-answers.forEach((a,i)=>{
-if(a.correct){
-buttons[i].style.background="#00c853"
-}
-})
+buttons[q.correct].classList.add("correct")
 
 document.getElementById("result").innerText=
-"❌ الإجابة الصحيحة: "+answers.find(a=>a.correct).text
+"❌ الإجابة الصحيحة: "+q.a[q.correct]
 
 }
 
@@ -245,19 +242,13 @@ currentQuestion++
 
 document.getElementById("result").innerText=""
 
-if(currentQuestion<questions.length){
-
 showQuestion()
-
-}else{
-
-endGame()
-
-}
 
 }
 
 function endGame(){
+
+clearInterval(timer)
 
 document.getElementById("question").innerText="🏁 انتهت اللعبة"
 
@@ -291,13 +282,9 @@ function openAdmin(){
 let panel=document.getElementById("adminPanel")
 
 if(panel.style.display==="none"){
-
 panel.style.display="block"
-
 }else{
-
 panel.style.display="none"
-
 }
 
 }

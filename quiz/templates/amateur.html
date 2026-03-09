@@ -2,12 +2,13 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المستوى الهاوي</title>
 
 <style>
 
 body{
-background-color:#0d1b2a;
+background:#0d1b2a;
 font-family:Arial;
 color:white;
 text-align:center;
@@ -15,25 +16,27 @@ margin:0;
 }
 
 .container{
-width:80%;
+width:90%;
 max-width:600px;
-margin:80px auto;
-background-color:#1b263b;
+margin:60px auto;
+background:#1b263b;
 padding:30px;
 border-radius:15px;
 }
 
 button{
 display:block;
-width:80%;
+width:90%;
 margin:12px auto;
 padding:14px;
-font-size:20px;
+font-size:18px;
 font-weight:bold;
 border-radius:10px;
 border:none;
 cursor:pointer;
-transition:0.3s;
+background:#415a77;
+color:white;
+transition:0.2s;
 }
 
 button:hover{
@@ -50,6 +53,14 @@ margin-bottom:10px;
 font-size:22px;
 color:#00e5ff;
 margin-bottom:15px;
+}
+
+.correct{
+background:#00c853 !important;
+}
+
+.wrong{
+background:#d50000 !important;
 }
 
 </style>
@@ -77,11 +88,25 @@ margin-bottom:15px;
 
 <script>
 
-let time = 10
-let timer
+let questions=[
 
-let currentQuestion = 0
-let score = 0
+{q:"كم عدد بطولات كأس العالم التي فازت بها إيطاليا؟",a:["2","3","4","5"],correct:2},
+{q:"من فاز بكأس العالم 2014؟",a:["الأرجنتين","ألمانيا","البرازيل","فرنسا"],correct:1},
+{q:"من سجل هدف فوز إسبانيا في نهائي كأس العالم 2010؟",a:["تشافي","إنييستا","فيلا","توريس"],correct:1},
+{q:"في أي دولة أقيم كأس العالم 2018؟",a:["روسيا","قطر","البرازيل","ألمانيا"],correct:0},
+{q:"أي منتخب فاز بكأس العالم 2010؟",a:["إسبانيا","هولندا","ألمانيا","الأرجنتين"],correct:0},
+{q:"من هو اللاعب الأرجنتيني الذي فاز بكأس العالم 1986؟",a:["ميسي","مارادونا","باتيستوتا","تيفيز"],correct:1},
+{q:"أي منتخب فاز بكأس العالم 2002؟",a:["ألمانيا","البرازيل","فرنسا","إيطاليا"],correct:1},
+{q:"في أي قارة تقع دولة البرازيل؟",a:["أوروبا","آسيا","أمريكا الجنوبية","إفريقيا"],correct:2},
+{q:"أي منتخب فاز بكأس العالم 1998؟",a:["البرازيل","إيطاليا","فرنسا","ألمانيا"],correct:2},
+{q:"من اللاعب الذي فاز بالكرة الذهبية 2010؟",a:["ميسي","رونالدو","تشافي","إنييستا"],correct:0}
+
+]
+
+let currentQuestion=0
+let score=0
+let timer
+let time=10
 
 function shuffle(array){
 for(let i=array.length-1;i>0;i--){
@@ -90,33 +115,13 @@ let j=Math.floor(Math.random()*(i+1))
 }
 }
 
-let questions = [
-
-/* جميع الأسئلة تبقى كما هي (لم أغيرها) */
-
-{q:"كم عدد بطولات كأس العالم التي فازت بها إيطاليا؟",a:["2","3","4","5"],correct:2},
-{q:"من فاز بكأس العالم 2014؟",a:["الأرجنتين","ألمانيا","البرازيل","فرنسا"],correct:1},
-{q:"من سجل هدف فوز إسبانيا في نهائي كأس العالم 2010؟",a:["تشافي","إنييستا","فيلا","توريس"],correct:1},
-{q:"في أي دولة أقيم كأس العالم 2018؟",a:["روسيا","قطر","البرازيل","ألمانيا"],correct:0},
-{q:"أي منتخب فاز بكأس العالم 2010؟",a:["إسبانيا","هولندا","ألمانيا","الأرجنتين"],correct:0},
-
-{q:"من هو اللاعب الأرجنتيني الذي فاز بكأس العالم 1986؟",a:["ميسي","مارادونا","باتيستوتا","تيفيز"],correct:1},
-{q:"أي منتخب فاز بكأس العالم 2002؟",a:["ألمانيا","البرازيل","فرنسا","إيطاليا"],correct:1},
-{q:"في أي قارة تقع دولة البرازيل؟",a:["أوروبا","آسيا","أمريكا الجنوبية","إفريقيا"],correct:2},
-{q:"أي منتخب فاز بكأس العالم 1998؟",a:["البرازيل","إيطاليا","فرنسا","ألمانيا"],correct:2},
-{q:"من اللاعب الذي فاز بالكرة الذهبية 2010؟",a:["ميسي","رونالدو","تشافي","إنييستا"],correct:0},
-
-/* بقية الأسئلة تبقى نفسها كما أرسلتها */
-
-]
-
 shuffle(questions)
 
 function startTimer(){
 
 clearInterval(timer)
 
-time = 10
+time=10
 
 document.getElementById("timer").innerText="⏳ الوقت: "+time
 
@@ -130,9 +135,7 @@ if(time<=0){
 
 clearInterval(timer)
 
-document.getElementById("result").innerText="⏰ انتهى الوقت!"
-
-setTimeout(nextQuestion,1200)
+autoAnswer()
 
 }
 
@@ -140,7 +143,28 @@ setTimeout(nextQuestion,1200)
 
 }
 
+function autoAnswer(){
+
+let q=questions[currentQuestion]
+
+let buttons=document.querySelectorAll("#answers button")
+
+buttons.forEach(b=>b.disabled=true)
+
+buttons[q.correct].classList.add("correct")
+
+document.getElementById("result").innerText="⏰ انتهى الوقت!"
+
+setTimeout(nextQuestion,1200)
+
+}
+
 function showQuestion(){
+
+if(currentQuestion>=questions.length){
+showFinal()
+return
+}
 
 startTimer()
 
@@ -152,19 +176,11 @@ let answersDiv=document.getElementById("answers")
 
 answersDiv.innerHTML=""
 
-let answers=q.a.map((text,i)=>{
-
-return {text:text,correct:i===q.correct}
-
-})
-
-shuffle(answers)
-
-answers.forEach((answer,index)=>{
+q.a.forEach((answer,index)=>{
 
 let btn=document.createElement("button")
 
-btn.innerText=answer.text
+btn.innerText=answer
 
 btn.onclick=function(){
 
@@ -174,29 +190,21 @@ let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
-if(answer.correct){
+if(index===q.correct){
 
 score++
 
 document.getElementById("score").innerText="⭐ السكور: "+score
 
-btn.style.backgroundColor="#00c853"
+btn.classList.add("correct")
 
 document.getElementById("result").innerText="✅ إجابة صحيحة!"
 
 }else{
 
-btn.style.backgroundColor="#d50000"
+btn.classList.add("wrong")
 
-buttons.forEach((b,i)=>{
-
-if(answers[i].correct){
-
-b.style.backgroundColor="#00c853"
-
-}
-
-})
+buttons[q.correct].classList.add("correct")
 
 document.getElementById("result").innerText="❌ إجابة خاطئة"
 
@@ -218,15 +226,7 @@ currentQuestion++
 
 document.getElementById("result").innerText=""
 
-if(currentQuestion<questions.length){
-
 showQuestion()
-
-}else{
-
-showFinal()
-
-}
 
 }
 

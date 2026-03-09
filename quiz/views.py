@@ -25,16 +25,17 @@ def home(request):
         defaults={"last_seen": timezone.now()}
     )
 
-    # تحديث آخر ظهور فقط إذا كان موجود
     if not created:
         visitor.last_seen = timezone.now()
         visitor.save(update_fields=["last_seen"])
 
-    # المتواجدون الآن (آخر 5 دقائق)
-    online_time = timezone.now() - timedelta(minutes=5)
-    online_users = Visitor.objects.filter(last_seen__gte=online_time).count()
+    # المتواجدين الآن خلال آخر 5 دقائق
+    online_limit = timezone.now() - timedelta(minutes=5)
 
-    # إجمالي الزوار
+    online_users = Visitor.objects.filter(
+        last_seen__gte=online_limit
+    ).count()
+
     visitors = Visitor.objects.count()
 
     context = {

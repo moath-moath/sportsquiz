@@ -107,25 +107,20 @@ let questions = [
 {q:"في أي دولة أقيم كأس العالم 2002؟",a:["اليابان وكوريا الجنوبية","الصين","أستراليا","الهند"],correct:0},
 {q:"في أي دولة أقيم كأس العالم 1994؟",a:["المكسيك","البرازيل","الولايات المتحدة","إسبانيا"],correct:2}
 
-];
+]
 
-let currentQuestion = 0
-let score = 0
+let currentQuestion=0
+let score=0
 let timer
-let timeLeft = 10
+let timeLeft=10
 
 shuffle(questions)
 
 function shuffle(array){
-
 for(let i=array.length-1;i>0;i--){
-
 let j=Math.floor(Math.random()*(i+1))
-
 [array[i],array[j]]=[array[j],array[i]]
-
 }
-
 }
 
 function startTimer(){
@@ -143,11 +138,8 @@ timeLeft--
 document.getElementById("timer").innerText="⏳ الوقت: "+timeLeft
 
 if(timeLeft<=0){
-
 clearInterval(timer)
-
 autoAnswer()
-
 }
 
 },1000)
@@ -155,6 +147,8 @@ autoAnswer()
 }
 
 function autoAnswer(){
+
+if(currentQuestion>=questions.length) return
 
 let q=questions[currentQuestion]
 
@@ -173,6 +167,11 @@ setTimeout(nextQuestion,1500)
 }
 
 function showQuestion(){
+
+if(currentQuestion>=questions.length){
+endGame()
+return
+}
 
 startTimer()
 
@@ -231,14 +230,11 @@ answersDiv.appendChild(btn)
 }
 
 function nextQuestion(){
-
 document.getElementById("result").innerText=""
-
-if(currentQuestion<questions.length){
-
 showQuestion()
+}
 
-}else{
+function endGame(){
 
 clearInterval(timer)
 
@@ -251,17 +247,13 @@ document.getElementById("timer").innerText=""
 document.getElementById("result").innerHTML=
 
 "⭐ نتيجتك: "+score+" / "+questions.length+
-
 "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
-
-}
 
 }
 
 function restartGame(){
 
 score=0
-
 currentQuestion=0
 
 document.getElementById("score").innerText="⭐ السكور: 0"

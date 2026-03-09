@@ -216,7 +216,9 @@ let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
+if(buttons[q.correct]){
 buttons[q.correct].classList.add("correct")
+}
 
 document.getElementById("result").innerText=
 "⏰ انتهى الوقت! الإجابة الصحيحة: "+q.a[q.correct]
@@ -270,7 +272,9 @@ document.getElementById("result").innerText="✅ إجابة صحيحة"
 
 btn.classList.add("wrong")
 
+if(buttons[q.correct]){
 buttons[q.correct].classList.add("correct")
+}
 
 document.getElementById("result").innerText=
 "❌ الإجابة الصحيحة: "+q.a[q.correct]

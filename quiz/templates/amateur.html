@@ -87,6 +87,7 @@ background:#d50000 !important;
 </div>
 
 <script>
+    
 let questions=[
 
 {q:"من فاز بكأس العالم 2002؟",a:["ألمانيا","البرازيل","فرنسا","إيطاليا"],correct:1},
@@ -144,6 +145,7 @@ let questions=[
 {q:"من هداف كأس العالم 2014؟",a:["مولر","خاميس رودريغيز","ميسي","نيمار"],correct:1}
 
 ]
+
 let currentQuestion=0
 let score=0
 let timer
@@ -192,7 +194,9 @@ let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
+if(buttons[q.correct]){
 buttons[q.correct].classList.add("correct")
+}
 
 document.getElementById("result").innerText="⏰ انتهى الوقت!"
 
@@ -245,7 +249,9 @@ document.getElementById("result").innerText="✅ إجابة صحيحة!"
 
 btn.classList.add("wrong")
 
+if(buttons[q.correct]){
 buttons[q.correct].classList.add("correct")
+}
 
 document.getElementById("result").innerText="❌ إجابة خاطئة"
 

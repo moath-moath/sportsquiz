@@ -139,14 +139,29 @@ background:#0056b3;
 <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
 <div class="stats">
- 👥 عدد الزوار: <span>{{ visitors }}</span> <br>
+👥 عدد الزوار: <span>{{ visitors }}</span><br>
 🟢 المتواجدون الآن: <span>{{ online_users }}</span>
+</div>
 
-<a href="{% url 'beginner' %}"><button class="level-btn">🟢 المستوى المبتدئ</button></a>
-<a href="{% url 'amateur' %}"><button class="level-btn">🔵 المستوى الهاوي</button></a>
-<a href="{% url 'medium' %}"><button class="level-btn">🟡 المستوى المتوسط</button></a>
-<a href="{% url 'hard' %}"><button class="level-btn">🔴 المستوى الصعب</button></a>
-<a href="{% url 'legendary' %}"><button class="level-btn">👑 المستوى الأسطوري</button></a>
+<a href="{% url 'beginner' %}">
+<button class="level-btn">🟢 المستوى المبتدئ</button>
+</a>
+
+<a href="{% url 'amateur' %}">
+<button class="level-btn">🔵 المستوى الهاوي</button>
+</a>
+
+<a href="{% url 'medium' %}">
+<button class="level-btn">🟡 المستوى المتوسط</button>
+</a>
+
+<a href="{% url 'hard' %}">
+<button class="level-btn">🔴 المستوى الصعب</button>
+</a>
+
+<a href="{% url 'legendary' %}">
+<button class="level-btn">👑 المستوى الأسطوري</button>
+</a>
 
 </div>
 

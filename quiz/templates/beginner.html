@@ -204,7 +204,9 @@ let buttons=document.querySelectorAll("#answers button")
 
 buttons.forEach(b=>b.disabled=true)
 
+if(buttons[q.correct]){
 buttons[q.correct].style.backgroundColor="#00c853"
+}
 
 document.getElementById("result").innerText="⏰ انتهى الوقت!"
 
@@ -254,7 +256,9 @@ document.getElementById("score").innerText="⭐ السكور: "+score
 
 btn.style.backgroundColor="#d50000"
 
+if(buttons[q.correct]){
 buttons[q.correct].style.backgroundColor="#00c853"
+}
 
 document.getElementById("result").innerText="❌ إجابة خاطئة"
 
@@ -301,8 +305,6 @@ document.getElementById("score").innerText="⭐ نتيجتك: "+score+" / "+ques
 }
 
 showQuestion()
-
-/* زوار عشوائيين */
 
 setInterval(()=>{
 

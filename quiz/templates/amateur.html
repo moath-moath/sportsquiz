@@ -88,57 +88,52 @@ background:#d50000 !important;
 
 <script>
 
-let questions=[
+let questions = [
 
-{
-q:"من فاز بكأس العالم 2018 ؟",
-a:["فرنسا","البرازيل","الأرجنتين","ألمانيا"],
-correct:0
-},
-
-{
-q:"من هو هداف ريال مدريد التاريخي ؟",
-a:["رونالدو","بنزيما","راؤول","دي ستيفانو"],
-correct:0
-},
-
-{
-q:"كم عدد لاعبي فريق كرة القدم ؟",
-a:["9","10","11","12"],
-correct:2
-}
+{q:"من فاز بكأس العالم 2018 ؟",a:["فرنسا","البرازيل","الأرجنتين","ألمانيا"],correct:0},
+{q:"من هو هداف ريال مدريد التاريخي ؟",a:["رونالدو","بنزيما","راؤول","دي ستيفانو"],correct:0},
+{q:"كم عدد لاعبي فريق كرة القدم ؟",a:["9","10","11","12"],correct:2}
 
 ]
 
-let currentQuestion=0
-let score=0
+let currentQuestion = 0
+let score = 0
 let timer
-let time=10
+let time = 10
+
 
 function shuffle(array){
-for(let i=array.length-1;i>0;i--){
-let j=Math.floor(Math.random()*(i+1))
-[array[i],array[j]]=[array[j],array[i]]
+
+for(let i = array.length - 1; i > 0; i--){
+
+let j = Math.floor(Math.random() * (i + 1))
+
+let temp = array[i]
+array[i] = array[j]
+array[j] = temp
+
 }
+
 }
 
 shuffle(questions)
+
 
 function startTimer(){
 
 clearInterval(timer)
 
-time=10
+time = 10
 
-document.getElementById("timer").innerText="⏳ الوقت: "+time
+document.getElementById("timer").innerText = "⏳ الوقت: " + time
 
-timer=setInterval(function(){
+timer = setInterval(function(){
 
 time--
 
-document.getElementById("timer").innerText="⏳ الوقت: "+time
+document.getElementById("timer").innerText = "⏳ الوقت: " + time
 
-if(time<=0){
+if(time <= 0){
 
 clearInterval(timer)
 
@@ -150,27 +145,31 @@ autoAnswer()
 
 }
 
+
 function autoAnswer(){
 
-let q=questions[currentQuestion]
+let q = questions[currentQuestion]
 
-let buttons=document.querySelectorAll("#answers button")
+let buttons = document.querySelectorAll("#answers button")
 
-buttons.forEach(b=>b.disabled=true)
+buttons.forEach(function(b){
+b.disabled = true
+})
 
 if(buttons[q.correct]){
 buttons[q.correct].classList.add("correct")
 }
 
-document.getElementById("result").innerText="⏰ انتهى الوقت"
+document.getElementById("result").innerText = "⏰ انتهى الوقت"
 
 setTimeout(nextQuestion,1200)
 
 }
 
+
 function showQuestion(){
 
-if(currentQuestion>=questions.length){
+if(currentQuestion >= questions.length){
 
 showFinal()
 
@@ -178,42 +177,43 @@ return
 
 }
 
-document.getElementById("result").innerText=""
-let q=questions[currentQuestion]
+document.getElementById("result").innerText = ""
+
+let q = questions[currentQuestion]
 
 startTimer()
 
+document.getElementById("question").innerText = q.q
 
+let answersDiv = document.getElementById("answers")
 
-document.getElementById("question").innerText=q.q
-
-let answersDiv=document.getElementById("answers")
-
-answersDiv.innerHTML=""
+answersDiv.innerHTML = ""
 
 q.a.forEach(function(answer,index){
 
-let btn=document.createElement("button")
+let btn = document.createElement("button")
 
-btn.innerText=answer
+btn.innerText = answer
 
-btn.onclick=function(){
+btn.onclick = function(){
 
 clearInterval(timer)
 
-let buttons=document.querySelectorAll("#answers button")
+let buttons = document.querySelectorAll("#answers button")
 
-buttons.forEach(b=>b.disabled=true)
+buttons.forEach(function(b){
+b.disabled = true
+})
 
-if(index===q.correct){
+if(index === q.correct){
 
 score++
 
-document.getElementById("score").innerText="⭐ السكور: "+score
+document.getElementById("score").innerText = "⭐ السكور: " + score
 
 btn.classList.add("correct")
 
-document.getElementById("result").innerText="✅ إجابة صحيحة"
+document.getElementById("result").innerText = "✅ إجابة صحيحة"
 
 }else{
 
@@ -223,7 +223,7 @@ if(buttons[q.correct]){
 buttons[q.correct].classList.add("correct")
 }
 
-document.getElementById("result").innerText="❌ إجابة خاطئة"
+document.getElementById("result").innerText = "❌ إجابة خاطئة"
 
 }
 
@@ -237,6 +237,7 @@ answersDiv.appendChild(btn)
 
 }
 
+
 function nextQuestion(){
 
 currentQuestion++
@@ -245,38 +246,39 @@ showQuestion()
 
 }
 
+
 function showFinal(){
 
 clearInterval(timer)
 
-document.getElementById("question").innerText="🎉 انتهت اللعبة"
+document.getElementById("question").innerText = "🎉 انتهت اللعبة"
 
-document.getElementById("answers").innerHTML=""
+document.getElementById("answers").innerHTML = ""
 
-document.getElementById("timer").innerText=""
+document.getElementById("timer").innerText = ""
 
-document.getElementById("result").innerHTML=
-
-"⭐ نتيجتك: "+score+" / "+questions.length+
-
+document.getElementById("result").innerHTML =
+"⭐ نتيجتك: " + score + " / " + questions.length +
 "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
 
 }
+
 
 function restartGame(){
 
 clearInterval(timer)
 
-score=0
-currentQuestion=0
+score = 0
+currentQuestion = 0
 
-document.getElementById("score").innerText="⭐ السكور: 0"
+document.getElementById("score").innerText = "⭐ السكور: 0"
 
 shuffle(questions)
 
 showQuestion()
 
 }
+
 
 showQuestion()
 

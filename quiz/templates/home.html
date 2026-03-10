@@ -200,11 +200,24 @@ document.getElementById("notice-box").style.display="none";
 
 function skipNotice(){
 
-document.getElementById("notice-box").style.display="none"
+const noticeBox = document.getElementById("notice-box");
 
-localStorage.setItem("noticeSeen","yes")
+if(noticeBox){
+noticeBox.style.display = "none";
+localStorage.setItem("noticeSeen","yes");
+}
 
 }
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const noticeBox = document.getElementById("notice-box");
+
+if(localStorage.getItem("noticeSeen") === "yes"){
+noticeBox.style.display = "none";
+}
+
+});
 
 </script>
 

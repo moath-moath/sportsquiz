@@ -101,7 +101,7 @@ background:#d50000 !important;
 
 <h3 id="result"></h3>
 
-<a href="/"><button>🏠 الرجوع للرئيسية</button></a>
+<a href="/" class="home-btn">🏠 الرجوع للرئيسية</a>
 
 </div>
 
@@ -212,10 +212,11 @@ if(currentQuestion>=questions.length){
 endGame()
 return
 }
+let q=questions[currentQuestion]
 
 startTimer()
 
-let q=questions[currentQuestion]
+
 
 document.getElementById("question").innerText=q.q
 

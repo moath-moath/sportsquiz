@@ -85,8 +85,10 @@ background:#d50000 !important;
 <a href="/"><button>🏠 الرجوع للرئيسية</button></a>
 
 </div>
+
 <script>
-let questions = [
+
+let questions=[
 
 {
 q:"من فاز بكأس العالم 2018 ؟",
@@ -130,7 +132,7 @@ time=10
 
 document.getElementById("timer").innerText="⏳ الوقت: "+time
 
-timer=setInterval(()=>{
+timer=setInterval(function(){
 
 time--
 
@@ -169,15 +171,19 @@ setTimeout(nextQuestion,1200)
 function showQuestion(){
 
 if(currentQuestion>=questions.length){
+
 showFinal()
+
 return
+
 }
 
 document.getElementById("result").innerText=""
+let q=questions[currentQuestion]
 
 startTimer()
 
-let q=questions[currentQuestion]
+
 
 document.getElementById("question").innerText=q.q
 
@@ -185,7 +191,7 @@ let answersDiv=document.getElementById("answers")
 
 answersDiv.innerHTML=""
 
-q.a.forEach((answer,index)=>{
+q.a.forEach(function(answer,index){
 
 let btn=document.createElement("button")
 
@@ -241,6 +247,8 @@ showQuestion()
 
 function showFinal(){
 
+clearInterval(timer)
+
 document.getElementById("question").innerText="🎉 انتهت اللعبة"
 
 document.getElementById("answers").innerHTML=""
@@ -256,6 +264,8 @@ document.getElementById("result").innerHTML=
 }
 
 function restartGame(){
+
+clearInterval(timer)
 
 score=0
 currentQuestion=0

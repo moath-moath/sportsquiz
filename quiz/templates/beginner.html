@@ -291,20 +291,32 @@ showFinalScore()
 }
 
 }
-
 function showFinalScore(){
 
-document.getElementById("question").innerText="🎉 انتهت الأسئلة"
+document.getElementById("question").innerText="🎉 انتهت اللعبة"
 
 document.getElementById("answers").innerHTML=""
 
 document.getElementById("timer").innerText=""
 
-document.getElementById("score").innerText="⭐ نتيجتك: "+score+" / "+questions.length
+document.getElementById("score").innerHTML=
+"⭐ نتيجتك: "+score+" / "+questions.length+
+"<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
 
 }
 
+function restartGame(){
+
+score=0
+currentQuestion=0
+
+document.getElementById("score").innerText="⭐ السكور: 0"
+
+shuffle(questions)
+
 showQuestion()
+
+}
 
 setInterval(()=>{
 

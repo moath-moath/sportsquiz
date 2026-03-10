@@ -54,15 +54,12 @@ max-width:300px;
 margin:14px auto;
 padding:16px;
 font-size:19px;
-border:none;
 border-radius:12px;
 cursor:pointer;
 background:linear-gradient(45deg,#ffd700,#ffa500);
 color:black;
 font-weight:bold;
-transition:all 0.25s;
-position:relative;
-overflow:hidden;
+text-decoration:none;
 }
 
 .level-btn:hover{
@@ -142,26 +139,15 @@ background:#0056b3;
 👥 عدد الزوار: <span>{{ visitors }}</span><br>
 🟢 المتواجدون الآن: <span>{{ online_users }}</span>
 </div>
+<a href="{% url 'beginner' %}" class="level-btn">🟢 المستوى المبتدئ</a>
 
-<a href="{% url 'beginner' %}">
-<button class="level-btn">🟢 المستوى المبتدئ</button>
-</a>
+<a href="{% url 'amateur' %}" class="level-btn">🔵 المستوى الهاوي</a>
 
-<a href="{% url 'amateur' %}">
-<button class="level-btn">🔵 المستوى الهاوي</button>
-</a>
+<a href="{% url 'medium' %}" class="level-btn">🟡 المستوى المتوسط</a>
 
-<a href="{% url 'medium' %}">
-<button class="level-btn">🟡 المستوى المتوسط</button>
-</a>
+<a href="{% url 'hard' %}" class="level-btn">🔴 المستوى الصعب</a>
 
-<a href="{% url 'hard' %}">
-<button class="level-btn">🔴 المستوى الصعب</button>
-</a>
-
-<a href="{% url 'legendary' %}">
-<button class="level-btn">👑 المستوى الأسطوري</button>
-</a>
+<a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
 
 </div>
 
@@ -191,18 +177,19 @@ background:#0056b3;
 
 <script>
 
-/* الملاحظة */
-
-function skipNotice(){
-document.getElementById("notice-box").style.display="none";
-localStorage.setItem("noticeSeen","yes");
-}
+document.addEventListener("DOMContentLoaded",function(){
 
 if(localStorage.getItem("noticeSeen")){
 document.getElementById("notice-box").style.display="none";
 }
 
+})
 
+function skipNotice(){
+document.getElementById("notice-box").style.display="none";
+localStorage.setItem("noticeSeen","yes");
+
+}
 
 </script>
 

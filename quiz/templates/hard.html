@@ -316,15 +316,18 @@ document.getElementById("result").innerHTML=
 "⭐ نتيجتك: "+score+" / "+questions.length+
 
 "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
-
 }
 
 function restartGame(){
 
+clearInterval(timer)
+
 score=0
 currentQuestion=0
+time=8
 
 document.getElementById("score").innerText="⭐ السكور: 0"
+document.getElementById("result").innerText=""
 
 shuffle(questions)
 

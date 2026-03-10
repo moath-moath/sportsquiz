@@ -279,7 +279,6 @@ document.getElementById("result").innerText=""
 showQuestion()
 
 }
-
 function endGame(){
 
 clearInterval(timer)
@@ -290,20 +289,39 @@ document.getElementById("answers").innerHTML=""
 
 document.getElementById("timer").innerText=""
 
+let level=""
+
+if(score<5){
+level="مبتدئ 🐣"
+}
+else if(score<10){
+level="جيد 👍"
+}
+else if(score<20){
+level="محترف ⚽"
+}
+else{
+level="أسطورة حقيقية 👑"
+}
+
 document.getElementById("result").innerHTML=
 
 "⭐ نتيجتك: "+score+" / "+questions.length+
-
+"<br>🏆 تقييمك: "+level+
 "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
 
 }
 
 function restartGame(){
 
+clearInterval(timer)
+
 score=0
 currentQuestion=0
+time=8
 
 document.getElementById("score").innerText="⭐ السكور: 0"
+document.getElementById("result").innerText=""
 
 shuffle(questions)
 
@@ -313,6 +331,10 @@ showQuestion()
 
 function openAdmin(){
 
+let pass=prompt("ادخل كلمة مرور المدير")
+
+if(pass==="1234"){
+
 let panel=document.getElementById("adminPanel")
 
 if(panel.style.display==="none"){
@@ -321,8 +343,13 @@ panel.style.display="block"
 panel.style.display="none"
 }
 
+}else{
+
+alert("❌ كلمة المرور خاطئة")
+
 }
 
+}
 showQuestion()
 
 </script>

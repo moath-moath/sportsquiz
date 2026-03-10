@@ -169,8 +169,6 @@ autoAnswer()
 
 function autoAnswer(){
 
-
-
 let q=questions[currentQuestion]
 
 let buttons=document.querySelectorAll("#answers button")
@@ -182,8 +180,6 @@ buttons[q.correct].classList.add("correct")
 }
 
 document.getElementById("result").innerText="⏰ انتهى الوقت! الإجابة: "+q.a[q.correct]
-
-currentQuestion++
 
 setTimeout(nextQuestion,1500)
 

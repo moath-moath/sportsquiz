@@ -72,7 +72,7 @@ background:#d50000 !important;
 
 <h1>⚽ المستوى الهاوي</h1>
 
-<div id="timer">⏳ الوقت: 10</div>
+<div id="timer">⏳ الوقت: 20</div>
 
 <div id="score">⭐ السكور: 0</div>
 
@@ -153,7 +153,7 @@ let questions = [
 let currentQuestion = 0
 let score = 0
 let timer
-let time = 10
+let time = 20
 
 
 function shuffle(array){
@@ -172,12 +172,33 @@ array[j] = temp
 
 shuffle(questions)
 
+function shuffleAnswers(question){
+
+let answers = question.a.map((answer,index)=>({
+text:answer,
+correct:index === question.correct
+}))
+
+for(let i = answers.length-1; i>0; i--){
+
+let j = Math.floor(Math.random()*(i+1))
+
+let temp = answers[i]
+answers[i] = answers[j]
+answers[j] = temp
+
+}
+
+question.a = answers.map(a=>a.text)
+question.correct = answers.findIndex(a=>a.correct)
+
+}
 
 function startTimer(){
 
 clearInterval(timer)
 
-time = 10
+time = 20
 
 document.getElementById("timer").innerText = "⏳ الوقت: " + time
 
@@ -231,22 +252,22 @@ return
 
 }
 
-document.getElementById("result").innerText = ""
+
 
 let q = questions[currentQuestion]
+
+shuffleAnswers(q)
 
 startTimer()
 
 document.getElementById("question").innerText = q.q
 
 let answersDiv = document.getElementById("answers")
-
 answersDiv.innerHTML = ""
 
 q.a.forEach(function(answer,index){
 
 let btn = document.createElement("button")
-
 btn.innerText = answer
 
 btn.onclick = function(){
@@ -262,11 +283,9 @@ b.disabled = true
 if(index === q.correct){
 
 score++
-
 document.getElementById("score").innerText = "⭐ السكور: " + score
 
 btn.classList.add("correct")
-
 document.getElementById("result").innerText = "✅ إجابة صحيحة"
 
 }else{

@@ -81,7 +81,8 @@ background:#d50000 !important;
 
 <h1>المستوى المبتدئ</h1>
 
-<div id="visitors">👥 الزوار الآن: <span id="online">...</span></div>
+<div id="timer">⏱ الوقت: <span id="time">30</span></div>
+
 
 <h3 id="score">⭐ السكور: 0</h3>
 
@@ -91,7 +92,7 @@ background:#d50000 !important;
 
 <h3 id="result"></h3>
 
-<div id="timer"></div>
+
 
 <a href="/"><button class="home-btn">🏠 الرجوع للرئيسية</button></a>
 
@@ -160,7 +161,7 @@ let questions = [
 ]
 
 let currentQuestion = 0
-let timeLeft = 10
+let timeLeft = 20
 let timer = null
 let score = 0
 
@@ -179,12 +180,33 @@ array[j] = temp
 }
 
 shuffle(questions)
+function shuffleAnswers(question){
+
+let answers = question.a.map((answer,index)=>({
+text:answer,
+correct:index === question.correct
+}))
+
+for(let i = answers.length-1; i>0; i--){
+
+let j = Math.floor(Math.random()*(i+1))
+
+let temp = answers[i]
+answers[i] = answers[j]
+answers[j] = temp
+
+}
+
+question.a = answers.map(a=>a.text)
+question.correct = answers.findIndex(a=>a.correct)
+
+}
 
 function startTimer(){
 
 clearInterval(timer)
 
-timeLeft = 10
+timeLeft = 20
 
 document.getElementById("timer").innerText = "⏳ الوقت: " + timeLeft
 
@@ -238,7 +260,10 @@ showFinalScore()
 return
 
 }
-let q=questions[currentQuestion]
+
+let q = questions[currentQuestion]
+
+shuffleAnswers(q)
 
 startTimer()
 
@@ -261,8 +286,8 @@ clearInterval(timer)
 let buttons = document.querySelectorAll("#answers button")
 
 buttons.forEach(function(b){
-
 b.disabled = true
+
 
 })
 
@@ -281,7 +306,6 @@ document.getElementById("score").innerText = "⭐ السكور: " + score
 btn.classList.add("wrong")
 
 if(buttons[q.correct]){
-
 buttons[q.correct].classList.add("correct")
 
 }

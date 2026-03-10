@@ -99,19 +99,26 @@ left:120%;
 
 .home-btn{
 display:inline-block;
-margin-top:20px;
-padding:12px 25px;
+margin-top:25px;
+padding:14px 25px;
+
+background:#ffd600;
+color:black;
+
+font-size:18px;
+font-weight:bold;
+
 border-radius:10px;
-background:#00c3ff;
-color:white;
+
 text-decoration:none;
-font-weight:600;
 transition:0.3s;
+
 }
 
 .home-btn:hover{
-background:#009fd4;
+background:#ffea00;
 transform:scale(1.05);
+
 }
 
 #notice-box{
@@ -164,7 +171,7 @@ background:#0056b3;
 
 <div class="container">
 
-<h1>🏆 Sports Quiz</h1>
+<h1>Sports Quiz </h1>
 
 <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
@@ -186,7 +193,7 @@ background:#0056b3;
 
 <a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
 
-<a href="/" class="home-btn">🔙 الرجوع إلى الرئيسية</a>
+
 
 </div>
 
@@ -224,19 +231,9 @@ const noticeBox = document.getElementById("notice-box");
 
 noticeBox.style.display = "none";
 
-localStorage.setItem("noticeSeen","yes");
-
 
 }
 
-document.addEventListener("DOMContentLoaded", function(){
-
-
-if(localStorage.getItem("noticeSeen") === "yes"){
-document.getElementById("notice-box").style.display = "none";
-}
-
-});
 
 </script>
 
@@ -245,3 +242,4 @@ document.getElementById("notice-box").style.display = "none";
 
 
 </html>
+

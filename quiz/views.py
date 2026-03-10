@@ -4,8 +4,9 @@ from django.utils import timezone
 from datetime import timedelta
 
 
+# الحصول على IP الزائر
 def get_ip(request):
-    """الحصول على IP الزائر"""
+
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
 
     if x_forwarded_for:
@@ -16,14 +17,12 @@ def get_ip(request):
     return ip
 
 
+# الصفحة الرئيسية
 def home(request):
 
     ip = get_ip(request)
 
-    visitor, created = Visitor.objects.get_or_create(
-        ip_address=ip,
-        defaults={"last_seen": timezone.now()}
-    )
+    visitor, created = Visitor.objects.get_or_create(ip_address=ip)
 
     visitor.last_seen = timezone.now()
     visitor.save(update_fields=["last_seen"])
@@ -43,6 +42,8 @@ def home(request):
 
     return render(request, "home.html", context)
 
+
+# صفحات المستويات
 
 def beginner(request):
     return render(request, "beginner.html")

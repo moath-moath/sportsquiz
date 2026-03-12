@@ -241,8 +241,9 @@ setTimeout(nextQuestion,1200)
 
 }
 
-
 function showQuestion(){
+
+document.getElementById("result").innerText = ""; // مسح النتيجة القديمة
 
 if(currentQuestion >= questions.length){
 
@@ -251,8 +252,6 @@ showFinal()
 return
 
 }
-
-
 
 let q = questions[currentQuestion]
 

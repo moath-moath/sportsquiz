@@ -95,6 +95,10 @@ background:#d50000 !important;
 <h2 id="question"></h2>
 
 <div id="answers"></div>
+<!-- زر تخطي السؤال -->
+<button id="skipBtn" style="background:#ff9800; color:white; padding:12px; margin:10px auto; border:none; border-radius:10px; cursor:pointer; display:block;">
+⏭ تخطي السؤال
+</button>
 
 <h3 id="result"></h3>
 
@@ -330,6 +334,11 @@ function showQuestion(){
 }
 
 function nextQuestion(){
+// زر التخطي
+document.getElementById("skipBtn").onclick = function() {
+  clearInterval(timer); // إيقاف المؤقت
+  nextQuestion();       // الانتقال للسؤال التالي
+};
 
 currentQuestion++
 
@@ -339,41 +348,30 @@ showQuestion()
 
 }
 
-function endGame(){
+function endGame() {
+  clearInterval(timer);
 
-clearInterval(timer)
+  document.getElementById("question").innerText="🏁 انتهت اللعبة";
+  document.getElementById("answers").innerHTML="";
+  document.getElementById("timer").innerText="";
 
-document.getElementById("question").innerText="🏁 انتهت اللعبة"
+  // إخفاء زر التخطي
+  document.getElementById("skipBtn").style.display = "none";
 
-document.getElementById("answers").innerHTML=""
+  let level="";
+  if(score<5) level="مبتدئ 🐣";
+  else if(score<10) level="جيد 👍";
+  else if(score<13) level="محترف ⚽";
+  else level="أسطورة حقيقية 👑";
 
-document.getElementById("timer").innerText=""
-
-let level=""
-
-if(score<5){
-level="مبتدئ 🐣"
-}
-else if(score<10){
-level="جيد 👍"
-}
-else if(score<13){
-level="محترف ⚽"
-}
-else{
-level="أسطورة حقيقية 👑"
-}
-
-document.getElementById("result").innerHTML=
-
-"⭐ نتيجتك: "+score+" / "+questions.length+
-"<br>🏆 تقييمك: "+level+
-"<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
-
+  document.getElementById("result").innerHTML=
+    "⭐ نتيجتك: "+score+" / "+questions.length+
+    "<br>🏆 تقييمك: "+level+
+    "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
 }
 
 function restartGame(){
-
+document.getElementById("skipBtn").style.display = "block";
 clearInterval(timer)
 
 score=0

@@ -85,6 +85,11 @@ background:#d50000 !important;
 
 <div id="answers"></div>
 
+<!-- زر تخطي السؤال -->
+<button id="skipBtn" style="background:#ff9800; color:white; padding:12px; margin:10px auto; border:none; border-radius:10px; cursor:pointer; display:block;">
+⏭ تخطي السؤال
+</button>
+
 <div id="result"></div>
 
 <a href="/"><button>🏠 الرجوع للرئيسية</button></a>
@@ -197,91 +202,64 @@ let questions=[
 
 {q:"من هو اللاعب الذي سجل هدف فوز إسبانيا بنهائي مونديال 2010؟",a:["إنييستا","تشافي","فيا","توريس"],correct:0}
 
-]
+];
 
+
+// خلط الأسئلة
 function shuffle(array){
-
-for(let i=array.length-1;i>0;i--){
-
-let j=Math.floor(Math.random()*(i+1))
-
-let temp=array[i]
-array[i]=array[j]
-array[j]=temp
-
+  for(let i=array.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    [array[i], array[j]]=[array[j], array[i]];
+  }
 }
+shuffle(questions);
 
-}
-
+// خلط الإجابات
 function shuffleAnswers(question){
-
-let answers = question.a.map((answer,index)=>({
-text:answer,
-correct:index===question.correct
-}))
-
-shuffle(answers)
-
-question.a = answers.map(a=>a.text)
-question.correct = answers.findIndex(a=>a.correct)
-
+  let answers = question.a.map((answer,index)=>({text:answer, correct:index===question.correct}));
+  for(let i=answers.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));
+    [answers[i], answers[j]]=[answers[j], answers[i]];
+  }
+  question.a = answers.map(a=>a.text);
+  question.correct = answers.findIndex(a=>a.correct);
 }
 
-shuffle(questions)
-
+// مؤقت
 function startTimer(){
-
-clearInterval(timer)
-
-time=20
-
-document.getElementById("timer").innerText="⏳ الوقت: "+time
-
-timer=setInterval(function(){
-
-time--
-
-document.getElementById("timer").innerText="⏳ الوقت: "+time
-
-if(time<=0){
-
-clearInterval(timer)
-autoAnswer()
-
+  clearInterval(timer);
+  timeLeft=20;
+  document.getElementById("timer").innerText="⏳ الوقت: "+timeLeft;
+  timer=setInterval(function(){
+    timeLeft--;
+    document.getElementById("timer").innerText="⏳ الوقت: "+timeLeft;
+    if(timeLeft<=0){
+      clearInterval(timer);
+      autoAnswer();
+    }
+  },1000);
 }
 
-},1000)
-
-}
-
+// انتهاء الوقت تلقائياً
 function autoAnswer(){
-
-let q=questions[currentQuestion]
-
-let buttons=document.querySelectorAll("#answers button")
-
-buttons.forEach(b=>b.disabled=true)
-
-if(buttons[q.correct]){
-buttons[q.correct].classList.add("correct")
+  let q=questions[currentQuestion];
+  let buttons = document.querySelectorAll("#answers button");
+  buttons.forEach(b=>b.disabled=true);
+  if(buttons[q.correct]) buttons[q.correct].classList.add("correct");
+  document.getElementById("result").innerText = "⏰ انتهى الوقت";
+  setTimeout(nextQuestion,1200);
 }
 
-document.getElementById("result").innerText=
-"⏰ انتهى الوقت! الإجابة الصحيحة: "+q.a[q.correct]
-
-setTimeout(nextQuestion,1500)
-
-}
-
+// عرض السؤال
 function showQuestion(){
+  document.getElementById("result").innerText = "";
+
   if(currentQuestion >= questions.length){
-    endGame();
+    showFinalScore();
     return;
   }
 
-  // تحديث عداد الأسئلة
-  document.getElementById("progress").innerText =
-    "السؤال " + (currentQuestion + 1) + " / " + questions.length;
+  document.getElementById("progress").innerText = "السؤال " + (currentQuestion+1) + " / " + questions.length;
 
   let q = questions[currentQuestion];
   shuffleAnswers(q);
@@ -292,77 +270,69 @@ function showQuestion(){
   let answersDiv = document.getElementById("answers");
   answersDiv.innerHTML = "";
 
-  q.a.forEach((answer, index) => {
+  q.a.forEach(function(answer,index){
     let btn = document.createElement("button");
     btn.innerText = answer;
 
     btn.onclick = function(){
       clearInterval(timer);
       let buttons = document.querySelectorAll("#answers button");
-      buttons.forEach(b => b.disabled = true);
+      buttons.forEach(b=>b.disabled=true);
 
       if(index === q.correct){
-        score++;
-        document.getElementById("score").innerText = "⭐ السكور: " + score;
         btn.classList.add("correct");
         document.getElementById("result").innerText = "✅ إجابة صحيحة";
+        score++;
+        document.getElementById("score").innerText = "⭐ السكور: "+score;
       } else {
         btn.classList.add("wrong");
         if(buttons[q.correct]) buttons[q.correct].classList.add("correct");
         document.getElementById("result").innerText = "❌ الإجابة الصحيحة: " + q.a[q.correct];
       }
 
-      currentQuestion++;
-      setTimeout(nextQuestion, 1500);
+      setTimeout(nextQuestion,1200);
     };
 
     answersDiv.appendChild(btn);
   });
 }
 
+// دالة موحدة للانتقال للسؤال التالي
 function nextQuestion(){
-
-currentQuestion++
-
-document.getElementById("result").innerText=""
-
-showQuestion()
-
+  currentQuestion++;
+  showQuestion();
 }
 
-function endGame(){
+// ربط زر التخطي
+document.getElementById("skipBtn").onclick = function() {
+    clearInterval(timer); 
+    nextQuestion();
+};
 
-clearInterval(timer)
+function showFinalScore(){
+  clearInterval(timer);
+  document.getElementById("question").innerText = "🎉 انتهت اللعبة";
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("timer").innerText = "";
+  document.getElementById("score").innerHTML = "⭐ نتيجتك: "+score+" / "+questions.length+
+    "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
 
-document.getElementById("question").innerText="🎉 انتهت الأسئلة"
-
-document.getElementById("answers").innerHTML=""
-
-document.getElementById("timer").innerText=""
-
-document.getElementById("result").innerHTML=
-
-"⭐ نتيجتك: "+score+" / "+questions.length+
-
-"<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>"
-
+  // إخفاء زر التخطي بعد انتهاء اللعبة
+  document.getElementById("skipBtn").style.display = "none";
 }
 
+// إعادة تشغيل اللعبة
 function restartGame(){
-
-score=0
-currentQuestion=0
-
-document.getElementById("score").innerText="⭐ السكور: 0"
-
-shuffle(questions)
-
-showQuestion()
-
+  clearInterval(timer);
+  score = 0;
+  currentQuestion = 0;
+  document.getElementById("score").innerText = "⭐ السكور: 0";
+  shuffle(questions);
+  showQuestion();
 }
 
-showQuestion()
-
+// بدء اللعبة
+showQuestion();
 
 </script>
 

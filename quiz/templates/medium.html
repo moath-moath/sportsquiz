@@ -303,34 +303,58 @@ function nextQuestion(){
   document.getElementById("result").innerText = "";
   showQuestion();
 }
-
-// نهاية اللعبة
+// نهاية اللعبة مع التقييم المنسق وإخفاء زر التخطي
 function endGame(){
   clearInterval(timer);
-  document.getElementById("question").innerText = "🎉 انتهت الأسئلة";
+  
+  // مسح الأسئلة والعداد
+  document.getElementById("question").innerText = "🎉 انتهت اللعبة";
   document.getElementById("answers").innerHTML = "";
   document.getElementById("timer").innerText = "";
+  
+  // اخفاء زر التخطي
+  document.getElementById("skipBtn").style.display = "none";
+  
+  // حساب التقييم
+  let level = "";
+  if(score < 5){
+    level = "مبتدئ 🐣";
+  } else if(score < 10){
+    level = "جيد 👍";
+  } else if(score < 15){
+    level = "محترف ⚽";
+  } else {
+    level = "أسطورة 👑";
+  }
+  
+  // عرض النتيجة والتقييم
   document.getElementById("result").innerHTML =
     "⭐ نتيجتك: " + score + " / " + questions.length +
+    "<br>🏆 تقييمك: " + level +
     "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
 }
-
-// إعادة تشغيل اللعبة
+// إعادة تشغيل اللعبة مع اظهار زر التخطي
 function restartGame(){
   score = 0;
   currentQuestion = 0;
   document.getElementById("score").innerText = "⭐ السكور: 0";
+  document.getElementById("result").innerText = "";
+  
+  // اظهار زر التخطي عند بداية اللعبة
+  document.getElementById("skipBtn").style.display = "block";
+  
   shuffle(questions);
   showQuestion();
 }
 
-// زر التخطي
-document.getElementById("skipBtn").onclick = function() {
-  clearInterval(timer);
-  currentQuestion++;
-  document.getElementById("result").innerText = "";
-  showQuestion();
-}
+// زر التخطي (تعريف واحد فقط)
+const skipBtn = document.getElementById("skipBtn");
+skipBtn.onclick = function() {
+  clearInterval(timer);                 // إيقاف المؤقت الحالي
+  currentQuestion++;                    // الانتقال للسؤال التالي
+  document.getElementById("result").innerText = ""; // مسح أي رسائل سابقة
+  showQuestion();                       // عرض السؤال التالي
+};
 
 // بدء اللعبة
 showQuestion();

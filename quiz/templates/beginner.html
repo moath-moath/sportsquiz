@@ -232,8 +232,8 @@ function autoAnswer(){
 function showQuestion(){
   document.getElementById("result").innerText = "";
 
-  if(currentQuestion>=questions.length){ 
-      showFinalScore(); 
+  if(currentQuestion >= questions.length){ 
+      showFinal();   // غير showFinalScore() الى showFinal()
       return; 
   }
 
@@ -288,15 +288,34 @@ document.getElementById("skipBtn").onclick=function(){
 };
 
 // نهاية اللعبة
-function showFinalScore(){
+function showFinal(){
   clearInterval(timer);
-  document.getElementById("question").innerText="🎉 انتهت اللعبة";
-  document.getElementById("answers").innerHTML="";
-  document.getElementById("timer").innerText="";
-  document.getElementById("score").innerHTML="⭐ نتيجتك: "+score+" / "+questions.length+"<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
+
+  // عرض رسالة نهاية اللعبة ومسح الأسئلة والعداد
+  document.getElementById("question").innerText = "🎉 انتهت اللعبة";
+  document.getElementById("answers").innerHTML = "";
+  document.getElementById("timer").innerText = "";
 
   // اخفاء زر التخطي بعد انتهاء اللعبة
   document.getElementById("skipBtn").style.display = "none";
+
+  // حساب التقييم بناءً على النتيجة
+  let level = "";
+  if(score < 10){
+    level = "مبتدئ 🐣";
+  } else if(score < 20){
+    level = "جيد 👍";
+  } else if(score < 35){
+    level = "محترف ⚽";
+  } else {
+    level = "أسطورة 👑";
+  }
+
+  // عرض النتيجة والتقييم مع زر إعادة اللعب
+  document.getElementById("result").innerHTML =
+    "⭐ نتيجتك: " + score + " / " + questions.length +
+    "<br>🏆 تقييمك: " + level +
+    "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
 }
 
 // إعادة تشغيل اللعبة

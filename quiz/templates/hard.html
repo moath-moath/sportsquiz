@@ -314,7 +314,23 @@ function showFinalScore(){
   document.getElementById("question").innerText = "🎉 انتهت اللعبة";
   document.getElementById("answers").innerHTML = "";
   document.getElementById("timer").innerText = "";
-  document.getElementById("score").innerHTML = "⭐ نتيجتك: "+score+" / "+questions.length+
+
+  // حساب التقييم بناءً على السكور
+  let level = "";
+  if(score < 5){
+    level = "مبتدئ 🐣";
+  } else if(score < 10){
+    level = "جيد 👍";
+  } else if(score < 15){
+    level = "محترف ⚽";
+  } else {
+    level = "أسطورة 👑";
+  }
+
+  // عرض النتيجة والتقييم مع زر إعادة اللعب
+  document.getElementById("score").innerHTML =
+    "⭐ نتيجتك: " + score + " / " + questions.length +
+    "<br>🏆 تقييمك: " + level +
     "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
 
   // إخفاء زر التخطي بعد انتهاء اللعبة

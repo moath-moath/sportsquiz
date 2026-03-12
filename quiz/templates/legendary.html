@@ -357,12 +357,20 @@ function endGame() {
 
   // إخفاء زر التخطي
   document.getElementById("skipBtn").style.display = "none";
+let level=""
 
-  let level="";
-  if(score<5) level="مبتدئ 🐣";
-  else if(score<10) level="جيد 👍";
-  else if(score<13) level="محترف ⚽";
-  else level="أسطورة حقيقية 👑";
+if(score<10){
+  level="مبتدئ 🐣"
+}
+else if(score<20){
+  level="جيد 👍"
+}
+else if(score<35){
+  level="محترف ⚽"
+}
+else{
+  level="أسطورة حقيقية 👑"
+}
 
   document.getElementById("result").innerHTML=
     "⭐ نتيجتك: "+score+" / "+questions.length+

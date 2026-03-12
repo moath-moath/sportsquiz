@@ -230,6 +230,11 @@ function showQuestion(){
   startTimer();
   document.getElementById("question").innerText = q.q;
 
+  // تفعيل زر التخطي دائماً
+  const skipBtn = document.getElementById("skipBtn");
+  skipBtn.disabled = false;
+  skipBtn.style.display = "block";
+
   let answersDiv = document.getElementById("answers");
   answersDiv.innerHTML = "";
 
@@ -241,6 +246,7 @@ function showQuestion(){
       clearInterval(timer);
       let buttons = document.querySelectorAll("#answers button");
       buttons.forEach(b => b.disabled = true);
+      skipBtn.disabled = true; // تعطيل زر التخطي بعد الإجابة
 
       if(index === q.correct){
         score++;
@@ -260,19 +266,20 @@ function showQuestion(){
   });
 }
 
+// تعديل زر التخطي بدون رسالة
+document.getElementById("skipBtn").onclick = function(){
+  clearInterval(timer);
+  this.disabled = true; // تعطيل الزر بعد الضغط
+  currentQuestion++;
+  setTimeout(showQuestion,500);
+}
+
 // الانتقال للسؤال التالي
 function nextQuestion(){
   currentQuestion++;
   showQuestion();
 }
 
-// زر تخطي السؤال
-document.getElementById("skipBtn").onclick = function(){
-  clearInterval(timer);
-  document.getElementById("result").innerText = "⏭ تم تخطي السؤال";
-  currentQuestion++;
-  setTimeout(showQuestion,500);
-}
 
 // نهاية اللعبة
 function showFinal(){
@@ -280,7 +287,25 @@ function showFinal(){
   document.getElementById("question").innerText = "🎉 انتهت اللعبة";
   document.getElementById("answers").innerHTML = "";
   document.getElementById("timer").innerText = "";
-  document.getElementById("result").innerHTML = "⭐ نتيجتك: " + score + " / " + questions.length +
+
+  // إخفاء زر التخطي عند نهاية اللعبة
+  document.getElementById("skipBtn").style.display = "none";
+
+  // حساب التقييم
+  let level = "";
+  if(score < 10){
+    level = "مبتدئ 🐣";
+  } else if(score < 20){
+    level = "جيد 👍";
+  } else if(score < 35){
+    level = "محترف ⚽";
+  } else {
+    level = "أسطورة 👑";
+  }
+
+  document.getElementById("result").innerHTML =
+    "⭐ نتيجتك: " + score + " / " + questions.length +
+    "<br>🏆 تقييمك: " + level +
     "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
 }
 
@@ -290,6 +315,12 @@ function restartGame(){
   score = 0;
   currentQuestion = 0;
   document.getElementById("score").innerText = "⭐ السكور: 0";
+  document.getElementById("result").innerText = "";
+
+  // إعادة إظهار زر التخطي عند بدء اللعبة من جديد
+  document.getElementById("skipBtn").style.display = "block";
+  document.getElementById("skipBtn").disabled = false;
+
   shuffle(questions);
   showQuestion();
 }

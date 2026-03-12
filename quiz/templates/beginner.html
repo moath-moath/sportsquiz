@@ -81,6 +81,12 @@ background:#00c853 !important;
 background:#d50000 !important;
 }
 
+#progress{
+font-size:18px;
+margin-bottom:10px;
+color:#90caf9;
+}
+
 </style>
 </head>
 
@@ -94,7 +100,7 @@ background:#d50000 !important;
 
 
 <h3 id="score">⭐ السكور: 0</h3>
-
+<div id="progress">السؤال 1 / 50</div>
 <h2 id="question"></h2>
 
 <div id="answers"></div>
@@ -262,6 +268,9 @@ setTimeout(nextQuestion,1200)
 }
 
 function showQuestion(){
+
+document.getElementById("progress").innerText =
+"السؤال " + (currentQuestion+1) + " / " + questions.length;
 
 if(currentQuestion >= questions.length){
 

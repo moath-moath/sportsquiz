@@ -63,6 +63,12 @@ background:#00c853 !important;
 background:#d50000 !important;
 }
 
+#questionNumber{
+  font-size: 20px;
+  color: #ff6d00;
+  margin-bottom: 10px;
+}
+
 </style>
 </head>
 
@@ -75,6 +81,7 @@ background:#d50000 !important;
 <div id="timer">⏳ الوقت: 20</div>
 
 <div id="score">⭐ السكور: 0</div>
+<div id="questionNumber">السؤال 1 / 50</div>
 
 <h2 id="question"></h2>
 
@@ -242,71 +249,50 @@ setTimeout(nextQuestion,1200)
 }
 
 function showQuestion(){
+  if(currentQuestion >= questions.length){
+    showFinal();
+    return;
+  }
 
-document.getElementById("result").innerText = ""; // مسح النتيجة القديمة
+  let q = questions[currentQuestion];
 
-if(currentQuestion >= questions.length){
+  // تحديث رقم السؤال
+  document.getElementById("questionNumber").innerText =
+    "السؤال " + (currentQuestion + 1) + " من " + questions.length;
 
-showFinal()
+  document.getElementById("result").innerText = ""; // مسح النتيجة القديمة
+  shuffleAnswers(q);
+  startTimer();
+  document.getElementById("question").innerText = q.q;
 
-return
+  let answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
 
-}
+  q.a.forEach(function(answer,index){
+    let btn = document.createElement("button");
+    btn.innerText = answer;
 
-let q = questions[currentQuestion]
+    btn.onclick = function(){
+      clearInterval(timer);
+      let buttons = document.querySelectorAll("#answers button");
+      buttons.forEach(b => b.disabled = true);
 
-shuffleAnswers(q)
+      if(index === q.correct){
+        score++;
+        document.getElementById("score").innerText = "⭐ السكور: " + score;
+        btn.classList.add("correct");
+        document.getElementById("result").innerText = "✅ إجابة صحيحة";
+      } else {
+        btn.classList.add("wrong");
+        buttons[q.correct].classList.add("correct");
+        document.getElementById("result").innerText = "❌ إجابة خاطئة";
+      }
 
-startTimer()
+      setTimeout(nextQuestion,1200);
+    };
 
-document.getElementById("question").innerText = q.q
-
-let answersDiv = document.getElementById("answers")
-answersDiv.innerHTML = ""
-
-q.a.forEach(function(answer,index){
-
-let btn = document.createElement("button")
-btn.innerText = answer
-
-btn.onclick = function(){
-
-clearInterval(timer)
-
-let buttons = document.querySelectorAll("#answers button")
-
-buttons.forEach(function(b){
-b.disabled = true
-})
-
-if(index === q.correct){
-
-score++
-document.getElementById("score").innerText = "⭐ السكور: " + score
-
-btn.classList.add("correct")
-document.getElementById("result").innerText = "✅ إجابة صحيحة"
-
-}else{
-
-btn.classList.add("wrong")
-
-if(buttons[q.correct]){
-buttons[q.correct].classList.add("correct")
-}
-
-document.getElementById("result").innerText = "❌ إجابة خاطئة"
-
-}
-
-setTimeout(nextQuestion,1200)
-
-}
-
-answersDiv.appendChild(btn)
-
-})
-
+    answersDiv.appendChild(btn);
+  });
 }
 
 

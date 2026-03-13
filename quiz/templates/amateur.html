@@ -76,6 +76,14 @@ background:#d50000 !important;
 
 <div class="container">
 
+<p id="player-name" style="
+font-size:22px;
+font-weight:800;
+color:#ffd700;
+text-shadow:1px 1px 4px black;
+margin-bottom:10px;
+"></p>
+
 <h1>⚽ المستوى الهاوي</h1>
 
 <div id="timer">⏳ الوقت: 20</div>
@@ -99,6 +107,12 @@ background:#d50000 !important;
 </div>
 
 <script>
+  
+const savedName = localStorage.getItem('username');
+
+if(savedName){
+document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
+}
 
 let questions = [
 {q:"من هو هداف كأس العالم 2014؟",a:["جيمس رودريغيز","ميسي","مولر","نيمار"],correct:0},

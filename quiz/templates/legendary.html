@@ -79,6 +79,14 @@ background:#d50000 !important;
 
 <div class="container">
 
+<p id="player-name" style="
+font-size:22px;
+font-weight:800;
+color:#ffd700;
+text-shadow:1px 1px 4px black;
+margin-bottom:10px;
+"></p>
+
 <h1>👑 المستوى الأسطوري</h1>
 
 <button onclick="openAdmin()">⚙ لوحة المدير</button>
@@ -107,6 +115,13 @@ background:#d50000 !important;
 </div>
 
 <script>
+
+  const savedName = localStorage.getItem('username');
+
+if(savedName){
+document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
+}
+
 
 let score=0
 let currentQuestion=0

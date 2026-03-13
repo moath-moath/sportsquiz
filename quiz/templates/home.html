@@ -241,15 +241,7 @@ function skipNotice(){
   document.getElementById("name-box").style.display = "flex";
 }
 
-// عند تحميل الصفحة، إذا الاسم موجود في localStorage
-window.onload = function(){
-  const savedName = localStorage.getItem('username');
-  if(savedName){
-    document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
-  } else {
-    document.getElementById("name-box").style.display = "flex";
-  }
-}
+
 
 // حفظ الاسم
 function saveName(){
@@ -258,9 +250,31 @@ function saveName(){
     alert("الرجاء إدخال اسمك!");
     return;
   }
+
+  // حفظ الاسم محلياً
   localStorage.setItem('username', name);
+
+  // إخفاء نافذة إدخال الاسم
   document.getElementById("name-box").style.display = "none";
+
+  // عرض الاسم في الصفحة
   document.getElementById("player-name").textContent = `👋 مرحباً ${name}`;
+
+  // تحديث subtitle
+  const subtitle = document.querySelector(".subtitle");
+  subtitle.textContent = `مرحباً ${name}! اختبر معلوماتك الرياضية`;
+}
+
+// عند تحميل الصفحة، إذا الاسم موجود مسبقاً
+window.onload = function(){
+  const savedName = localStorage.getItem('username');
+  if(savedName){
+    document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
+    const subtitle = document.querySelector(".subtitle");
+    subtitle.textContent = `مرحباً ${savedName}! اختبر معلوماتك الرياضية`;
+  } else {
+    document.getElementById("name-box").style.display = "flex";
+  }
 }
 </script>
 

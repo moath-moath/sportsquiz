@@ -59,7 +59,7 @@ body{
   font-size:20px;
   border-radius:14px;
   cursor:pointer;
-  background: linear-gradient(45deg, #ffd700, #ffb700); /* ذهبي لامع */
+  background: linear-gradient(45deg, #ffd700, #ffb700);
   color:#111;
   font-weight:800;
   text-decoration:none;
@@ -170,7 +170,7 @@ body{
   background:#0056b3;
 }
 
-/* responsive للهاتف */
+
 @media screen and (max-width:480px){
   .container{
     padding:25px;
@@ -183,6 +183,7 @@ body{
     padding:20px;
   }
 }
+
 </style>
 
 </head>
@@ -216,34 +217,36 @@ body{
 
 <!-- المحتوى الأساسي -->
 <div class="container">
-<p id="player-name" style="font-size:22px;font-weight:800;color:#ffd700;text-shadow:1px 1px 4px black;margin-bottom:10px;"></p>
+  <p id="player-name" style="font-size:22px;font-weight:800;color:#ffd700;text-shadow:1px 1px 4px black;margin-bottom:10px;"></p>
 
-<h1>Sports Quiz</h1>
+  <h1>Sports Quiz</h1>
+  <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
-<div class="subtitle">اختبر معلوماتك الرياضية</div>
+  <div class="stats">
+    👥 عدد الزوار: <span>{{ visitors }}</span><br>
+    🟢 المتواجدون الآن: <span>{{ online_users }}</span>
+  </div>
 
-<div class="stats">
-  👥 عدد الزوار: <span>{{ visitors }}</span><br>
-  🟢 المتواجدون الآن: <span>{{ online_users }}</span>
-</div>
-
-<a href="{% url 'beginner' %}" class="level-btn">🟢 المستوى المبتدئ</a>
-<a href="{% url 'amateur' %}" class="level-btn">🔵 المستوى الهاوي</a>
-<a href="{% url 'medium' %}" class="level-btn">🟡 المستوى المتوسط</a>
-<a href="{% url 'hard' %}" class="level-btn">🔴 المستوى الصعب</a>
-<a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
+  <a href="{% url 'beginner' %}" class="level-btn">🟢 المستوى المبتدئ</a>
+  <a href="{% url 'amateur' %}" class="level-btn">🔵 المستوى الهاوي</a>
+  <a href="{% url 'medium' %}" class="level-btn">🟡 المستوى المتوسط</a>
+  <a href="{% url 'hard' %}" class="level-btn">🔴 المستوى الصعب</a>
+  <a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
 </div>
 
 <script>
 // زر تخطي الملاحظة
 function skipNotice(){
   document.getElementById("notice-box").style.display = "none";
-  document.getElementById("name-box").style.display = "flex";
+
+  // نتحقق إذا الاسم موجود مسبقاً
+  const savedName = localStorage.getItem('username');
+  if(!savedName){ 
+    document.getElementById("name-box").style.display = "flex";
+  }
 }
 
-
-
-// حفظ الاسم
+// حفظ الاسم محلياً
 function saveName(){
   const name = document.getElementById("username").value.trim();
   if(name===""){
@@ -251,32 +254,32 @@ function saveName(){
     return;
   }
 
-  // حفظ الاسم محلياً
+  // حفظ الاسم على المتصفح
   localStorage.setItem('username', name);
 
   // إخفاء نافذة إدخال الاسم
   document.getElementById("name-box").style.display = "none";
 
-  // عرض الاسم في الصفحة
-  document.getElementById("player-name").textContent = `👋 مرحباً ${name}`;
+  // عرض الاسم فقط، لا نعدل subtitle
+  document.getElementById("player-name").textContent = ` الاعب: ${name}`;
 
-  // تحديث subtitle
-  const subtitle = document.querySelector(".subtitle");
-  subtitle.textContent = `مرحباً ${name}! اختبر معلوماتك الرياضية`;
+
+  
 }
 
-// عند تحميل الصفحة، إذا الاسم موجود مسبقاً
+// عند تحميل الصفحة، عرض الاسم إذا موجود مسبقاً
 window.onload = function(){
   const savedName = localStorage.getItem('username');
   if(savedName){
-    document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
-    const subtitle = document.querySelector(".subtitle");
-    subtitle.textContent = `مرحباً ${savedName}! اختبر معلوماتك الرياضية`;
+    document.getElementById("player-name").textContent = ` الاعب: ${savedName}`;
+
   } else {
+
     document.getElementById("name-box").style.display = "flex";
   }
 }
 </script>
+
 
 </body>
 

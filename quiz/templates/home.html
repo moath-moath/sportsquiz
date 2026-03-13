@@ -227,6 +227,7 @@ margin-bottom:10px;
 "></p>
 
   <h1>Sports Quiz</h1>
+
   <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
   <div class="stats">
@@ -241,65 +242,67 @@ margin-bottom:10px;
   <a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
 </div>
 
-<script>
-// زر تخطي الملاحظة
-function skipNotice(){
+<script type="module">
+  // --- Firebase SDK ---
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
-document.getElementById("notice-box").style.display="none";
+  // إعداد Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyApMeB_ayA2bWtzcxGunKKJ_EIB6lTqPD4",
+    authDomain: "sportsquiz-9218d.firebaseapp.com",
+    projectId: "sportsquiz-9218d",
+    storageBucket: "sportsquiz-9218d.firebasestorage.app",
+    messagingSenderId: "16464338545",
+    appId: "1:16464338545:web:2dfe457e6fbaa762d585d0",
+    measurementId: "G-0VL06D3719"
+  };
 
-const savedName = localStorage.getItem('username');
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-if(savedName){
+  const playerNameElem = document.getElementById("player-name");
+  const nameBox = document.getElementById("name-box");
+  const noticeBox = document.getElementById("notice-box");
 
-document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
+  // زر تخطي الملاحظة
+  function skipNotice(){
+    noticeBox.style.display = "none";
+    nameBox.style.display = "flex";
+  }
+  window.skipNotice = skipNotice;
 
-} else {
+  // زر تسجيل الدخول
+  async function saveName(){
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, { name: user.displayName }, { merge: true });
+      nameBox.style.display = "none";
+      playerNameElem.textContent = `👋 مرحباً ${user.displayName}`;
+    } catch(error) {
+      alert("حدث خطأ أثناء تسجيل الدخول: " + error.message);
+    }
+  }
+  window.saveName = saveName;
 
-document.getElementById("name-box").style.display="flex";
+  // متابعة حالة تسجيل الدخول
+  onAuthStateChanged(auth, async (user) => {
+    if(user){
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+      let name = user.displayName;
+      if(docSnap.exists() && docSnap.data().name) name = docSnap.data().name;
+      nameBox.style.display = "none";
+      noticeBox.style.display = "none";
+      playerNameElem.textContent = `👋 مرحباً ${name}`;
+    }
+  });
 
-}
-
-}
-
-
-// عند تحميل الصفحة
-window.onload = function(){
-
-const savedName = localStorage.getItem('username');
-
-if(savedName){
-
-document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
-
-}
-
-}
-
-
-// حفظ الاسم
-function saveName(){
-
-const name = document.getElementById("username").value.trim();
-
-if(name===""){
-alert("الرجاء إدخال اسمك!");
-return;
-}
-
-localStorage.setItem('username', name);
-
-document.getElementById("name-box").style.display="none";
-
-document.getElementById("player-name").textContent = `👋 مرحباً ${name}`;
-
-}
-
-
-// عرض الاسم في subtitle
-function displayName(name){
-  const subtitle = document.querySelector(".subtitle");
-  subtitle.textContent = `مرحباً ${name}! اختبر معلوماتك الرياضية`;
-}
 </script>
 
 </body>

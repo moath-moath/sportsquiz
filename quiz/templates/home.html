@@ -89,14 +89,13 @@ body{
 
 /* --- نافذة إدخال الاسم --- */
 #name-box{
-
   position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100%;
   background:rgba(0,0,0,0.85);
-  display:none;   /* هنا التعديل */
+  display:none;
   justify-content:center;
   align-items:center;
   z-index:9999;
@@ -217,92 +216,52 @@ body{
 
 <!-- المحتوى الأساسي -->
 <div class="container">
+<p id="player-name" style="font-size:22px;font-weight:800;color:#ffd700;text-shadow:1px 1px 4px black;margin-bottom:10px;"></p>
 
-<p id="player-name" style="
-font-size:22px;
-font-weight:800;
-color:#ffd700;
-text-shadow:1px 1px 4px black;
-margin-bottom:10px;
-"></p>
+<h1>Sports Quiz</h1>
 
-  <h1>Sports Quiz</h1>
+<div class="subtitle">اختبر معلوماتك الرياضية</div>
 
-  <div class="subtitle">اختبر معلوماتك الرياضية</div>
-
-  <div class="stats">
-    👥 عدد الزوار: <span>{{ visitors }}</span><br>
-    🟢 المتواجدون الآن: <span>{{ online_users }}</span>
-  </div>
-
-  <a href="{% url 'beginner' %}" class="level-btn">🟢 المستوى المبتدئ</a>
-  <a href="{% url 'amateur' %}" class="level-btn">🔵 المستوى الهاوي</a>
-  <a href="{% url 'medium' %}" class="level-btn">🟡 المستوى المتوسط</a>
-  <a href="{% url 'hard' %}" class="level-btn">🔴 المستوى الصعب</a>
-  <a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
+<div class="stats">
+  👥 عدد الزوار: <span>{{ visitors }}</span><br>
+  🟢 المتواجدون الآن: <span>{{ online_users }}</span>
 </div>
 
-<script type="module">
-  // --- Firebase SDK ---
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+<a href="{% url 'beginner' %}" class="level-btn">🟢 المستوى المبتدئ</a>
+<a href="{% url 'amateur' %}" class="level-btn">🔵 المستوى الهاوي</a>
+<a href="{% url 'medium' %}" class="level-btn">🟡 المستوى المتوسط</a>
+<a href="{% url 'hard' %}" class="level-btn">🔴 المستوى الصعب</a>
+<a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
+</div>
 
-  // إعداد Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyApMeB_ayA2bWtzcxGunKKJ_EIB6lTqPD4",
-    authDomain: "sportsquiz-9218d.firebaseapp.com",
-    projectId: "sportsquiz-9218d",
-    storageBucket: "sportsquiz-9218d.firebasestorage.app",
-    messagingSenderId: "16464338545",
-    appId: "1:16464338545:web:2dfe457e6fbaa762d585d0",
-    measurementId: "G-0VL06D3719"
-  };
+<script>
+// زر تخطي الملاحظة
+function skipNotice(){
+  document.getElementById("notice-box").style.display = "none";
+  document.getElementById("name-box").style.display = "flex";
+}
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  const playerNameElem = document.getElementById("player-name");
-  const nameBox = document.getElementById("name-box");
-  const noticeBox = document.getElementById("notice-box");
-
-  // زر تخطي الملاحظة
-  function skipNotice(){
-    noticeBox.style.display = "none";
-    nameBox.style.display = "flex";
+// عند تحميل الصفحة، إذا الاسم موجود في localStorage
+window.onload = function(){
+  const savedName = localStorage.getItem('username');
+  if(savedName){
+    document.getElementById("player-name").textContent = `👋 مرحباً ${savedName}`;
+  } else {
+    document.getElementById("name-box").style.display = "flex";
   }
-  window.skipNotice = skipNotice;
+}
 
-  // زر تسجيل الدخول
-  async function saveName(){
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, { name: user.displayName }, { merge: true });
-      nameBox.style.display = "none";
-      playerNameElem.textContent = `👋 مرحباً ${user.displayName}`;
-    } catch(error) {
-      alert("حدث خطأ أثناء تسجيل الدخول: " + error.message);
-    }
+// حفظ الاسم
+function saveName(){
+  const name = document.getElementById("username").value.trim();
+  if(name===""){
+    alert("الرجاء إدخال اسمك!");
+    return;
   }
-  window.saveName = saveName;
-
-  // متابعة حالة تسجيل الدخول
-  onAuthStateChanged(auth, async (user) => {
-    if(user){
-      const userRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(userRef);
-      let name = user.displayName;
-      if(docSnap.exists() && docSnap.data().name) name = docSnap.data().name;
-      nameBox.style.display = "none";
-      noticeBox.style.display = "none";
-      playerNameElem.textContent = `👋 مرحباً ${name}`;
-    }
-  });
-
+  localStorage.setItem('username', name);
+  document.getElementById("name-box").style.display = "none";
+  document.getElementById("player-name").textContent = `👋 مرحباً ${name}`;
+}
 </script>
 
 </body>

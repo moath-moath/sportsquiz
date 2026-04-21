@@ -19,17 +19,15 @@ def google_verification(request):
 
 
 urlpatterns = [
-
-
+    
     path('admin/', admin.site.urls),
 
-
+    # الصفحة الرئيسية
     path('', views.home, name="home"),
 
-
+    # صفحات المستويات
     path('beginner/', views.beginner, name="beginner"),
-    path('beginner.html', views.beginner),   # هذا الجديد
-
+    path('beginner.html', views.beginner),
     path('amateur/', views.amateur, name="amateur"),
     path('amateur.html', views.amateur),
 
@@ -41,6 +39,11 @@ urlpatterns = [
 
     path('legendary/', views.legendary, name="legendary"),
     path('legendary.html', views.legendary),
+
+    # حفظ اسم اللاعب (لـ AJAX)
+    path('save_player_name/', views.save_player_name, name="save_player_name"),
+
+    # تحقق Google
     path(
         'google088b0de6aac36d11.html',
         google_verification,

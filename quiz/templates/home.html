@@ -7,283 +7,226 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 /* --- عام --- */
-body{
-  margin:0;
-  font-family:'Cairo', sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color:white;
-  text-align:center;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background-attachment: fixed;
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-attachment: fixed;
 }
 
 /* container */
-.container{
-  background: rgba(0,0,0,0.6);
-  padding:40px;
-  border-radius:18px;
-  width:90%;
-  max-width:420px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.1);
+.container {
+    background: rgba(0,0,0,0.6);
+    padding: 40px;
+    border-radius: 18px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* التنسيق الجديد للاعب والنقاط (Header) */
+.user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+#player-name, #total-points {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffd700;
+    text-shadow: 1px 1px 4px black;
+    margin: 0;
 }
 
 /* subtitle */
-.subtitle{
-  font-size:18px;
-  margin-bottom:25px;
-  opacity:0.9;
+.subtitle {
+    font-size: 18px;
+    margin-bottom: 25px;
+    opacity: 0.9;
 }
 
 /* stats */
-.stats{
-  margin-bottom:25px;
-  font-size:16px;
-  opacity:0.9;
-  line-height:1.6;
+.stats {
+    margin-bottom: 25px;
+    font-size: 14px;
+    opacity: 0.7;
+    line-height: 1.6;
 }
 
 /* --- أزرار المستويات --- */
-.level-btn{
-  position:relative;
-  overflow:hidden;
-  display:block;
-  width:90%;
-  max-width:320px;
-  margin:16px auto;
-  padding:18px;
-  font-size:20px;
-  border-radius:14px;
-  cursor:pointer;
-  background: linear-gradient(45deg, #ffd700, #ffb700);
-  color:#111;
-  font-weight:800;
-  text-decoration:none;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+.level-btn {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    width: 90%;
+    max-width: 320px;
+    margin: 16px auto;
+    padding: 18px;
+    font-size: 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #ffd700, #ffb700);
+    color: #111;
+    font-weight: 800;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
 }
 
-.level-btn:hover{
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7);
+.level-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7);
 }
 
-.level-btn::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:-120%;
-  width:120%;
-  height:100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
-  transition: 0.7s;
+/* --- نوافذ التنبيه --- */
+#name-box, #notice-box {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
 
-.level-btn:hover::before{
-  left:120%;
+.notice {
+    background: white;
+    color: black;
+    padding: 30px;
+    border-radius: 12px;
+    width: 85%;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* --- نافذة إدخال الاسم --- */
-#name-box{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.85);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+#name-box input {
+    font-size: 16px;
+    text-align: center;
+    width: 80%;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
-#name-box .notice{
-  background:white;
-  color:black;
-  padding:30px;
-  border-radius:12px;
-  width:90%;
-  max-width:400px;
-  box-shadow:0 0 20px rgba(0,0,0,0.5);
-}
-#name-box input{
-  font-size:16px;
-  text-align:center;
-  width:80%;
-  padding:10px;
-  margin-top:10px;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-#name-box button{
-  margin-top:15px;
-  padding:10px 25px;
-  border:none;
-  background:#007BFF;
-  color:white;
-  font-size:16px;
-  border-radius:6px;
-  cursor:pointer;
-}
-#name-box button:hover{
-  background:#0056b3;
+.notice button {
+    padding: 10px 25px;
+    border: none;
+    background: #007BFF;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-/* --- مربع الملاحظة --- */
-#notice-box{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.85);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:10000;
+@media screen and (max-width:480px) {
+    .user-header { padding: 10px; }
+    #player-name, #total-points { font-size: 14px; }
 }
-#notice-box .notice{
-  background:white;
-  color:black;
-  padding:35px;
-  border-radius:12px;
-  width:90%;
-  max-width:400px;
-  box-shadow:0 0 20px rgba(0,0,0,0.5);
-  text-align:center;
-}
-#notice-box button{
-  margin-top:20px;
-  padding:10px 25px;
-  border:none;
-  background:#007BFF;
-  color:white;
-  font-size:16px;
-  border-radius:6px;
-  cursor:pointer;
-}
-#notice-box button:hover{
-  background:#0056b3;
-}
-
-
-@media screen and (max-width:480px){
-  .container{
-    padding:25px;
-  }
-  .level-btn{
-    font-size:18px;
-    padding:15px;
-  }
-  #name-box .notice, #notice-box .notice{
-    padding:20px;
-  }
-}
-
 </style>
-
 </head>
 
 <body>
 
-<!-- مربع الملاحظة يظهر أولًا -->
 <div id="notice-box">
-  <div class="notice">
-    <h2>⚠ ملاحظة مهمة</h2>
-    <p>
-      هذا الموقع نسخة تجريبية من مشروع <b>Sports Quiz</b>.<br><br>
-      قد تواجه بعض الأخطاء أو ميزات غير مكتملة أثناء الاستخدام.<br><br>
-      نحن نعمل حالياً على تطوير الموقع وتحسينه باستمرار.<br><br>
-      شكراً لتجربتك ودعمك ❤️
-    </p>
-    <button onclick="skipNotice()">تخطي</button>
-  </div>
+    <div class="notice">
+        <h2>⚠ ملاحظة مهمة</h2>
+        <p>هذه نسخة تجريبية من مشروع <b>Sports Quiz</b>.<br> نحن نطور الموقع باستمرار. شكراً لدعمك ❤️</p>
+        <button onclick="skipNotice()">تخطي</button>
+    </div>
 </div>
 
-<!-- نافذة إدخال الاسم -->
 <div id="name-box">
-  <div class="notice">
-    <h2>👋 مرحباً!</h2>
-    <p>من فضلك أدخل اسمك للبدء:</p>
-    <input type="text" id="username" placeholder="اكتب اسمك هنا">
-    <br>
-    <button onclick="saveName()">حفظ</button>
-  </div>
+    <div class="notice">
+        <h2>👋 مرحباً بك!</h2>
+        <p>أدخل اسمك لحفظ تقدمك ونقاطك:</p>
+        <input type="text" id="username" placeholder="اكتب اسمك هنا">
+        <br>
+        <button onclick="saveName()">بدء اللعب</button>
+    </div>
 </div>
 
-<!-- المحتوى الأساسي -->
 <div class="container">
-  <p id="player-name" style="font-size:22px;font-weight:800;color:#ffd700;text-shadow:1px 1px 4px black;margin-bottom:10px;"></p>
+    <div class="user-header">
+        <p id="player-name">اللاعب: ---</p>
+        <p id="total-points">🏆 النقاط: 0</p>
+    </div>
 
-  <h1>Sports Quiz</h1>
-  <div class="subtitle">اختبر معلوماتك الرياضية</div>
+    <h1>Sports Quiz</h1>
+    <div class="subtitle">اختبر معلوماتك الرياضية</div>
 
-  <div class="stats">
-    👥 عدد الزوار: <span>{{ visitors }}</span><br>
-    🟢 المتواجدون الآن: <span>{{ online_users }}</span>
-  </div>
+    <div class="stats">
+        👥 الزوار: <span>124</span> | 🟢 أونلاين: <span>1</span>
+    </div>
 
-  <a href="{% url 'beginner' %}" class="level-btn">🟢 المستوى المبتدئ</a>
-  <a href="{% url 'amateur' %}" class="level-btn">🔵 المستوى الهاوي</a>
-  <a href="{% url 'medium' %}" class="level-btn">🟡 المستوى المتوسط</a>
-  <a href="{% url 'hard' %}" class="level-btn">🔴 المستوى الصعب</a>
-  <a href="{% url 'legendary' %}" class="level-btn">👑 المستوى الأسطوري</a>
+    <a href="beginner.html" class="level-btn">⚽ المستوى المبتدئ</a>
+    <a href="amateur.html" class="level-btn">🏃 المستوى الهاوي</a>
+    <a href="medium.html" class="level-btn">🔥 المستوى المتوسط</a>
+    <a href="hard.html" class="level-btn">🏆 المستوى الصعب</a>
+    <a href="legendary.html" class="level-btn">👑 المستوى الأسطوري</a>
 </div>
 
 <script>
-// زر تخطي الملاحظة
-function skipNotice(){
-  document.getElementById("notice-box").style.display = "none";
+// وظيفة مخصصة لتحديث النقاط والاسم من الذاكرة
+function refreshUserData() {
+    const savedName = localStorage.getItem('username');
+    const totalScore = localStorage.getItem('totalScore') || 0;
 
-  // نتحقق إذا الاسم موجود مسبقاً
-  const savedName = localStorage.getItem('username');
-  if(!savedName){ 
-    document.getElementById("name-box").style.display = "flex";
-  }
+    // تحديث نص النقاط في الواجهة
+    document.getElementById("total-points").textContent = `🏆 النقاط: ${totalScore}`;
+
+    if (savedName) {
+        document.getElementById("player-name").textContent = `اللاعب: ${savedName}`;
+    }
 }
 
-// حفظ الاسم محلياً
-function saveName(){
-  const name = document.getElementById("username").value.trim();
-  if(name===""){
-    alert("الرجاء إدخال اسمك!");
-    return;
-  }
+// استخدام pageshow لضمان التحديث حتى عند استخدام زر العودة للخلف
+window.addEventListener('pageshow', function(event) {
+    refreshUserData();
+    
+    const savedName = localStorage.getItem('username');
+    // إذا لم يوجد اسم مستخدم، أظهر صندوق التنبيه
+    if (!savedName) {
+        // التأكد من عدم إظهار صندوق الاسم إذا كان صندوق الملاحظة مفتوحاً
+        if (document.getElementById("notice-box").style.display !== "flex") {
+            document.getElementById("name-box").style.display = "flex";
+        }
+    }
+});
 
-  // حفظ الاسم على المتصفح
-  localStorage.setItem('username', name);
-
-  // إخفاء نافذة إدخال الاسم
-  document.getElementById("name-box").style.display = "none";
-
-  // عرض الاسم فقط، لا نعدل subtitle
-  document.getElementById("player-name").textContent = ` الاعب: ${name}`;
-
-
-  
+function skipNotice() {
+    document.getElementById("notice-box").style.display = "none";
+    const savedName = localStorage.getItem('username');
+    if (!savedName) {
+        document.getElementById("name-box").style.display = "flex";
+    }
 }
 
-// عند تحميل الصفحة، عرض الاسم إذا موجود مسبقاً
-window.onload = function(){
-  const savedName = localStorage.getItem('username');
-  if(savedName){
-    document.getElementById("player-name").textContent = ` الاعب: ${savedName}`;
-
-  } else {
-
-    document.getElementById("name-box").style.display = "flex";
-  }
+function saveName() {
+    const name = document.getElementById("username").value.trim();
+    if (name === "") {
+        alert("من فضلك أدخل اسمك!");
+        return;
+    }
+    localStorage.setItem('username', name);
+    refreshUserData(); // تحديث فوري للاسم
+    document.getElementById("name-box").style.display = "none";
 }
 </script>
 
-
 </body>
-
-
-
 </html>
-

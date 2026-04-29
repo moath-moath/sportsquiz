@@ -184,7 +184,8 @@ body {
 // وظيفة مخصصة لتحديث النقاط والاسم من الذاكرة
 function refreshUserData() {
     const savedName = localStorage.getItem('username');
-    const totalScore = localStorage.getItem('totalScore') || 0;
+    // تم التعديل هنا ليقرأ من user_total_points ليتطابق مع ملفات المستويات
+    const totalScore = localStorage.getItem('user_total_points') || 0;
 
     // تحديث نص النقاط في الواجهة
     document.getElementById("total-points").textContent = `🏆 النقاط: ${totalScore}`;
@@ -194,6 +195,11 @@ function refreshUserData() {
     }
 }
 
+// إضافة مراقب لمزامنة النقاط فوراً عند حدوث تغيير في ملفات اللعبة
+window.addEventListener('storage', function() {
+    refreshUserData();
+});
+
 // استخدام pageshow لضمان التحديث حتى عند استخدام زر العودة للخلف
 window.addEventListener('pageshow', function(event) {
     refreshUserData();
@@ -201,7 +207,6 @@ window.addEventListener('pageshow', function(event) {
     const savedName = localStorage.getItem('username');
     // إذا لم يوجد اسم مستخدم، أظهر صندوق التنبيه
     if (!savedName) {
-        // التأكد من عدم إظهار صندوق الاسم إذا كان صندوق الملاحظة مفتوحاً
         if (document.getElementById("notice-box").style.display !== "flex") {
             document.getElementById("name-box").style.display = "flex";
         }
@@ -223,7 +228,7 @@ function saveName() {
         return;
     }
     localStorage.setItem('username', name);
-    refreshUserData(); // تحديث فوري للاسم
+    refreshUserData(); 
     document.getElementById("name-box").style.display = "none";
 }
 </script>

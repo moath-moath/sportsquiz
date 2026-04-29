@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-<html lang="ar">
-
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>المستوى الصعب 🔥 - لوحة الشرف الملكية</title>
-
+    <title>سيرفر المطورين - التحدي المطور</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
 
-        /* إعدادات أساسية */
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%);
+            background: #050505;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 69, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 0, 0.15) 0%, transparent 50%);
             font-family: 'Cairo', sans-serif;
             color: white;
             text-align: center;
@@ -25,347 +22,294 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 480px;
-            background: rgba(27, 38, 59, 0.7);
-            padding: 20px;
+            max-width: 500px;
+            background: rgba(10, 10, 10, 0.98);
+            padding: 25px 20px;
             border-radius: 35px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 1), 0 0 20px rgba(255, 0, 0, 0.2);
+            border: 1px solid #333;
+            backdrop-filter: blur(15px);
         }
 
-        /* لوحة الشرف الملكية - ذهب حقيقي متحرك */
         .honor-board {
-            background: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b8860b 50%, #f9f295 55%, #d4af37 100%);
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
+            background: linear-gradient(135deg, #2b0000 0%, #000 100%);
             padding: 15px;
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid #ffffff;
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
-            color: #1a1a1a;
+            border: 1px solid #ff4500;
         }
 
-        @keyframes shine { to { background-position: 200% center; } }
-
-        .player-info h3 { margin: 2px 0; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
         .level-badge { 
-            background: #1a1a1a; color: #ff3d00; 
-            padding: 5px 15px; border-radius: 50px; font-size: 13px; font-weight: bold;
-            display: inline-block; margin-top: 5px;
-            border: 1px solid #ff3d00;
+            background: #ff4500; color: white; 
+            padding: 5px 20px; border-radius: 50px; font-size: 13px; font-weight: 900;
+            display: inline-block; margin-top: 8px;
         }
 
-        /* عدادات البيانات - ألوان نيون */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 10px; 
+            margin-bottom: 20px; 
         }
+        .stat-card { background: #111; padding: 10px; border-radius: 15px; border: 1px solid #333; }
+        .stat-card.timer { border-bottom: 3px solid #ff4500; }
+        .stat-card.points { border-bottom: 3px solid #ffd700; }
+        .stat-card.progress { border-bottom: 3px solid #00ff88; }
 
-        .stat-card {
-            background: rgba(13, 27, 42, 0.6);
-            padding: 12px 5px;
-            border-radius: 18px;
-            border-bottom: 3px solid #415a77;
-        }
+        .stat-label { font-size: 10px; color: #666; display: block; margin-bottom: 2px; }
+        .stat-value { font-size: 16px; font-weight: 900; }
 
-        .stat-label { font-size: 11px; color: #a2adbb; display: block; margin-bottom: 4px; }
-        .stat-value { font-size: 18px; font-weight: 900; }
-
-        /* 🔥 صندوق السؤال - زجاجي (Frosted Glass) */
         #game-area {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border-radius: 30px;
-            padding: 25px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            margin-bottom: 15px;
+            background: rgba(20, 20, 20, 0.5);
+            border-radius: 25px;
+            padding: 20px;
+            border: 1px solid #222;
+            min-height: 320px;
         }
 
         #question { 
-            min-height: 70px; 
-            margin: 0 0 25px 0; 
-            font-size: 20px; 
-            line-height: 1.5; 
-            font-weight: 700;
-            color: #ffffff;
+            font-size: 18px; 
+            font-weight: 700; 
+            color: #efefef; 
+            margin-bottom: 25px; 
+            min-height: 70px;
+            line-height: 1.5;
         }
 
-        /* أزرار الإجابات */
-        .answers-container {
-            display: grid;
-            gap: 12px;
-        }
-
+        .answers-container { display: grid; gap: 10px; }
         button.answer-btn {
-            background: #415a77;
+            background: #151515; 
+            color: #ccc; 
+            border: 1px solid #282828; 
+            padding: 15px;
+            font-size: 15px; 
+            font-weight: 600; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            transition: all 0.1s ease;
+        }
+
+        button.answer-btn:active { transform: scale(0.98); }
+        .correct { background: #00ff88 !important; color: #000 !important; font-weight: 900 !important; border-color: #00ff88 !important; }
+        .wrong { background: #ff0055 !important; color: white !important; border-color: #ff0055 !important; }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .nav-btn {
+            background: #222;
             color: white;
-            border: none;
-            padding: 16px;
-            font-size: 16px;
+            border: 1px solid #444;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
             font-weight: 700;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            font-family: 'Cairo', sans-serif;
-        }
-
-        button.answer-btn:active { transform: scale(0.96); }
-
-        .correct { 
-            background: linear-gradient(to right, #00b09b, #96c93d) !important; 
-            box-shadow: 0 0 20px rgba(0, 176, 155, 0.4) !important;
-        }
-        .wrong { 
-            background: linear-gradient(to right, #ff416c, #ff4b2b) !important;
-            box-shadow: 0 0 20px rgba(255, 65, 108, 0.4) !important;
-        }
-
-        /* ⏭ زر التخطي */
-        #skipBtn {
-            background: transparent;
-            width: 80%;
-            margin-top: 10px;
-            padding: 12px;
-            border-radius: 50px;
-            font-size: 15px;
-            border: 2px solid #778da9;
-            color: #778da9;
-            font-family: 'Cairo', sans-serif;
-            font-weight: bold;
-            cursor: pointer;
             transition: 0.3s;
+            font-size: 14px;
         }
 
-        #skipBtn:hover:not(:disabled) {
-            background: #778da9;
-            color: #0d1b2a;
-        }
-
-        #skipBtn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        #auto-redirect-msg { font-size: 13px; color: #778da9; margin-top: 20px; display: none; }
-        
-        /* زر إعادة اللعب النهائي */
-        .restart-btn {
-            background: #ffd700;
-            color: #0d1b2a;
-            padding: 15px 30px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 900;
-            font-size: 18px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
+        .skip-btn { border-color: #ff4500; color: #ff4500; }
+        .skip-btn:hover { background: #ff4500; color: white; }
+        .retry-btn { background: #ff4500; border: none; }
     </style>
 </head>
-
 <body>
 
     <div class="container">
-        <!-- لوحة الشرف -->
         <div class="honor-board">
-            <div class="player-info">
-                <span style="font-size: 12px; font-weight: bold; text-transform: uppercase;">Hardcore Player</span>
-                <h3 id="display-username">جاري التحميل...</h3>
-            </div>
-            <span class="level-badge">🔥 المستوى الصعب 🔥</span>
+            <h3 style="margin:0; font-size: 20px;">سيرفر المطورين</h3>
+            <span class="level-badge">⚡ تحدي الـ 20 ثانية ⚡</span>
         </div>
 
-        <!-- عدادات ذكية -->
         <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card progress">
                 <span class="stat-label">السؤال</span>
-                <span id="progress-val" class="stat-value" style="color:#fff">1/49</span>
+                <span id="q-num" class="stat-value">0/50</span>
             </div>
-            <div class="stat-card" style="border-bottom-color: #ffd600;">
+            <div class="stat-card points">
+                <span class="stat-label">النقاط</span>
+                <span id="current-points" class="stat-value">0</span>
+            </div>
+            <div class="stat-card timer">
                 <span class="stat-label">الوقت</span>
-                <span id="timer-val" class="stat-value" style="color:#ffd600">20</span>
-            </div>
-            <div class="stat-card" style="border-bottom-color: #00e676;">
-                <span class="stat-label">السكور</span>
-                <span id="score-val" class="stat-value" style="color:#00e676">0</span>
+                <span id="timer" class="stat-value">20</span>
             </div>
         </div>
 
-        <!-- صندوق السؤال -->
         <div id="game-area">
-            <h2 id="question">جاري تحميل السؤال...</h2>
-            <div id="answers" class="answers-container"></div>
-        </div>
+            <div id="quiz">
+                <div id="question">جاري التجهيز...</div>
+                <div id="answers" class="answers-container"></div>
+                <div class="controls">
+                    <button class="nav-btn skip-btn" id="skip-btn" onclick="nextQuestion()">تخطي السؤال ⏭️</button>
+                </div>
+            </div>
 
-        <button id="skipBtn">⏭️ تخطي هذا السؤال</button>
-          
-        <div id="final-box">
-             <h3 id="result"></h3>
-             <p id="auto-redirect-msg">🔄 العودة للرئيسية خلال 10 ثوانٍ...</p>
+            <div id="result-box" style="display:none;">
+                <h2 style="color:#ffd700;">انتهى التحدي!</h2>
+                <span id="rank-text" style="font-size: 28px; display: block; margin: 15px 0;"></span>
+                <p id="final-stats" style="font-size: 18px;"></p>
+                <div style="margin-top: 20px;">
+                    <button class="nav-btn retry-btn" onclick="location.reload()">إعادة المحاولة</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        const savedName = localStorage.getItem('username') || "بطل مجهول";
-        document.getElementById("display-username").textContent = savedName;
-
-        let questions = [
-            {q:"من هو اللاعب الذي سجل أول هدف ذهبي في تاريخ كأس العالم؟",a:["لوران بلان","ماركو فان باستن","ديفيد تريزيغيه","روبيرتو باجيو"],correct:0},
-            {q:"أي منتخب خسر نهائي كأس العالم 3 مرات دون أن يفوز به؟",a:["هولندا","المجر","السويد","تشيكوسلوفاكيا"],correct:0},
-            {q:"من هو أول لاعب يسجل في 5 نسخ مختلفة من كأس العالم؟",a:["كريستيانو رونالدو","بيليه","ميسي","كلوزه"],correct:0},
-            {q:"أي نادي فاز بأول نسخة من دوري أبطال أوروبا بنظامها الجديد 1993؟",a:["مارسيليا","ميلان","برشلونة","أياكس"],correct:0},
-            {q:"من هو أصغر قائد منتخب فاز بكأس العالم؟",a:["دانيال باساريلا","مارادونا","بيليه","كافو"],correct:0},
-            {q:"أي منتخب سجل أكبر عدد أهداف في نسخة واحدة من كأس العالم؟",a:["المجر 1954","البرازيل 1970","ألمانيا 2014","فرنسا 1998"],correct:0},
-            {q:"من هو اللاعب الذي سجل أسرع هاتريك في تاريخ الدوري الإنجليزي؟",a:["ساديو ماني","هاري كين","روني","أجويرو"],correct:0},
-            {q:"أي نادي إنجليزي فاز بدوري الأبطال مرتين متتاليتين في السبعينات؟",a:["نوتنغهام فورست","ليفربول","أستون فيلا","مانشستر يونايتد"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف الفوز في نهائي كأس العالم 1954؟",a:["هيلمت ران","بوشكاش","كوكسيس","دي ستيفانو"],correct:0},
-            {q:"أي منتخب أفريقي وصل ربع نهائي كأس العالم أول مرة؟",a:["الكاميرون","غانا","السنغال","المغرب"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف إنجلترا الأول في كأس العالم 1966؟",a:["جيف هيرست","روجر هانت","بوبي تشارلتون","بيترز"],correct:1},
-            {q:"أي نادي فاز بدوري أبطال أوروبا 1987؟",a:["بورتو","بايرن ميونخ","برشلونة","ريال مدريد"],correct:0},
-            {q:"من هو المدرب الذي قاد اليونان للفوز بيورو 2004؟",a:["أوتو ريهاجل","سكولاري","تراباتوني","هاينكس"],correct:0},
-            {q:"أي منتخب خسر نهائي كأس العالم 1958؟",a:["السويد","البرازيل","ألمانيا","الأرجنتين"],correct:0},
-            {q:"من هو أول لاعب أفريقي يفوز بالكرة الذهبية؟",a:["جورج وياه","إيتو","دروغبا","كانو"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 1997؟",a:["بوروسيا دورتموند","يوفنتوس","أياكس","ريال مدريد"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف القرن في مونديال 1986؟",a:["مارادونا","بيليه","زيكو","باتيستوتا"],correct:0},
-            {q:"أي منتخب فاز بكأس العالم دون استقبال أي هدف في الأدوار الإقصائية؟",a:["إيطاليا 2006","فرنسا 1998","البرازيل 2002","ألمانيا 2014"],correct:0},
-            {q:"من هو اللاعب الذي سجل أسرع هدف في تاريخ الدوري الإيطالي؟",a:["رافائيل لياو","ديل بييرو","توتي","شيفتشينكو"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 2004؟",a:["بورتو","موناكو","ميلان","ريال مدريد"],correct:0},
-            {q:"من هو الحارس الوحيد الذي فاز بالكرة الذهبية؟",a:["ليف ياشين","بوفون","كاسياس","نوير"],correct:0},
-            {q:"أي منتخب فاز بيورو 1992 بعد دعوته بديلاً؟",a:["الدنمارك","السويد","هولندا","ألمانيا"],correct:0},
-            {q:"من هو الهداف التاريخي لمنتخب ألمانيا؟",a:["ميروسلاف كلوزه","غيرد مولر","بودولسكي","رومينيغه"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 1995؟",a:["أياكس","ميلان","يوفنتوس","ريال مدريد"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف الفوز (الذهبي) في نهائي يورو 2000؟",a:["ديفيد تريزيغيه","هنري","زيدان","فييرا"],correct:0},
-            {q:"أي منتخب خسر نهائي كأس العالم 1950 (الماراكانازو)؟",a:["البرازيل","الأوروغواي","إيطاليا","الأرجنتين"],correct:0},
-            {q:"من هو أول لاعب سجل 5 أهداف في مباراة واحدة بدوري الأبطال؟",a:["ليونيل ميسي","رونالدو","ليفاندوفسكي","راؤول"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 1979؟",a:["نوتنغهام فورست","ليفربول","ميلان","أياكس"],correct:0},
-            {q:"من هو المدرب الذي فاز بكأس العالم كلاعب ومدرب؟",a:["فرانز بيكنباور","زيدان","ديشامب","كلينسمان"],correct:0},
-            {q:"أي منتخب فاز بكأس العالم 1938؟",a:["إيطاليا","البرازيل","ألمانيا","فرنسا"],correct:0},
-            {q:"من هو اللاعب صاحب 'فولي' الفوز في نهائي دوري الأبطال 2002؟",a:["زيدان","راؤول","فيغو","رونالدو"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 1988؟",a:["إيندهوفن","ميلان","ريال مدريد","بنفيكا"],correct:0},
-            {q:"من هو اللاعب الذي سجل أسرع هدف في تاريخ دوري الأبطال؟",a:["روي ماكاي","ميسي","رونالدو","إيتو"],correct:0},
-            {q:"أي منتخب وصل نهائي مونديال 1962 وخسره؟",a:["تشيكوسلوفاكيا","البرازيل","تشيلي","إيطاليا"],correct:0},
-            {q:"من هو الهداف التاريخي لمنتخب البرازيل رسمياً؟",a:["نيمار","بيليه","رونالدو","روماريو"],correct:0},
-            {q:"أي نادي إنجليزي يلقب بـ 'السيوف'؟",a:["شيفيلد يونايتد","أرسنال","ميلوول","أستون فيلا"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف الفوز في نهائي يورو 2016؟",a:["إيدر","رونالدو","ناني","سانشيز"],correct:0},
-            {q:"أي منتخب فاز بكأس العالم 1954؟",a:["ألمانيا الغربية","المجر","البرازيل","إيطاليا"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف الفوز في نهائي دوري الأبطال 1998؟",a:["مياتوفيتش","راؤول","زيدان","سوكر"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 1971؟",a:["أياكس","ميلان","إنتر","بنفيكا"],correct:0},
-            {q:"كم عدد أهداف زيدان في نهائي مونديال 1998؟",a:["2","1","3","0"],correct:0},
-            {q:"أي منتخب فاز بكأس العالم 1934؟",a:["إيطاليا","ألمانيا","البرازيل","فرنسا"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف التعادل القاتل في نهائي دوري الأبطال 2014؟",a:["راموس","بيل","رونالدو","دي ماريا"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 1986 بضربات الترجيح؟",a:["ستيوا بوخارست","برشلونة","ميلان","بايرن"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف الأرجنتين الثاني في نهائي 2022؟",a:["دي ماريا","ميسي","ألفاريز","لاوتارو"],correct:0},
-            {q:"أي منتخب فاز بكأس العالم 1990؟",a:["ألمانيا الغربية","الأرجنتين","إيطاليا","البرازيل"],correct:0},
-            {q:"من هو اللاعب الذي سجل هدف الفوز في نهائي دوري الأبطال 2013؟",a:["روبن","مولر","ريبيري","ماندزوكيتش"],correct:0},
-            {q:"أي نادي فاز بدوري الأبطال 1962؟",a:["بنفيكا","ريال مدريد","ميلان","إنتر"],correct:0},
-            {q:"من هو صاحب هدف الفوز لإسبانيا في نهائي 2010؟",a:["إنييستا","تشافي","فيا","توريس"],correct:0}
+        const bank = [
+            {q:"من هو اللاعب الذي سجل أسرع هاتريك في تاريخ الدوري الإنجليزي؟", a:["ساديو ماني","روبي فاولر","صلاح","أغويرو"], c:"ساديو ماني"},
+            {q:"كم عدد أهداف ميسي الرسمية في عام 2012؟", a:["91","85","79","95"], c:"91"},
+            {q:"أي منتخب فاز بأول نسخة من اليورو عام 1960؟", a:["الاتحاد السوفيتي","يوغوسلافيا","فرنسا","إسبانيا"], c:"الاتحاد السوفيتي"},
+            {q:"من هو الهداف التاريخي لكأس أمم أفريقيا؟", a:["صامويل إيتو","لورين بوكو","رشيدي يكيني","دروغبا"], c:"صامويل إيتو"},
+            {q:"كم مرة فازت البرتغال بكأس العالم؟", a:["ولا مرة","مرة واحدة","مرتين","3 مرات"], c:"ولا مرة"},
+            {q:"من هو النادي الأكثر فوزاً بالدوري الإيطالي؟", a:["يوفنتوس","ميلان","إنتر","روما"], c:"يوفنتوس"},
+            {q:"في أي مدينة أقيم أول نهائي لدوري أبطال أوروبا (1956)؟", a:["باريس","مدريد","لندن","ميلانو"], c:"باريس"},
+            {q:"من هو اللاعب الذي لقب بـ 'الظاهرة'؟", a:["رونالدو نازاريو","كريستيانو","رونالدينيو","ريفالدو"], c:"رونالدو نازاريو"},
+            {q:"أي لاعب فاز بكأس العالم كلاعب ومدرب؟", a:["ماريو زاغالو","مارادونا","زيدان","كلينسمان"], c:"ماريو زاغالو"},
+            {q:"ما هو المنتخب الوحيد الذي شارك في جميع نسخ كأس العالم؟", a:["البرازيل","ألمانيا","إيطاليا","الأرجنتين"], c:"البرازيل"},
+            {q:"من هو أصغر لاعب سجل في تاريخ نهائيات كأس العالم؟", a:["بيليه","مبابي","روزيوسكي","ميسي"], c:"بيليه"},
+            {q:"كم عدد كرات 'الكرة الذهبية' التي فاز بها كرويف؟", a:["3","2","4","1"], c:"3"},
+            {q:"من هو صاحب أسرع هدف في تاريخ كأس العالم؟", a:["هاكان شوكور","مازيلا","برايان روبسون","ديمبسي"], c:"هاكان شوكور"},
+            {q:"أي نادٍ فاز بـ 5 بطولات دوري أبطال متتالية؟", a:["ريال مدريد","بايرن ميونخ","أياكس","ميلان"], c:"ريال مدريد"},
+            {q:"من هو المدرب صاحب الرقم القياسي في الفوز بدوري الأبطال؟", a:["أنشيلوتي","زيدان","بايرن","غوارديولا"], c:"أنشيلوتي"},
+            {q:"ما هو رقم قميص زين الدين زيدان في ريال مدريد؟", a:["5","10","21","7"], c:"5"},
+            {q:"من هو اللاعب الإيطالي الذي أضاع ركلة الترجيح الأخيرة في نهائي 1994؟", a:["روبرتو باجيو","باريزي","مالديني","زولا"], c:"روبرتو باجيو"},
+            {q:"أي منتخب فاز بكأس العالم 2010؟", a:["إسبانيا","هولندا","ألمانيا","الأوروغواي"], c:"إسبانيا"},
+            {q:"من هو الهداف التاريخي للمنتخبات الوطنية؟", a:["كريستيانو رونالدو","ميسي","علي دائي","بوشكاش"], c:"كريستيانو رونالدو"},
+            {q:"من هو الملقب بـ 'باني جدار برلين' في حراسة المرمى؟", a:["أوليفر كان","ليف ياشين","بوفون","نوير"], c:"ليف ياشين"},
+            {q:"كم كان عمر ميسي عندما سجل أول هدف له مع برشلونة؟", a:["17","16","18","19"], c:"17"},
+            {q:"أي نادٍ يلقب بـ 'السيدة العجوز'؟", a:["يوفنتوس","ميلان","لاتسيو","هرتا برلين"], c:"يوفنتوس"},
+            {q:"من هو اللاعب الوحيد الذي فاز بكأس العالم 3 مرات؟", a:["بيليه","كافو","رونالدو","بكنباور"], c:"بيليه"},
+            {q:"أين أقيمت أول نسخة لكأس العالم 1930؟", a:["الأوروغواي","الأرجنتين","البرازيل","فرنسا"], c:"الأوروغواي"},
+            {q:"من هو النادي الذي يمتلك ملعب 'أليانز أرينا'؟", a:["بايرن ميونخ","لايبزيغ","دورتموند","شالكه"], c:"بايرن ميونخ"},
+            {q:"من فاز بالكرة الذهبية عام 2018؟", a:["مودريتش","ميسي","رونالدو","غريزمان"], c:"مودريتش"},
+            {q:"كم عدد أهداف بيليه (الموثقة رسمياً)؟", a:["767","1281","1000","850"], c:"767"},
+            {q:"من هو أكثر لاعب شارك في مباريات كأس العالم؟", a:["ميسي","لوتار ماتيوس","كلوزه","مالديني"], c:"ميسي"},
+            {q:"من هو الهداف التاريخي لبطولة اليورو؟", a:["كريستيانو رونالدو","بلاتيني","غريزمان","هنري"], c:"كريستيانو رونالدو"},
+            {q:"من هو النادي الألماني الوحيد الذي فاز بالثلاثية؟", a:["بايرن ميونخ","دورتموند","هامبورغ","ليفركوزن"], c:"بايرن ميونخ"},
+            {q:"أي منتخب يلقب بـ 'الماكينات'؟", a:["ألمانيا","هولندا","السويد","النرويج"], c:"ألمانيا"},
+            {q:"من هو اللاعب الذي سجل هدف 'يد الله'؟", a:["مارادونا","بيليه","زيكو","شيلتون"], c:"مارادونا"},
+            {q:"ما هو المنتخب الأفريقي الأول الذي وصل لنصف نهائي المونديال؟", a:["المغرب","الكاميرون","السنغال","غانا"], c:"المغرب"},
+            {q:"من هو الهداف التاريخي لكأس العالم؟", a:["ميروسلاف كلوزه","رونالدو","مولر","فونتين"], c:"ميروسلاف كلوزه"},
+            {q:"أي نادٍ يلعب في ملعب 'الأنفيلد'؟", a:["ليفربول","إيفرتون","مانشستر","أرسنال"], c:"ليفربول"},
+            {q:"من هو اللاعب الذي انتقل من برشلونة لريال مدريد عام 2000؟", a:["لويس فيغو","رونالدو","إنريكي","إيتو"], c:"لويس فيغو"},
+            {q:"كم عدد ألقاب أرسنال في دوري أبطال أوروبا؟", a:["0","1","2","3"], c:"0"},
+            {q:"من هو الحارس الملقب بـ 'العنكبوت الأسود'؟", a:["ليف ياشين","بوفون","شمايكل","كاسياس"], c:"ليف ياشين"},
+            {q:"أي منتخب فاز بكأس أمم آسيا 2019؟", a:["قطر","اليابان","السعودية","الأردن"], c:"قطر"},
+            {q:"من هو الهداف التاريخي للدوري الإنجليزي (البريميرليغ)؟", a:["آلان شيرر","هاري كين","روني","هنري"], c:"آلان شيرر"},
+            {q:"من هو اللاعب الذي فاز بدوري الأبطال مع 3 أندية مختلفة؟", a:["سيدورف","إيتو","رونالدو","زلاتان"], c:"سيدورف"},
+            {q:"في أي عام حدثت معجزة إسطنبول (نهائي ليفربول وميلان)؟", a:["2005","2004","2006","2007"], c:"2005"},
+            {q:"من هو اللاعب الذي سجل في جميع مباريات دور المجموعات بدوري الأبطال؟", a:["رونالدو","ميسي","هالاند","صلاح"], c:"رونالدو"},
+            {q:"ما هو النادي الذي يلقب بـ 'الغواصات الصفراء'؟", a:["فياريال","قادش","إسبانيول","واتفورد"], c:"فياريال"},
+            {q:"كم عدد بطولات كأس العالم التي فازت بها إنجلترا؟", a:["1","0","2","3"], c:"1"},
+            {q:"من هو صاحب أعلى قفزة (رأسية) مسجلة في كرة القدم? ", a:["كريستيانو رونالدو","النصيري","إبراهيموفيتش","بيكهام"], c:"كريستيانو رونالدو"},
+            {q:"من فاز بكأس العالم 1998؟", a:["فرنسا","البرازيل","كرواتيا","هولندا"], c:"فرنسا"},
+            {q:"من هو اللاعب الملقب بـ 'البرغوث'؟", a:["ميسي","مارادونا","سانشيز","إنسيني"], c:"ميسي"},
+            {q:"أين ستقام نهائيات كأس العالم 2026؟", a:["أمريكا وكندا والمكسيك","السعودية","المغرب","إسبانيا"], c:"أمريكا وكندا والمكسيك"},
+            {q:"من هو الهداف التاريخي لنادي ريال مدريد؟", a:["كريستيانو رونالدو","راؤول","بنزيمة","دي ستيفانو"], c:"كريستيانو رونالدو"}
         ];
 
-        let currentQuestion = 0;
+        let quizSet = [];
+        let idx = 0;
         let score = 0;
-        let timerId;
-        let timeLeft = 20;
+        let timer;
+        const TIME_LIMIT = 20; // تم التعديل إلى 20 ثانية
 
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
             }
-        }
-        shuffle(questions);
-
-        function startTimer() {
-            clearInterval(timerId);
-            timeLeft = 20;
-            document.getElementById("timer-val").innerText = timeLeft;
-            timerId = setInterval(() => {
-                timeLeft--;
-                document.getElementById("timer-val").innerText = timeLeft;
-                if (timeLeft <= 0) { clearInterval(timerId); nextQuestion(); }
-            }, 1000);
+            return arr;
         }
 
-        function showQuestion() {
-            if (currentQuestion >= questions.length) { showFinal(); return; }
-            document.getElementById("progress-val").innerText = `${currentQuestion + 1}/${questions.length}`;
-            let q = questions[currentQuestion];
-            startTimer();
-            document.getElementById("question").innerText = q.q;
-            let answersDiv = document.getElementById("answers");
-            answersDiv.innerHTML = "";
+        function init() {
+            quizSet = shuffle([...bank]).slice(0, 50);
+            loadQ();
+        }
+
+        function loadQ() {
+            if(idx >= quizSet.length) return finish();
             
-            // خلط الإجابات داخلياً
-            let options = [...q.a];
-            let correctText = q.a[q.correct];
-            shuffle(options);
-            let newCorrectIndex = options.indexOf(correctText);
+            clearInterval(timer);
+            let timeL = TIME_LIMIT;
+            document.getElementById('timer').innerText = timeL;
+            
+            timer = setInterval(() => {
+                timeL--;
+                document.getElementById('timer').innerText = timeL;
+                if(timeL <= 0) {
+                    clearInterval(timer);
+                    nextQuestion(); 
+                }
+            }, 1000);
 
-            options.forEach((answer, index) => {
-                let btn = document.createElement("button");
-                btn.className = "answer-btn";
-                btn.innerText = answer;
-                btn.onclick = () => checkAnswer(index, newCorrectIndex, btn);
-                answersDiv.appendChild(btn);
+            document.getElementById('q-num').innerText = `${idx+1}/${quizSet.length}`;
+            const qData = quizSet[idx];
+            document.getElementById('question').innerText = qData.q;
+            
+            const ansBox = document.getElementById('answers');
+            ansBox.innerHTML = '';
+            
+            shuffle([...qData.a]).forEach(txt => {
+                const b = document.createElement('button');
+                b.className = 'answer-btn';
+                b.innerText = txt;
+                b.onclick = () => check(b, txt, qData.c);
+                ansBox.appendChild(b);
             });
-            document.getElementById("skipBtn").disabled = false;
         }
 
-        function checkAnswer(selected, correct, btn) {
-            clearInterval(timerId);
-            let buttons = document.querySelectorAll(".answer-btn");
-            buttons.forEach(b => b.disabled = true);
-            document.getElementById("skipBtn").disabled = true;
+        function check(btn, val, cor) {
+            clearInterval(timer);
+            const btns = document.querySelectorAll('.answer-btn');
+            btns.forEach(x => x.style.pointerEvents = 'none');
 
-            if (selected === correct) {
-                btn.classList.add("correct");
+            if(val === cor) {
+                btn.classList.add('correct');
                 score++;
-                document.getElementById("score-val").innerText = score;
-                
-                // تحديث السكور الكلي في المتصفح
-                let total = parseInt(localStorage.getItem('totalScore')) || 0;
-                localStorage.setItem('totalScore', total + 1);
+                document.getElementById('current-points').innerText = score;
+
+                // تحديث النقاط التراكمية في المتصفح
+                let total = parseInt(localStorage.getItem('user_total_points')) || 0;
+                localStorage.setItem('user_total_points', total + 1);
             } else {
-                btn.classList.add("wrong");
-                buttons[correct].classList.add("correct");
+                btn.classList.add('wrong');
+                btns.forEach(x => { if(x.innerText === cor) x.classList.add('correct'); });
             }
-            setTimeout(nextQuestion, 1000);
+
+            setTimeout(nextQuestion, 800);
         }
 
         function nextQuestion() {
-            currentQuestion++;
-            showQuestion();
+            idx++;
+            loadQ();
         }
 
-        document.getElementById("skipBtn").onclick = () => {
-            clearInterval(timerId);
-            nextQuestion();
-        };
-
-        function showFinal() {
-            document.getElementById("game-area").innerHTML = "<h2 style='color:#ff3d00'>🎊 انتهى كابوس المحترفين! 🎊</h2>";
-            document.getElementById("skipBtn").style.display = "none";
-            document.querySelector(".stats-grid").style.display = "none";
-            document.getElementById("auto-redirect-msg").style.display = "block";
+        function finish() {
+            clearInterval(timer);
+            document.getElementById('quiz').style.display = 'none';
+            const res = document.getElementById('result-box');
+            res.style.display = 'block';
             
-            let level = score < 15 ? "مبتدئ محظوظ 🐣" : score < 35 ? "وحش الملاعب ⚽" : "أسطورة حية 👑";
-            
-            document.getElementById("result").innerHTML = `
-                <div style="font-size:24px; margin-bottom:10px;">النتيجة: ${score} من ${questions.length}</div>
-                <div style="font-size:20px; color:#ffd700;">التقييم: ${level}</div>
-                <button class="restart-btn" onclick="location.reload()">🔄 إعادة التحدي</button>
-            `;
-            
-            setTimeout(() => { window.location.href = "/"; }, 10000);
+            let rText = score > 40 ? "أنت أسطورة حقيقية! 🔥" : score > 25 ? "أداء ممتاز للمحترفين ⚽" : "تحتاج لمزيد من التدريب! 🏃‍♂️";
+            document.getElementById('rank-text').innerText = rText;
+            document.getElementById('final-stats').innerText = `إجاباتك الصحيحة: ${score} من 50`;
         }
 
-        showQuestion();
+        window.onload = init;
     </script>
 </body>
 </html>

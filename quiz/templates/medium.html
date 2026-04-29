@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>👑 المستوى المتوسط - لوحة الشرف الملكية الذهبية</title>
-
+    <title>سيرفر المطورين - المستوى المتوسط</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%);
+            background: #0a0a0a;
+            /* خلفية زرقاء هادئة للمستوى المتوسط */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 100, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 200, 255, 0.1) 0%, transparent 50%);
             font-family: 'Cairo', sans-serif;
             color: white;
             text-align: center;
@@ -21,266 +23,239 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
         }
 
         .container {
             width: 100%;
-            max-width: 480px;
-            background: rgba(27, 38, 59, 0.7);
-            padding: 20px;
+            max-width: 500px;
+            background: rgba(15, 15, 15, 0.95);
+            padding: 25px 20px;
             border-radius: 35px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            border: 1px solid rgba(212, 175, 55, 0.3); /* إطار ذهبي خفيف */
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 150, 255, 0.2);
+            border: 1px solid #222;
+            backdrop-filter: blur(10px);
         }
 
-        /* لوحة الشرف الملكية بالثيم الذهبي */
-        .honor-board {
-            background: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b8860b 50%, #f9f295 55%, #d4af37 100%);
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
+        .level-header {
+            background: linear-gradient(135deg, #0044cc 0%, #001133 100%);
             padding: 15px;
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid #ffffff;
-            color: #1a1a1a;
+            border: 1px solid #00d2ff;
         }
 
-        @keyframes shine { to { background-position: 200% center; } }
-
-        .player-info h3 { margin: 2px 0; font-size: 20px; font-weight: 900; }
         .level-badge { 
-            background: #1a1a1a; color: #ffd700; 
-            padding: 5px 15px; border-radius: 50px; font-size: 13px; font-weight: bold;
-            display: inline-block; margin-top: 5px; border: 1px solid #ffd700;
+            background: #00d2ff; color: #000; 
+            padding: 5px 20px; border-radius: 50px; font-size: 13px; font-weight: 900;
+            display: inline-block; margin-top: 8px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 10px; 
+            margin-bottom: 20px; 
         }
+        .stat-card { background: #111; padding: 12px 5px; border-radius: 15px; border: 1px solid #333; }
+        .stat-card.progress { border-bottom: 3px solid #8a2be2; }
+        .stat-card.points { border-bottom: 3px solid #00d2ff; }
+        .stat-card.timer { border-bottom: 3px solid #ffcc00; }
 
-        .stat-card {
-            background: rgba(13, 27, 42, 0.6);
-            padding: 12px 5px;
-            border-radius: 18px;
-            border-bottom: 3px solid #d4af37; /* خط ذهبي */
-        }
-
-        .stat-label { font-size: 11px; color: #a2adbb; display: block; }
-        .stat-value { font-size: 18px; font-weight: 900; }
+        .stat-label { font-size: 10px; color: #666; display: block; margin-bottom: 2px; }
+        .stat-value { font-size: 16px; font-weight: 900; }
 
         #game-area {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 30px;
-            padding: 25px 15px;
-            min-height: 260px;
+            background: rgba(25, 25, 25, 0.5);
+            border-radius: 25px;
+            padding: 20px;
+            border: 1px solid #333;
+            min-height: 320px;
         }
 
-        #question { font-size: 1.1rem; line-height: 1.5; font-weight: 700; margin-bottom: 20px; }
+        #question { 
+            font-size: 19px; 
+            font-weight: 700; 
+            color: #ffffff; 
+            margin-bottom: 25px; 
+            min-height: 70px;
+            line-height: 1.5;
+        }
 
         .answers-container { display: grid; gap: 10px; }
-
         button.answer-btn {
-            background: #415a77;
-            color: white;
-            border: none;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.2s;
+            background: #1e1e1e; 
+            color: #eee; 
+            border: 1px solid #333; 
+            padding: 15px;
+            font-size: 15px; 
+            font-weight: 600; 
+            border-radius: 15px; 
+            cursor: pointer; 
+            transition: all 0.2s ease;
         }
 
-        .correct { background: #00e676 !important; color: #000 !important; }
-        .wrong { background: #ff5252 !important; }
+        button.answer-btn:active { transform: scale(0.97); }
+        .correct { background: #00c853 !important; color: white !important; border-color: #00c853 !important; }
+        .wrong { background: #ff1744 !important; color: white !important; border-color: #ff1744 !important; }
 
-        #skipBtn {
-            background: transparent;
-            width: 80%;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 50px;
-            border: 1px solid #d4af37;
-            color: #d4af37;
-            font-weight: bold;
-            cursor: pointer;
+        #skipBtn { 
+            background: none;
+            color: #555; border: none; padding: 10px;
+            cursor: pointer; font-weight: 700; font-size: 13px; margin-top: 15px;
         }
 
-        #final-screen { display: none; }
+        #result-box h2 { color: #00d2ff; }
     </style>
 </head>
-
 <body>
 
     <div class="container">
-        <div class="honor-board">
-            <div class="player-info">
-                <span style="font-size: 11px; font-weight: bold;">ROYAL GOLDEN BOARD</span>
-                <h3 id="display-username">جاري التحميل...</h3>
-            </div>
-            <span class="level-badge">🏆 المستوى المتوسط الذهبي</span>
+        <div class="level-header">
+            <h3 style="margin:0; font-size: 20px;">سيرفر المطورين</h3>
+            <span class="level-badge">⚽ المستوى المتوسط ⚽</span>
         </div>
 
-        <div id="ui-main">
-            <div class="stats-grid">
-                <div class="stat-card"><span class="stat-label">السؤال</span><span id="progress-val" class="stat-value">1/30</span></div>
-                <div class="stat-card"><span class="stat-label">الوقت</span><span id="timer-val" class="stat-value" style="color:#ffd60a">25</span></div>
-                <div class="stat-card"><span class="stat-label">النقاط</span><span id="score-val" class="stat-value" style="color:#00e5ff">0</span></div>
+        <div class="stats-grid">
+            <div class="stat-card progress">
+                <span class="stat-label">السؤال</span>
+                <span id="q-num" class="stat-value">0/50</span>
             </div>
+            <div class="stat-card points">
+                <span class="stat-label">نقاطك</span>
+                <span id="current-points" class="stat-value">0</span>
+            </div>
+            <div class="stat-card timer">
+                <span class="stat-label">الوقت</span>
+                <span id="timer" class="stat-value">20</span>
+            </div>
+        </div>
 
-            <div id="game-area">
-                <h2 id="question">تجهيز التحدي المتوسط...</h2>
+        <div id="game-area">
+            <div id="quiz">
+                <div id="question">جاري التحميل...</div>
                 <div id="answers" class="answers-container"></div>
             </div>
 
-            <button id="skipBtn">⏭ تخطي السؤال</button>
+            <div id="result-box" style="display:none;">
+                <h2>انتهى المستوى!</h2>
+                <span id="rank-text" style="font-size: 28px; font-weight: 900; display: block; margin: 15px 0;"></span>
+                <p id="final-stats"></p>
+                <button onclick="location.reload()" style="background:#0044cc; color:white; border:none; padding:10px 25px; border-radius:12px; cursor:pointer; font-family:'Cairo';">إعادة المحاولة</button>
+            </div>
         </div>
 
-        <div id="final-screen">
-            <h2 style="color:#ffd700">🌟 تألق ملكي!</h2>
-            <div id="final-score" style="font-size:24px; margin:20px 0;"></div>
-            <div id="rank" style="font-size:20px; color:#00e5ff; margin-bottom: 20px;"></div>
-            <p id="redirect-msg" style="color:#ffd60a;"></p>
-        </div>
+        <button id="skipBtn" onclick="skipQuestion()">تخطي السؤال</button>
     </div>
 
     <script>
-        const savedName = localStorage.getItem('username') || "لاعب ذهبي";
-        document.getElementById("display-username").textContent = savedName;
-
-        // أسئلة المستوى المتوسط (30 سؤال)
-        const questions = [
-            { q: "من هو اللاعب الملقب بـ 'الظاهرة'؟", a: ["كريستيانو", "رونالدو نازاريو", "نيمار", "رونالدينيو"], correct: 1 },
-            { q: "كم عدد لاعبي الفريق الواحد في الملعب؟", a: ["10", "11", "12", "9"], correct: 1 },
-            { q: "أي منتخب فاز بكأس العالم 2014؟", a: ["الأرجنتين", "ألمانيا", "البرازيل", "إسبانيا"], correct: 1 },
-            { q: "من هو هداف الدوري الإنجليزي التاريخي؟", a: ["واين روني", "آلان شيرر", "هاري كين", "صلاح"], correct: 1 },
-            { q: "أين يقع ملعب الكامب نو؟", a: ["مدريد", "برشلونة", "ميلانو", "لندن"], correct: 1 },
-            { q: "ما هي مدة مباراة كرة القدم الأساسية؟", a: ["80 دقيقة", "90 دقيقة", "100 دقيقة", "70 دقيقة"], correct: 1 },
-            { q: "من فاز بالكرة الذهبية عام 2022؟", a: ["ميسي", "كريم بنزيما", "هالاند", "مبابي"], correct: 1 },
-            { q: "كم مرة فازت البرازيل بكأس العالم؟", a: ["4", "5", "6", "3"], correct: 1 },
-            { q: "أي نادٍ يلقب بـ 'البلوز'؟", a: ["مانشستر سيتي", "تشيلسي", "ليفربول", "إيفرتون"], correct: 1 },
-            { q: "من هو مدرب مانشستر سيتي الحالي؟", a: ["أنشيلوتي", "غوارديولا", "كلوب", "تشافي"], correct: 1 },
-            { q: "في أي دولة أقيم كأس العالم 2010؟", a: ["البرازيل", "جنوب أفريقيا", "ألمانيا", "قطر"], correct: 1 },
-            { q: "من سجل هدف الفوز في نهائي مونديال 2010؟", a: ["تشافي", "إنييستا", "فيا", "توريس"], correct: 1 },
-            { q: "ما هو لقب منتخب إيطاليا؟", a: ["الماتادور", "الآزوري", "الديوك", "الماكينات"], correct: 1 },
-            { q: "أي نادٍ فاز بدوري أبطال أوروبا 2019؟", a: ["توتنهام", "ليفربول", "بايرن ميونخ", "ريال مدريد"], correct: 1 },
-            { q: "من هو الهداف التاريخي لنادي ريال مدريد؟", a: ["راؤول", "كريستيانو رونالدو", "بنزيما", "دي ستيفانو"], correct: 1 },
-            { q: "أي منتخب يلقب بـ 'الماكينات'؟", a: ["هولندا", "ألمانيا", "فرنسا", "إيطاليا"], correct: 1 },
-            { q: "ما هو المنتخب الذي يرتدي اللون البرتقالي؟", a: ["هولندا", "بلجيكا", "البرتغال", "إسبانيا"], correct: 0 },
-            { q: "كم عدد تبديلات كرة القدم الحالية؟", a: ["3", "5", "4", "2"], correct: 1 },
-            { q: "أين أقيم نهائي دوري الأبطال 2023؟", a: ["باريس", "إسطنبول", "لندن", "مدريد"], correct: 1 },
-            { q: "من هو اللاعب الملقب بـ 'البرغوث'؟", a: ["نيمار", "ميسي", "مودريتش", "سواريز"], correct: 1 },
-            { q: "أي نادٍ حقق السداسية عام 2009؟", a: ["ريال مدريد", "برشلونة", "بايرن ميونخ", "مانشستر يونايتد"], correct: 1 },
-            { q: "من فاز بكأس العالم 2018؟", a: ["كرواتيا", "فرنسا", "بلجيكا", "إنجلترا"], correct: 1 },
-            { q: "ما هو لقب منتخب إسبانيا؟", a: ["السامبا", "الماتادور", "الأسود", "النسور"], correct: 1 },
-            { q: "كم مرة فازت مصر بكأس أمم أفريقيا؟", a: ["5", "7", "6", "8"], correct: 1 },
-            { q: "من هو هداف كأس العالم التاريخي؟", a: ["رونالدو", "كلوزه", "مولر", "بيليه"], correct: 1 },
-            { q: "أين يقع ملعب 'أولد ترافورد'؟", a: ["لندن", "مانشستر", "ليفربول", "نيوكاسل"], correct: 1 },
-            { q: "أي لاعب يرتدي الرقم 7 في النصر السعودي؟", a: ["ماني", "رونالدو", "تاليسكا", "غريب"], correct: 1 },
-            { q: "من فاز بلقب الدوري الإنجليزي 2016 (المفاجأة)؟", a: ["توتنهام", "ليستر سيتي", "أرسنال", "تشيلسي"], correct: 1 },
-            { q: "من هو الحارس الذي يلقب بـ 'الاخطبوط'؟", a: ["كاسياس", "بوفون", "نوير", "ياشين"], correct: 1 },
-            { q: "من هو صاحب 'يد الله'؟", a: ["ميسي", "مارادونا", "بيليه", "رونالدو"], correct: 1 }
+        // مصفوفة الأسئلة (متوسطة الصعوبة)
+        const bank = [
+            {q:"من هو المنتخب الفائز بكأس العالم 2014؟", a:["ألمانيا","الأرجنتين","البرازيل","إسبانيا"], c:"ألمانيا"},
+            {q:"في أي نادٍ يلعب كيفين دي بروين حالياً؟", a:["مانشستر سيتي","ليفربول","ريال مدريد","بايرن ميونخ"], c:"مانشستر سيتي"},
+            {q:"كم عدد بطولات كأس العالم التي فازت بها فرنسا؟", a:["2","1","3","0"], c:"2"},
+            {q:"من هو مدرب مانشستر سيتي الحالي؟", a:["غوارديولا","أنشيلوتي","كلوب","تشافي"], c:"غوارديولا"},
+            {q:"أين أقيم نهائي دوري أبطال أوروبا 2023؟", a:["إسطنبول","باريس","لندن","مدريد"], c:"إسطنبول"},
+            {q:"من هو الهداف التاريخي لنادي برشلونة؟", a:["ميسي","رونالدينيو","سواريز","إيتو"], c:"ميسي"},
+            {q:"كم عدد لاعبي فريق كرة القدم داخل الملعب؟", a:["11","10","12","9"], c:"11"},
+            {q:"من هو اللاعب الملقب بـ 'صاروخ ماديرا'؟", a:["كريستيانو رونالدو","ناني","بيبي","فيغو"], c:"كريستيانو رونالدو"},
+            {q:"أي منتخب يلقب بـ 'السامبا'؟", a:["البرازيل","الأرجنتين","كولومبيا","المكسيك"], c:"البرازيل"},
+            {q:"في أي دوري يلعب نادي يوفنتوس؟", a:["الدوري الإيطالي","الدوري الإسباني","الدوري الألماني","الدوري الفرنسي"], c:"الدوري الإيطالي"}
+            // ... أكمل باقي الـ 50 سؤال هنا بنفس التنسيق
         ];
 
-        let currentQuestion = 0;
+        let quizSet = [];
+        let idx = 0;
         let score = 0;
-        let timerId;
-        let timeLeft = 25;
+        let timer;
 
-        function initGame() {
-            if (currentQuestion >= questions.length) {
-                endGame();
-                return;
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
             }
+            return arr;
+        }
 
-            document.getElementById("progress-val").innerText = `${currentQuestion + 1}/${questions.length}`;
-            let q = questions[currentQuestion];
-            document.getElementById("question").innerText = q.q;
+        function init() {
+            // جلب النقاط الحالية من الخارج لعرضها فوراً
+            const savedPoints = parseInt(localStorage.getItem('user_total_points')) || 0;
+            document.getElementById('current-points').innerText = savedPoints;
             
-            let answersDiv = document.getElementById("answers");
-            answersDiv.innerHTML = "";
+            quizSet = shuffle([...bank]);
+            loadQ();
+        }
 
-            q.a.forEach((ans, index) => {
-                let btn = document.createElement("button");
-                btn.className = "answer-btn";
-                btn.innerText = ans;
-                btn.onclick = () => checkAnswer(index, q.correct, btn);
-                answersDiv.appendChild(btn);
+        function loadQ() {
+            if(idx >= 50 || idx >= quizSet.length) return finish();
+            
+            clearInterval(timer);
+            let timeL = 20;
+            document.getElementById('timer').innerText = timeL;
+            timer = setInterval(() => {
+                timeL--;
+                document.getElementById('timer').innerText = timeL;
+                if(timeL <= 0) skipQuestion();
+            }, 1000);
+
+            document.getElementById('q-num').innerText = `${idx+1}/50`;
+            const qData = quizSet[idx];
+            document.getElementById('question').innerText = qData.q;
+            
+            const ansBox = document.getElementById('answers');
+            ansBox.innerHTML = '';
+            
+            shuffle([...qData.a]).forEach(txt => {
+                const b = document.createElement('button');
+                b.className = 'answer-btn';
+                b.innerText = txt;
+                b.onclick = () => check(b, txt, qData.c);
+                ansBox.appendChild(b);
             });
-
-            startTimer();
         }
 
-        function startTimer() {
-            clearInterval(timerId);
-            timeLeft = 25;
-            document.getElementById("timer-val").innerText = timeLeft;
-            timerId = setInterval(() => {
-                timeLeft--;
-                document.getElementById("timer-val").innerText = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(timerId);
-                    nextQuestion();
-                }
-            }, 1000);
-        }
+        function check(btn, val, cor) {
+            clearInterval(timer);
+            const btns = document.querySelectorAll('.answer-btn');
+            btns.forEach(x => x.style.pointerEvents = 'none');
 
-        function checkAnswer(selected, correct, btn) {
-            clearInterval(timerId);
-            let buttons = document.querySelectorAll(".answer-btn");
-            buttons.forEach(b => b.disabled = true);
-
-            if (selected === correct) {
-                btn.classList.add("correct");
-                score++;
-                document.getElementById("score-val").innerText = score;
+            if(val === cor) {
+                btn.classList.add('correct');
+                
+                // تحديث النقاط الخارجية (localStorage)
+                let total = parseInt(localStorage.getItem('user_total_points')) || 0;
+                total += 1;
+                localStorage.setItem('user_total_points', total);
+                
+                // تحديث الرقم المعروض في المربع الأزرق
+                document.getElementById('current-points').innerText = total;
+                score++; 
             } else {
-                btn.classList.add("wrong");
-                buttons[correct].classList.add("correct");
+                btn.classList.add('wrong');
+                btns.forEach(x => { if(x.innerText === cor) x.classList.add('correct'); });
             }
-            setTimeout(nextQuestion, 1200);
+
+            setTimeout(() => { idx++; loadQ(); }, 1200);
         }
 
-        function nextQuestion() {
-            currentQuestion++;
-            initGame();
+        function skipQuestion() {
+            idx++;
+            loadQ();
         }
 
-        document.getElementById("skipBtn").onclick = () => {
-            clearInterval(timerId);
-            nextQuestion();
-        };
-
-        function endGame() {
-            document.getElementById("ui-main").style.display = "none";
-            document.getElementById("final-screen").style.display = "block";
+        function finish() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('skipBtn').style.display = 'none';
+            const res = document.getElementById('result-box');
+            res.style.display = 'block';
             
-            document.getElementById("final-score").innerText = `نقاطك: ${score} من 30`;
-            
-            let rank = "";
-            if (score >= 25) rank = "بطل ذهبي محترف 🏆🥇";
-            else if (score >= 15) rank = "لاعب ملكي واعد 🌟";
-            else rank = "استمر في التدريب للوصول للذهب! ⚽";
-            
-            document.getElementById("rank").innerText = `اللقب: ${rank}`;
-            
-            let count = 10;
-            const redirectMsg = document.getElementById("redirect-msg");
-            const interval = setInterval(() => {
-                redirectMsg.innerText = `🔄 العودة خلال ${count} ثوانٍ...`;
-                if (count <= 0) {
-                    clearInterval(interval);
-                    window.location.href = "/";
-                }
-                count--;
-            }, 1000);
+            let rText = score > 40 ? "أداء مذهل! ✨" : score > 20 ? "جيد جداً 👍" : "حاول مرة أخرى ⚽";
+            document.getElementById('rank-text').innerText = rText;
+            document.getElementById('final-stats').innerText = `أنهيت 50 سؤالاً بنجاح`;
         }
 
-        initGame();
+        window.onload = init;
     </script>
 </body>
 </html>

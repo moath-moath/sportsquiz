@@ -24,10 +24,12 @@ urlpatterns = [
 
     # الصفحة الرئيسية
     path('', views.home, name="home"),
+    path('index.html', views.home), # إضافة هذا المسار لمنع خطأ 404 عند استدعاء index.html
 
     # صفحات المستويات
     path('beginner/', views.beginner, name="beginner"),
     path('beginner.html', views.beginner),
+    
     path('amateur/', views.amateur, name="amateur"),
     path('amateur.html', views.amateur),
 
@@ -51,6 +53,8 @@ urlpatterns = [
     ),
 ]
 
-# تشغيل ملفات static أثناء التطوير
+# إضافة مسارات الملفات الثابتة (Static & Media) بشكل أفضل
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # إذا كنت تستخدم ملفات ميديا (صور مرفوعة)، يفضل إضافة السطر التالي أيضاً:
+    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

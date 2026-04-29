@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>المستوى الهاوي - لوحة الشرف الملكية</title>
+    
+    <!-- إضافة صورتك الخاصة كأيقونة للموقع -->
+    <link rel="icon" type="image/png" href="1_2.png">
 
     <style>
+        /* التنسيقات ستبقى كما هي لضمان ثبات التصميم */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
             background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%);
             font-family: 'Cairo', sans-serif;
@@ -23,7 +25,6 @@
             align-items: center;
             min-height: 100vh;
         }
-
         .container {
             width: 100%;
             max-width: 480px;
@@ -33,7 +34,6 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .honor-board {
             background: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b8860b 50%, #f9f295 55%, #d4af37 100%);
             background-size: 200% auto;
@@ -44,67 +44,22 @@
             border: 1px solid #ffffff;
             color: #1a1a1a;
         }
-
         @keyframes shine { to { background-position: 200% center; } }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: rgba(13, 27, 42, 0.6);
-            padding: 12px 5px;
-            border-radius: 18px;
-            border-bottom: 3px solid #415a77;
-        }
-
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: rgba(13, 27, 42, 0.6); padding: 12px 5px; border-radius: 18px; border-bottom: 3px solid #415a77; }
         .stat-label { font-size: 11px; color: #a2adbb; display: block; }
         .stat-value { font-size: 18px; font-weight: 900; }
-
-        #game-area {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 30px;
-            padding: 25px 15px;
-            min-height: 250px;
-        }
-
+        #game-area { background: rgba(255, 255, 255, 0.03); border-radius: 30px; padding: 25px 15px; min-height: 250px; }
         #question { font-size: 1.2rem; margin-bottom: 20px; }
-
         .answers-container { display: grid; gap: 12px; }
-
-        button.answer-btn {
-            background: #415a77;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
+        button.answer-btn { background: #415a77; color: white; border: none; padding: 15px; font-size: 16px; font-weight: 700; border-radius: 15px; cursor: pointer; transition: 0.2s; }
         .correct { background: #00e676 !important; color: #000 !important; }
         .wrong { background: #ff5252 !important; }
-
-        #skipBtn {
-            background: transparent;
-            width: 100%;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 50px;
-            border: 1px solid #778da9;
-            color: #778da9;
-            cursor: pointer;
-        }
+        #skipBtn { background: transparent; width: 100%; margin-top: 15px; padding: 12px; border-radius: 50px; border: 1px solid #778da9; color: #778da9; cursor: pointer; }
     </style>
 </head>
 
 <body>
-
     <div class="container">
         <div class="honor-board">
             <div class="player-info">
@@ -114,7 +69,8 @@
         </div>
 
         <div class="stats-grid" id="stats-ui">
-            <div class="stat-card"><span class="stat-label">السؤال</span><span id="progress-val" class="stat-value">1/50</span></div>
+            <!-- لاحظ هنا تركت الرقم فارغ ليقوم الجافاسكريبت بتعبئته ديناميكياً -->
+            <div class="stat-card"><span class="stat-label">السؤال</span><span id="progress-val" class="stat-value">--</span></div>
             <div class="stat-card"><span class="stat-label">الوقت</span><span id="timer-val" class="stat-value" style="color:#ffd600">20</span></div>
             <div class="stat-card"><span class="stat-label">النقاط</span><span id="score-val" class="stat-value" style="color:#00e676">0</span></div>
         </div>
@@ -137,7 +93,6 @@
         const savedName = localStorage.getItem('username') || "بطل مجهول";
         document.getElementById("display-username").textContent = savedName;
 
-        // مصفوفة أسئلة موسعة (يجب أن تصل لـ 50 ليتطابق العداد)
         let questions = [
             { q: "من هو هداف كأس العالم 2014؟", a: ["جيمس رودريغيز", "ميسي", "مولر", "نيمار"], correct: 0 },
             { q: "نادي فاز بدوري أبطال أوروبا 2023؟", a: ["مانشستر سيتي", "ريال مدريد", "ليفربول", "بايرن ميونخ"], correct: 0 },
@@ -148,8 +103,7 @@
             { q: "أين أقيمت أول نسخة كأس عالم؟", a: ["البرازيل", "الأوروغواي", "إيطاليا", "فرنسا"], correct: 1 },
             { q: "ما هو لقب منتخب إيطاليا؟", a: ["الديوك", "الآزوري", "الماتادور", "الماكينات"], correct: 1 },
             { q: "أكثر لاعب فاز بالكرة الذهبية؟", a: ["رونالدو", "ميسي", "بلاتيني", "كرويف"], correct: 1 },
-            { q: "نادي يلقب بـ 'السيدة العجوز'؟", a: ["ميلان", "إنتر ميلان", "يوفنتوس", "روما"], correct: 2 },
-            // ... يمكنك إضافة المزيد هنا ليصل المجموع لـ 50
+            { q: "نادي يلقب بـ 'السيدة العجوز'؟", a: ["ميلان", "إنتر ميلان", "يوفنتوس", "روما"], correct: 2 }
         ];
 
         let currentQuestion = 0;
@@ -163,9 +117,10 @@
                 return; 
             }
 
-            document.getElementById("progress-val").innerText = `${currentQuestion + 1}/${questions.length}`;
-            let q = questions[currentQuestion];
+            // تحديث العداد بناءً على طول المصفوفة الحقيقي
+            document.getElementById("progress-val").innerText = (currentQuestion + 1) + "/" + questions.length;
             
+            let q = questions[currentQuestion];
             document.getElementById("question").innerText = q.q;
             let answersDiv = document.getElementById("answers");
             answersDiv.innerHTML = "";
@@ -230,13 +185,16 @@
             let evaluation = score > (questions.length / 2) ? "خبير كروي ⚽" : "هاوي صاعد 🐣";
             document.getElementById("result").innerHTML = `نتيجتك: ${score} من ${questions.length}<br>${evaluation}`;
             
+            // حفظ النتيجة في localStorage ليتم استخدامها خارجياً إذا لزم الأمر
+            localStorage.setItem('lastScore', score);
+
             let seconds = 5;
             const msg = document.getElementById("auto-redirect-msg");
             const interval = setInterval(() => {
                 msg.innerText = `🔄 العودة للرئيسية خلال ${seconds}...`;
                 if(seconds <= 0) {
                     clearInterval(interval);
-                    window.location.href = "/"; 
+                    window.location.href = "index.html"; // تأكد من اسم ملفك الرئيسي
                 }
                 seconds--;
             }, 1000);

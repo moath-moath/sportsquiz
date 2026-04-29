@@ -74,19 +74,24 @@ button:hover {
 
 #skipBtn { background: #ff9800; margin-top: 20px; }
 
-.home-btn { background: #34495e; font-size: 16px; margin-top: 15px; }
-
 .correct { background: #00c853 !important; }
 .wrong { background: #d50000 !important; }
 
 #result { font-size: 18px; margin: 15px 0; font-weight: bold; }
+
+#auto-redirect-msg {
+    font-size: 14px;
+    color: #ffca28;
+    margin-top: 10px;
+    font-weight: normal;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <div id="player-name">الاعب: </div>
+    <div id="player-name">اللاعب: </div>
     <div class="level-title">🔥 المستوى المتوسط</div>
     <div id="timer">⏳ الوقت: 20</div>
     <div id="score">⭐ السكور: 0</div>
@@ -95,10 +100,6 @@ button:hover {
     <div id="answers"></div>
     <button id="skipBtn">⏭ تخطي السؤال</button>
     <div id="result"></div>
-    
-    <a href="index.html" style="text-decoration: none;">
-        <button class="home-btn">🏠 الرجوع للرئيسية</button>
-    </a>
 </div>
 
 <script>
@@ -228,7 +229,6 @@ function showQuestion(){
                 score++;
                 document.getElementById("score").innerText = "⭐ السكور: "+score;
                 
-                // تحديث تراكمي فوري
                 let currentTotal = parseInt(localStorage.getItem('totalScore')) || 0;
                 localStorage.setItem('totalScore', currentTotal + 1);
 
@@ -256,28 +256,26 @@ document.getElementById("skipBtn").onclick = function() {
 function showFinalScore(){
     clearInterval(timer);
 
-    document.getElementById("question").innerText = "🎉 انتهت اللعبة";
+    document.getElementById("question").innerText = "🎉 انتهى التحدي المتوسط";
     document.getElementById("answers").innerHTML = "";
-    document.getElementById("timer").innerText = "";
+    document.getElementById("timer").style.display = "none";
     document.getElementById("skipBtn").style.display = "none";
+    document.getElementById("progress").style.display = "none";
     
     let level = score < 15 ? "مبتدئ 🐣" : score < 30 ? "جيد 👍" : score < 45 ? "محترف ⚽" : "أسطورة 👑";
     
     document.getElementById("result").innerHTML = `
-        ⭐ نتيجتك في هذا الدور: ${score} / ${questions.length}<br>
+        ⭐ نتيجتك: ${score} / ${questions.length}<br>
         🏆 تقييمك: ${level}<br>
-        🔥 تم تحديث رصيدك الكلي بنجاح!<br><br>
-        <button onclick='restartGame()'>🔄 إعادة اللعب</button>
+        🔥 تم تحديث رصيدك بنجاح!<br><br>
+        <button onclick='location.reload()'>🔄 إعادة اللعب</button>
+        <div id="auto-redirect-msg">سيتم توجيهك للرئيسية خلال 10 ثوانٍ...</div>
     `;
-}
 
-function restartGame(){
-    score = 0;
-    currentQuestion = 0;
-    document.getElementById("score").innerText = "⭐ السكور: 0";
-    document.getElementById("skipBtn").style.display = "block";
-    shuffle(questions);
-    showQuestion();
+    // العودة للرئيسية في Django
+    setTimeout(function() {
+        window.location.href = "/"; 
+    }, 10000);
 }
 
 shuffle(questions);

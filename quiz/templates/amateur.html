@@ -91,12 +91,6 @@ button:hover {
     margin-top: 20px;
 }
 
-.home-btn {
-    background: #34495e;
-    font-size: 16px;
-    margin-top: 15px;
-}
-
 .correct { background: #00c853 !important; transform: none !important; box-shadow: none !important;}
 .wrong { background: #d50000 !important; transform: none !important; box-shadow: none !important;}
 
@@ -104,6 +98,13 @@ button:hover {
     font-size: 18px;
     margin: 15px 0;
     font-weight: bold;
+}
+
+#auto-redirect-msg {
+    font-size: 14px;
+    color: #8bb0cc;
+    margin-top: 15px;
+    display: none;
 }
 </style>
 </head>
@@ -113,23 +114,20 @@ button:hover {
 <div class="container">
     <div id="player-name">الاعب: جاري التحميل...</div>
     <div class="level-title">⚽ المستوى الهاوي</div>
-    <div id="timer">⏳ الوقت: 20</div>
-    <div id="score">⭐ السكور: 0</div>
+    <div id="timer">⏱ الوقت: 20</div>
+    <div id="score">⭐ Score: 0</div>
     <div id="questionNumber">السؤال 1 / 50</div>
     <h2 id="question">جاري تحميل السؤال...</h2>
     <div id="answers"></div>
     <button id="skipBtn">⏭ تخطي السؤال</button>
     <h3 id="result"></h3>
-
-    <a href="index.html" style="text-decoration: none;">
-        <button class="home-btn">🏠 الرجوع للرئيسية</button>
-    </a>
+    <p id="auto-redirect-msg">🔄 سيتم العودة للرئيسية تلقائياً بعد 10 ثوانٍ...</p>
 </div>
 
 <script>
 const savedName = localStorage.getItem('username');
 if(savedName){
-    document.getElementById("player-name").textContent = `الاعب: ${savedName}`;
+    document.getElementById("player-name").textContent = `👤 اللاعب: ${savedName}`;
 }
 
 let questions = [
@@ -200,10 +198,7 @@ shuffle(questions);
 
 function shuffleAnswers(question){
     let answers = question.a.map((answer,index)=>({text:answer, correct:index===question.correct}));
-    for(let i = answers.length-1; i>0; i--){
-        let j = Math.floor(Math.random()*(i+1));
-        [answers[i], answers[j]] = [answers[j], answers[i]];
-    }
+    shuffle(answers);
     question.a = answers.map(a=>a.text);
     question.correct = answers.findIndex(a=>a.correct);
 }
@@ -211,10 +206,10 @@ function shuffleAnswers(question){
 function startTimer(){
     clearInterval(timer);
     time = 20;
-    document.getElementById("timer").innerText = "⏳ الوقت: " + time;
+    document.getElementById("timer").innerText = "⏱ الوقت: " + time;
     timer = setInterval(function(){
         time--;
-        document.getElementById("timer").innerText = "⏳ الوقت: " + time;
+        document.getElementById("timer").innerText = "⏱ الوقت: " + time;
         if(time <= 0){
             clearInterval(timer);
             autoAnswer();
@@ -227,7 +222,6 @@ function autoAnswer(){
     let buttons = document.querySelectorAll("#answers button");
     buttons.forEach(b => b.disabled = true);
     if(buttons[q.correct]) buttons[q.correct].classList.add("correct");
-    document.getElementById("result").innerText = "⏰ انتهى الوقت";
     setTimeout(nextQuestion,1200);
 }
 
@@ -246,7 +240,6 @@ function showQuestion(){
 
     const skipBtn = document.getElementById("skipBtn");
     skipBtn.disabled = false;
-    skipBtn.style.display = "block";
 
     let answersDiv = document.getElementById("answers");
     answersDiv.innerHTML = "";
@@ -258,22 +251,19 @@ function showQuestion(){
             clearInterval(timer);
             let buttons = document.querySelectorAll("#answers button");
             buttons.forEach(b => b.disabled = true);
-            skipBtn.disabled = true;
+            document.getElementById("skipBtn").disabled = true;
 
             if(index === q.correct){
                 score++;
-                document.getElementById("score").innerText = "⭐ السكور: " + score;
+                document.getElementById("score").innerText = "⭐  Score: " + score;
                 btn.classList.add("correct");
-                document.getElementById("result").innerText = "✅ إجابة صحيحة";
-                
-                // التحديث اللحظي للرصيد الكلي
+                document.getElementById("result").innerText = "✅ إجابة صحيحة رائع!";
                 let currentTotal = parseInt(localStorage.getItem('totalScore')) || 0;
                 localStorage.setItem('totalScore', currentTotal + 1);
-
             } else {
                 btn.classList.add("wrong");
                 buttons[q.correct].classList.add("correct");
-                document.getElementById("result").innerText = "❌ إجابة خاطئة";
+                document.getElementById("result").innerText = "❌ إجابة خاطئة!";
             }
             setTimeout(nextQuestion,1200);
         };
@@ -281,11 +271,10 @@ function showQuestion(){
     });
 }
 
+// التخطي صامت ومباشر
 document.getElementById("skipBtn").onclick = function(){
     clearInterval(timer);
-    this.disabled = true;
-    currentQuestion++;
-    setTimeout(showQuestion,500);
+    nextQuestion();
 }
 
 function nextQuestion(){
@@ -293,14 +282,14 @@ function nextQuestion(){
     showQuestion();
 }
 
-function showFinal(){
+function showFinal() {
     clearInterval(timer);
-    // تم حذف الزيادة من هنا لأنها أصبحت تتم لحظياً
-    
-    document.getElementById("question").innerText = "🎉 انتهت اللعبة";
+    document.getElementById("question").innerText = "🎊 انتهت اللعبة 🎊";
     document.getElementById("answers").innerHTML = "";
-    document.getElementById("timer").innerText = "";
+    document.getElementById("timer").style.display = "none";
     document.getElementById("skipBtn").style.display = "none";
+    document.getElementById("questionNumber").style.display = "none";
+    document.getElementById("auto-redirect-msg").style.display = "block";
 
     let level = "";
     if(score < 10) level = "مبتدئ 🐣";
@@ -309,21 +298,19 @@ function showFinal(){
     else level = "أسطورة 👑";
 
     document.getElementById("result").innerHTML =
-        "⭐ نتيجتك في هذا الدور: " + score + " / " + questions.length +
+        "⭐ نتيجتك النهائية: " + score + " / " + questions.length +
         "<br>🏆 تقييمك: " + level +
         "<br>🔥 تم تحديث رصيدك الكلي بنجاح!" +
         "<br><br><button onclick='restartGame()'>🔄 إعادة اللعب</button>";
+
+    // العودة للرئيسية تلقائياً بعد 10 ثوانٍ
+    setTimeout(function() {
+        window.location.href = "/";
+    }, 10000);
 }
 
 function restartGame(){
-    score = 0;
-    currentQuestion = 0;
-    document.getElementById("score").innerText = "⭐ السكور: 0";
-    document.getElementById("result").innerText = "";
-    document.getElementById("skipBtn").style.display = "block";
-    document.getElementById("skipBtn").disabled = false;
-    shuffle(questions);
-    showQuestion();
+    location.reload(); // إعادة تحميل الصفحة لتصفير كل شيء بشكل نظيف
 }
 
 showQuestion();

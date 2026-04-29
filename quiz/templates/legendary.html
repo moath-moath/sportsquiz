@@ -93,19 +93,24 @@ button:hover {
 
 #skipBtn { background: #ff9800; margin-top: 20px; }
 
-.home-btn { background: #34495e; font-size: 16px; margin-top: 15px; }
-
 .correct { background: #00c853 !important; }
 .wrong { background: #d50000 !important; }
 
 #result { font-size: 18px; margin: 15px 0; font-weight: bold; }
+
+#auto-redirect-msg {
+    font-size: 14px;
+    color: #ffca28;
+    margin-top: 10px;
+    font-weight: normal;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <div id="player-name">الاعب: </div>
+    <div id="player-name">اللاعب: </div>
     <div class="level-title">👑 المستوى الأسطوري</div>
 
     <button class="admin-btn" onclick="openAdmin()">⚙ لوحة المدير</button>
@@ -123,10 +128,6 @@ button:hover {
 
     <button id="skipBtn">⏭ تخطي السؤال</button>
     <div id="result"></div>
-
-    <a href="index.html" style="text-decoration: none;">
-        <button class="home-btn">🏠 الرجوع للرئيسية</button>
-    </a>
 </div>
 
 <script>
@@ -234,6 +235,8 @@ function autoAnswer(){
 
 function showQuestion(){
     document.getElementById("result").innerText = "";
+    document.getElementById("skipBtn").style.display = "block";
+
     if(currentQuestion >= questions.length){
         endGame();
         return;
@@ -258,7 +261,6 @@ function showQuestion(){
                 btn.classList.add("correct");
                 document.getElementById("result").innerText = "✅ إجابة صحيحة";
                 
-                // تحديث المجموع الكلي لحظياً
                 let currentTotal = parseInt(localStorage.getItem('totalScore')) || 0;
                 localStorage.setItem('totalScore', currentTotal + 1);
 
@@ -285,29 +287,26 @@ document.getElementById("skipBtn").onclick = function() {
 
 function endGame() {
     clearInterval(timer);
-    document.getElementById("question").innerText = "🏁 انتهت اللعبة";
+    document.getElementById("question").innerText = "🏁 انتهى التحدي الأسطوري";
     document.getElementById("answers").innerHTML = "";
-    document.getElementById("timer").innerText = "";
+    document.getElementById("timer").style.display = "none";
     document.getElementById("skipBtn").style.display = "none";
+    document.getElementById("progress").style.display = "none";
     
     let level = score < 20 ? "بداية أسطورة 🐣" : score < 40 ? "أسطورة حقيقي 👍" : "ملك اللعبة 👑";
     
     document.getElementById("result").innerHTML = `
-        ⭐ نتيجتك في هذا الدور الأسطوري: ${score} / ${questions.length}<br>
+        ⭐ نتيجتك: ${score} / ${questions.length}<br>
         🏆 تقييمك: ${level}<br>
-        🔥 تم تحديث رصيدك الكلي بنجاح!<br><br>
-        <button onclick='restartGame()'>🔄 إعادة اللعب</button>
+        🔥 تم تحديث رصيدك بنجاح!<br><br>
+        <button onclick='location.reload()'>🔄 إعادة اللعب</button>
+        <div id="auto-redirect-msg">سيتم توجيهك للرئيسية خلال 10 ثوانٍ...</div>
     `;
-}
 
-function restartGame(){
-    document.getElementById("skipBtn").style.display = "block";
-    score = 0;
-    currentQuestion = 0;
-    document.getElementById("score").innerText = "⭐ السكور: 0";
-    document.getElementById("result").innerText = "";
-    shuffle(questions);
-    showQuestion();
+    // العودة للرئيسية في Django
+    setTimeout(function() {
+        window.location.href = "/"; 
+    }, 10000);
 }
 
 function openAdmin(){

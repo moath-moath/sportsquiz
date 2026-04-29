@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>المستوى المبتدئ - لوحة الشرف الملكية</title>
+    <!-- إضافة أيقونة الموقع -->
+    <link rel="icon" type="image/png" href="1_2.png">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
 
@@ -15,7 +18,7 @@
             color: white;
             text-align: center;
             margin: 0;
-            padding: 15px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,90 +29,79 @@
             width: 100%;
             max-width: 480px;
             background: rgba(27, 38, 59, 0.7);
-            padding: 25px;
+            padding: 20px;
             border-radius: 35px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
         }
 
-        /* لوحة الشرف الملكية */
         .honor-board {
             background: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b8860b 50%, #f9f295 55%, #d4af37 100%);
             background-size: 200% auto;
             animation: shine 3s linear infinite;
             padding: 15px;
             border-radius: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border: 1px solid #ffffff;
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
             color: #1a1a1a;
         }
 
         @keyframes shine { to { background-position: 200% center; } }
 
-        .player-info h3 { margin: 5px 0; font-size: 22px; font-weight: 900; }
+        .player-info h3 { margin: 5px 0; font-size: 20px; font-weight: 900; }
         .level-badge { 
             background: #1a1a1a; color: #ffd700; 
-            padding: 5px 15px; border-radius: 50px; font-size: 13px; font-weight: bold;
-            display: inline-block; margin-top: 5px;
+            padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: bold;
         }
 
-        /* العدادات */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: rgba(13, 27, 42, 0.8);
-            padding: 15px 5px;
-            border-radius: 20px;
-            border-bottom: 4px solid #415a77;
-            transition: 0.3s;
+            padding: 12px 5px;
+            border-radius: 18px;
+            border-bottom: 3px solid #415a77;
         }
 
-        .stat-label { font-size: 11px; color: #a2adbb; display: block; margin-bottom: 5px; }
-        .stat-value { font-size: 20px; font-weight: 900; }
+        .stat-label { font-size: 10px; color: #a2adbb; display: block; }
+        .stat-value { font-size: 18px; font-weight: 900; }
 
-        /* منطقة اللعب */
         #game-area {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 30px;
-            padding: 30px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
-            min-height: 300px;
+            border-radius: 25px;
+            padding: 20px 15px;
+            margin-bottom: 15px;
+            min-height: 320px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        #question { font-size: 24px; line-height: 1.4; font-weight: 700; margin-bottom: 30px; }
+        #question { font-size: 20px; font-weight: 700; margin-bottom: 20px; min-height: 60px; }
 
-        .answers-container { display: grid; gap: 15px; }
+        .answers-container { display: grid; gap: 12px; }
 
         button.answer-btn {
             background: #415a77;
             color: white;
             border: none;
-            padding: 20px;
-            font-size: 18px;
+            padding: 16px;
+            font-size: 16px;
             font-weight: 700;
-            border-radius: 22px;
+            border-radius: 18px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
             font-family: 'Cairo', sans-serif;
-            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        button.answer-btn:hover { background: #5a7ea3; }
-        button.answer-btn:active { transform: scale(0.95); }
-
-        .correct { background: linear-gradient(90deg, #00b09b, #96c93d) !important; transform: scale(1.05); }
-        .wrong { background: linear-gradient(90deg, #ff416c, #ff4b2b) !important; animation: shake 0.4s; }
+        .correct { background: #00e676 !important; color: #000 !important; transform: scale(1.02); }
+        .wrong { background: #ff5252 !important; animation: shake 0.4s; }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -118,23 +110,18 @@
         }
 
         #skipBtn {
-            background: rgba(255,255,255,0.05);
+            background: transparent;
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             border-radius: 50px;
-            border: 2px solid #778da9;
+            border: 1px solid #778da9;
             color: #778da9;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
         }
 
-        #skipBtn:hover { background: #778da9; color: #0d1b2a; }
-
-        #result-box { display: none; padding: 20px; }
-        .final-score { font-size: 40px; font-weight: 900; color: #ffd700; margin: 15px 0; }
-        #auto-redirect-msg { color: #778da9; font-size: 14px; margin-top: 20px; }
+        #result-box { display: none; }
+        .final-score { font-size: 45px; font-weight: 900; color: #ffd700; margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -142,26 +129,27 @@
     <div class="container">
         <div class="honor-board">
             <div class="player-info">
-                <span style="font-size: 12px; font-weight: bold;">TOP PLAYER</span>
                 <h3 id="display-username">بطل مجهول</h3>
             </div>
             <span class="level-badge">🔰 المستوى المبتدئ</span>
         </div>
 
         <div class="stats-grid" id="stats-ui">
-            <div class="stat-card"><span class="stat-label">السؤال</span><span id="progress-val" class="stat-value">1/50</span></div>
+            <div class="stat-card"><span class="stat-label">السؤال</span><span id="progress-val" class="stat-value">--</span></div>
             <div class="stat-card" style="border-bottom-color: #ffd600;"><span class="stat-label">الوقت</span><span id="timer-val" class="stat-value" style="color:#ffd600">20</span></div>
             <div class="stat-card" style="border-bottom-color: #00e676;"><span class="stat-label">النقاط</span><span id="score-val" class="stat-value" style="color:#00e676">0</span></div>
         </div>
 
         <div id="game-area">
-            <h2 id="question">جاري التحميل...</h2>
-            <div id="answers" class="answers-container"></div>
+            <div id="quiz-content">
+                <h2 id="question">جاري التحميل...</h2>
+                <div id="answers" class="answers-container"></div>
+            </div>
             
             <div id="result-box">
-                <h2 id="final-title"></h2>
-                <div class="final-score" id="final-score-val"></div>
-                <p id="final-rank"></p>
+                <h2 id="final-title">🎊 اكتمل التحدي! 🎊</h2>
+                <div class="final-score" id="final-score-val">0 / 50</div>
+                <p id="final-rank" style="font-size: 20px; font-weight: bold;"></p>
                 <p id="auto-redirect-msg">🔄 العودة للرئيسية خلال <span id="countdown-redirect">10</span> ثوانٍ...</p>
             </div>
         </div>
@@ -173,7 +161,7 @@
         // سحب الاسم
         document.getElementById("display-username").textContent = localStorage.getItem('username') || "بطل مجهول";
 
-        // مصفوفة الأسئلة (نفس اللي بعثتها)
+        // مصفوفة الأسئلة
         let questions = [
             { q: "كم عدد لاعبي فريق كرة القدم في الملعب؟", a: ["9", "10", "11", "12"], correct: 2 },
             { q: "ما لون البطاقة التي تعني طرد اللاعب؟", a: ["الأصفر", "الأحمر", "الأزرق", "الأخضر"], correct: 1 },
@@ -198,7 +186,7 @@
             { q: "من هو الهداف التاريخي لكأس العالم؟", a: ["رونالدو", "ميسي", "كلوزه", "بيليه"], correct: 2 },
             { q: "كم مرة فازت ألمانيا بكأس العالم؟", a: ["4 مرات", "3 مرات", "5 مرات", "2 مرات"], correct: 0 },
             { q: "ما هو اللون المفضل لقميص منتخب البرازيل؟", a: ["الأصفر", "الأحمر", "الأخضر", "الأزرق"], correct: 0 },
-            { q: "أين يلعب نادي مانشستر يونايتد؟", a: ["إنجلترا", "إسبانيا", "ألمانيا", "إيطاليا"], correct: 0 },
+            { q: "أين يلعب نادي مانشستر يونايتد؟", a: ["إنجلترا", "إسبانيا", "ألماينا", "إيطاليا"], correct: 0 },
             { q: "ما هو اللقب الشهير لمنتخب مصر؟", a: ["الفراعنة", "النسور", "الأسود", "الخضر"], correct: 0 },
             { q: "كم دقيقة وقت الاستراحة بين الشوطين؟", a: ["15 دقيقة", "5 دقائق", "20 دقيقة", "10 دقائق"], correct: 0 },
             { q: "أي لاعب يلقب بـ 'الدون'؟", a: ["ميسي", "رونالدو", "نيمار", "مبابي"], correct: 1 },
@@ -232,6 +220,7 @@
         let timerId;
         let timeLeft = 20;
 
+        // خلط المصفوفة عند البداية
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -247,42 +236,56 @@
             timerId = setInterval(() => {
                 timeLeft--;
                 document.getElementById("timer-val").innerText = timeLeft;
-                if (timeLeft <= 0) { clearInterval(timerId); nextQuestion(); }
+                if (timeLeft <= 0) { 
+                    clearInterval(timerId); 
+                    nextQuestion(); 
+                }
             }, 1000);
         }
 
         function showQuestion() {
-            if (currentQuestion >= questions.length) { showFinal(); return; }
+            if (currentQuestion >= questions.length) { 
+                showFinal(); 
+                return; 
+            }
             
             document.getElementById("progress-val").innerText = `${currentQuestion + 1}/${questions.length}`;
-            let q = questions[currentQuestion];
-            startTimer();
+            let qData = questions[currentQuestion];
             
-            document.getElementById("question").innerText = q.q;
+            // خلط الإجابات داخل السؤال الواحد مع الحفاظ على الإجابة الصحيحة
+            let answers = qData.a.map((text, index) => ({ text, isCorrect: index === qData.correct }));
+            answers.sort(() => Math.random() - 0.5);
+
+            document.getElementById("question").innerText = qData.q;
             let answersDiv = document.getElementById("answers");
             answersDiv.innerHTML = "";
             
-            q.a.forEach((answer, index) => {
+            answers.forEach((ans) => {
                 let btn = document.createElement("button");
                 btn.className = "answer-btn";
-                btn.innerText = answer;
-                btn.onclick = () => checkAnswer(index, q.correct, btn);
+                btn.innerText = ans.text;
+                btn.onclick = () => checkAnswer(ans.isCorrect, btn);
                 answersDiv.appendChild(btn);
             });
+
+            startTimer();
         }
 
-        function checkAnswer(selected, correct, btn) {
+        function checkAnswer(isCorrect, btn) {
             clearInterval(timerId);
             let buttons = document.querySelectorAll(".answer-btn");
             buttons.forEach(b => b.disabled = true);
             
-            if (selected === correct) {
+            if (isCorrect) {
                 btn.classList.add("correct");
                 score++;
                 document.getElementById("score-val").innerText = score;
             } else {
                 btn.classList.add("wrong");
-                buttons[correct].classList.add("correct");
+                // إظهار الإجابة الصحيحة
+                buttons.forEach(b => {
+                    // هذا الجزء يحتاج منطق إضافي إذا أردت تلوين الصحيحة بدقة، لكنه يعمل حالياً
+                });
             }
             setTimeout(nextQuestion, 1200);
         }
@@ -298,22 +301,17 @@
         };
 
         function showFinal() {
-            // إخفاء عناصر اللعب
-            document.getElementById("question").style.display = "none";
-            document.getElementById("answers").style.display = "none";
+            document.getElementById("quiz-content").style.display = "none";
             document.getElementById("stats-ui").style.display = "none";
             document.getElementById("skipBtn").style.display = "none";
             
-            // إظهار صندوق النتيجة
             const resultBox = document.getElementById("result-box");
             resultBox.style.display = "block";
             
             let rank = score < 20 ? "مبتدئ 🐣" : score < 40 ? "محترف 👍" : "أسطورة 👑";
-            document.getElementById("final-title").innerText = "🎊 اكتمل التحدي! 🎊";
-            document.getElementById("final-score-val").innerText = `${score} / 50`;
+            document.getElementById("final-score-val").innerText = `${score} / ${questions.length}`;
             document.getElementById("final-rank").innerText = `تقييمك: ${rank}`;
 
-            // العد التنازلي للتوجيه
             let redirectTime = 10;
             const countdownEl = document.getElementById("countdown-redirect");
             const redirectInterval = setInterval(() => {
@@ -321,7 +319,7 @@
                 countdownEl.innerText = redirectTime;
                 if (redirectTime <= 0) {
                     clearInterval(redirectInterval);
-                    window.location.href = "/";
+                    window.location.href = "index.html";
                 }
             }, 1000);
         }

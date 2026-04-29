@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-<html lang="ar">
-
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>المستوى المبتدئ - لوحة الشرف الملكية</title>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
 
-        /* إعدادات أساسية */
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background: radial-gradient(circle at center, #1b263b 0%, #0d1b2a 100%);
@@ -32,20 +26,21 @@
             width: 100%;
             max-width: 480px;
             background: rgba(27, 38, 59, 0.7);
-            padding: 20px;
+            padding: 25px;
             border-radius: 35px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
-        /* لوحة الشرف الملكية - ذهب حقيقي */
+        /* لوحة الشرف الملكية */
         .honor-board {
             background: linear-gradient(135deg, #d4af37 0%, #f9f295 45%, #b8860b 50%, #f9f295 55%, #d4af37 100%);
             background-size: 200% auto;
             animation: shine 3s linear infinite;
             padding: 15px;
             border-radius: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border: 1px solid #ffffff;
             box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
             color: #1a1a1a;
@@ -53,153 +48,132 @@
 
         @keyframes shine { to { background-position: 200% center; } }
 
-        .player-info h3 { margin: 2px 0; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
+        .player-info h3 { margin: 5px 0; font-size: 22px; font-weight: 900; }
         .level-badge { 
             background: #1a1a1a; color: #ffd700; 
             padding: 5px 15px; border-radius: 50px; font-size: 13px; font-weight: bold;
             display: inline-block; margin-top: 5px;
         }
 
-        /* عدادات البيانات - ألوان نيون هادئة */
+        /* العدادات */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .stat-card {
-            background: rgba(13, 27, 42, 0.6);
-            padding: 12px 5px;
-            border-radius: 18px;
-            border-bottom: 3px solid #415a77;
+            background: rgba(13, 27, 42, 0.8);
+            padding: 15px 5px;
+            border-radius: 20px;
+            border-bottom: 4px solid #415a77;
+            transition: 0.3s;
         }
 
-        .stat-label { font-size: 11px; color: #a2adbb; display: block; margin-bottom: 4px; }
-        .stat-value { font-size: 18px; font-weight: 900; }
+        .stat-label { font-size: 11px; color: #a2adbb; display: block; margin-bottom: 5px; }
+        .stat-value { font-size: 20px; font-weight: 900; }
 
-        /* 🔥 صندوق السؤال - زجاجي (Frosted Glass) */
+        /* منطقة اللعب */
         #game-area {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 30px;
-            padding: 25px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            margin-bottom: 15px;
+            padding: 30px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        #question { 
-            min-height: 70px; 
-            margin: 0 0 25px 0; 
-            font-size: 22px; 
-            line-height: 1.5; 
-            font-weight: 700;
-            color: #ffffff;
-        }
+        #question { font-size: 24px; line-height: 1.4; font-weight: 700; margin-bottom: 30px; }
 
-        /* أزرار الإجابات */
-        .answers-container {
-            display: grid;
-            gap: 12px;
-        }
+        .answers-container { display: grid; gap: 15px; }
 
         button.answer-btn {
             background: #415a77;
             color: white;
             border: none;
-            padding: 18px;
+            padding: 20px;
             font-size: 18px;
             font-weight: 700;
-            border-radius: 20px;
+            border-radius: 22px;
             cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            font-family: 'Cairo', sans-serif;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        button.answer-btn:active { transform: scale(0.96); }
+        button.answer-btn:hover { background: #5a7ea3; }
+        button.answer-btn:active { transform: scale(0.95); }
 
-        .correct { 
-            background: linear-gradient(to right, #00b09b, #96c93d) !important; 
-            box-shadow: 0 0 20px rgba(0, 176, 155, 0.4) !important;
-        }
-        .wrong { 
-            background: linear-gradient(to right, #ff416c, #ff4b2b) !important;
-            box-shadow: 0 0 20px rgba(255, 65, 108, 0.4) !important;
+        .correct { background: linear-gradient(90deg, #00b09b, #96c93d) !important; transform: scale(1.05); }
+        .wrong { background: linear-gradient(90deg, #ff416c, #ff4b2b) !important; animation: shake 0.4s; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
-        /* ⏭ زر التخطي المنسق */
         #skipBtn {
-            background: transparent;
-            width: 80%;
-            margin-top: 10px;
-            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            width: 100%;
+            padding: 15px;
             border-radius: 50px;
-            font-size: 15px;
             border: 2px solid #778da9;
             color: #778da9;
-            font-family: 'Cairo', sans-serif;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 10px;
         }
 
-        #skipBtn:hover {
-            background: #778da9;
-            color: #0d1b2a;
-        }
+        #skipBtn:hover { background: #778da9; color: #0d1b2a; }
 
-        #auto-redirect-msg { font-size: 13px; color: #778da9; margin-top: 20px; display: none; }
+        #result-box { display: none; padding: 20px; }
+        .final-score { font-size: 40px; font-weight: 900; color: #ffd700; margin: 15px 0; }
+        #auto-redirect-msg { color: #778da9; font-size: 14px; margin-top: 20px; }
     </style>
 </head>
-
 <body>
 
     <div class="container">
-        <!-- لوحة الشرف -->
         <div class="honor-board">
             <div class="player-info">
-                <span style="font-size: 12px; font-weight: bold; text-transform: uppercase;">Top Player</span>
-                <h3 id="display-username">جاري التحميل...</h3>
+                <span style="font-size: 12px; font-weight: bold;">TOP PLAYER</span>
+                <h3 id="display-username">بطل مجهول</h3>
             </div>
             <span class="level-badge">🔰 المستوى المبتدئ</span>
         </div>
 
-        <!-- عدادات ذكية -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-label">السؤال</span>
-                <span id="progress-val" class="stat-value" style="color:#fff">1/50</span>
-            </div>
-            <div class="stat-card" style="border-bottom-color: #ffd600;">
-                <span class="stat-label">الوقت</span>
-                <span id="timer-val" class="stat-value" style="color:#ffd600">20</span>
-            </div>
-            <div class="stat-card" style="border-bottom-color: #00e676;">
-                <span class="stat-label">النقاط</span>
-                <span id="score-val" class="stat-value" style="color:#00e676">0</span>
-            </div>
+        <div class="stats-grid" id="stats-ui">
+            <div class="stat-card"><span class="stat-label">السؤال</span><span id="progress-val" class="stat-value">1/50</span></div>
+            <div class="stat-card" style="border-bottom-color: #ffd600;"><span class="stat-label">الوقت</span><span id="timer-val" class="stat-value" style="color:#ffd600">20</span></div>
+            <div class="stat-card" style="border-bottom-color: #00e676;"><span class="stat-label">النقاط</span><span id="score-val" class="stat-value" style="color:#00e676">0</span></div>
         </div>
 
-        <!-- صندوق السؤال -->
         <div id="game-area">
-            <h2 id="question">جاري تجهيز السؤال...</h2>
+            <h2 id="question">جاري التحميل...</h2>
             <div id="answers" class="answers-container"></div>
+            
+            <div id="result-box">
+                <h2 id="final-title"></h2>
+                <div class="final-score" id="final-score-val"></div>
+                <p id="final-rank"></p>
+                <p id="auto-redirect-msg">🔄 العودة للرئيسية خلال <span id="countdown-redirect">10</span> ثوانٍ...</p>
+            </div>
         </div>
 
-        <button id="skipBtn">⏭ تخطي هذا السؤال</button>
-          
-        <div id="final-box">
-             <h3 id="result"></h3>
-             <p id="auto-redirect-msg">🔄 العودة للرئيسية بعد 10 ثوانٍ...</p>
-        </div>
+        <button id="skipBtn">⏭ تخطي السؤال</button>
     </div>
 
     <script>
-        const savedName = localStorage.getItem('username') || "بطل مجهول";
-        document.getElementById("display-username").textContent = savedName;
+        // سحب الاسم
+        document.getElementById("display-username").textContent = localStorage.getItem('username') || "بطل مجهول";
 
-        // [سيتم وضع مصفوفة الأسئلة هنا - هي نفسها في الكود السابق]
+        // مصفوفة الأسئلة (نفس اللي بعثتها)
         let questions = [
             { q: "كم عدد لاعبي فريق كرة القدم في الملعب؟", a: ["9", "10", "11", "12"], correct: 2 },
             { q: "ما لون البطاقة التي تعني طرد اللاعب؟", a: ["الأصفر", "الأحمر", "الأزرق", "الأخضر"], correct: 1 },
@@ -260,7 +234,7 @@
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
+                const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
         }
@@ -279,12 +253,15 @@
 
         function showQuestion() {
             if (currentQuestion >= questions.length) { showFinal(); return; }
-            document.getElementById("progress-val").innerText = `${currentQuestion + 1}/50`;
+            
+            document.getElementById("progress-val").innerText = `${currentQuestion + 1}/${questions.length}`;
             let q = questions[currentQuestion];
             startTimer();
+            
             document.getElementById("question").innerText = q.q;
             let answersDiv = document.getElementById("answers");
             answersDiv.innerHTML = "";
+            
             q.a.forEach((answer, index) => {
                 let btn = document.createElement("button");
                 btn.className = "answer-btn";
@@ -298,6 +275,7 @@
             clearInterval(timerId);
             let buttons = document.querySelectorAll(".answer-btn");
             buttons.forEach(b => b.disabled = true);
+            
             if (selected === correct) {
                 btn.classList.add("correct");
                 score++;
@@ -320,13 +298,32 @@
         };
 
         function showFinal() {
-            document.getElementById("game-area").innerHTML = "<h2 style='color:#ffd700'>🎊 بطل المبتدئين! 🎊</h2>";
+            // إخفاء عناصر اللعب
+            document.getElementById("question").style.display = "none";
+            document.getElementById("answers").style.display = "none";
+            document.getElementById("stats-ui").style.display = "none";
             document.getElementById("skipBtn").style.display = "none";
-            document.querySelector(".stats-grid").style.display = "none";
-            document.getElementById("auto-redirect-msg").style.display = "block";
-            let level = score < 20 ? "مبتدئ 🐣" : score < 40 ? "جيد جداً 👍" : "أسطورة 👑";
-            document.getElementById("result").innerHTML = `النتيجة: ${score} من 50<br>التقييم: ${level}`;
-            setTimeout(() => { window.location.href = "/"; }, 10000);
+            
+            // إظهار صندوق النتيجة
+            const resultBox = document.getElementById("result-box");
+            resultBox.style.display = "block";
+            
+            let rank = score < 20 ? "مبتدئ 🐣" : score < 40 ? "محترف 👍" : "أسطورة 👑";
+            document.getElementById("final-title").innerText = "🎊 اكتمل التحدي! 🎊";
+            document.getElementById("final-score-val").innerText = `${score} / 50`;
+            document.getElementById("final-rank").innerText = `تقييمك: ${rank}`;
+
+            // العد التنازلي للتوجيه
+            let redirectTime = 10;
+            const countdownEl = document.getElementById("countdown-redirect");
+            const redirectInterval = setInterval(() => {
+                redirectTime--;
+                countdownEl.innerText = redirectTime;
+                if (redirectTime <= 0) {
+                    clearInterval(redirectInterval);
+                    window.location.href = "/";
+                }
+            }, 1000);
         }
 
         showQuestion();

@@ -102,26 +102,46 @@
 
         .controls {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start; /* تم التعديل ليكون في جهة اليسار */
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .nav-btn {
             background: #222;
             color: white;
             border: 1px solid #444;
-            padding: 10px 20px;
-            border-radius: 12px;
+            padding: 12px 24px;
+            border-radius: 15px;
             cursor: pointer;
             font-weight: 700;
             transition: 0.3s;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .skip-btn { border-color: #ff4500; color: #ff4500; }
-        .skip-btn:hover { background: #ff4500; color: white; }
+        .skip-btn { 
+            border: 1px solid rgba(255, 69, 0, 0.5); 
+            color: #ff4500;
+            background: rgba(255, 69, 0, 0.05);
+        }
+        
+        .skip-btn:hover { 
+            background: #ff4500; 
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
+
         .retry-btn { background: #ff4500; border: none; }
+
+        #redirect-info {
+            margin-top: 15px;
+            color: #888;
+            font-size: 14px;
+        }
+        #back-count { color: #ff4500; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -152,7 +172,10 @@
                 <div id="question">جاري التجهيز...</div>
                 <div id="answers" class="answers-container"></div>
                 <div class="controls">
-                    <button class="nav-btn skip-btn" id="skip-btn" onclick="nextQuestion()">تخطي السؤال ⏭️</button>
+                    <button class="nav-btn skip-btn" id="skip-btn" onclick="nextQuestion()">
+                        <span>تخطي السؤال</span>
+                        <span style="font-size: 1.2em;">⏭️</span>
+                    </button>
                 </div>
             </div>
 
@@ -160,8 +183,11 @@
                 <h2 style="color:#ffd700;">انتهى التحدي!</h2>
                 <span id="rank-text" style="font-size: 28px; display: block; margin: 15px 0;"></span>
                 <p id="final-stats" style="font-size: 18px;"></p>
+                
+                <div id="redirect-info">سيتم نقلك لصفحة البداية خلال <span id="back-count">5</span> ثوانٍ</div>
+                
                 <div style="margin-top: 20px;">
-                    <button class="nav-btn retry-btn" onclick="location.reload()">إعادة المحاولة</button>
+                    <button class="nav-btn retry-btn" onclick="location.reload()">إعادة المحاولة الآن</button>
                 </div>
             </div>
         </div>
@@ -196,7 +222,7 @@
             {q:"من هو النادي الذي يمتلك ملعب 'أليانز أرينا'؟", a:["بايرن ميونخ","لايبزيغ","دورتموند","شالكه"], c:"بايرن ميونخ"},
             {q:"من فاز بالكرة الذهبية عام 2018؟", a:["مودريتش","ميسي","رونالدو","غريزمان"], c:"مودريتش"},
             {q:"كم عدد أهداف بيليه (الموثقة رسمياً)؟", a:["767","1281","1000","850"], c:"767"},
-            {q:"من هو أكثر لاعب شارك في مباريات كأس العالم؟", a:["ميسي","لوتار ماتيوس","كلوزه","مالديني"], c:"ميسي"},
+            {q:"من هو أكثر لاعب شارك في مباريات كأس العالم? ", a:["ميسي","لوتار ماتيوس","كلوزه","مالديني"], c:"ميسي"},
             {q:"من هو الهداف التاريخي لبطولة اليورو؟", a:["كريستيانو رونالدو","بلاتيني","غريزمان","هنري"], c:"كريستيانو رونالدو"},
             {q:"من هو النادي الألماني الوحيد الذي فاز بالثلاثية؟", a:["بايرن ميونخ","دورتموند","هامبورغ","ليفركوزن"], c:"بايرن ميونخ"},
             {q:"أي منتخب يلقب بـ 'الماكينات'؟", a:["ألمانيا","هولندا","السويد","النرويج"], c:"ألمانيا"},
@@ -225,7 +251,7 @@
         let idx = 0;
         let score = 0;
         let timer;
-        const TIME_LIMIT = 20; // تم التعديل إلى 20 ثانية
+        const TIME_LIMIT = 20;
 
         function shuffle(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
@@ -281,8 +307,6 @@
                 btn.classList.add('correct');
                 score++;
                 document.getElementById('current-points').innerText = score;
-
-                // تحديث النقاط التراكمية في المتصفح
                 let total = parseInt(localStorage.getItem('user_total_points')) || 0;
                 localStorage.setItem('user_total_points', total + 1);
             } else {
@@ -307,6 +331,17 @@
             let rText = score > 40 ? "أنت أسطورة حقيقية! 🔥" : score > 25 ? "أداء ممتاز للمحترفين ⚽" : "تحتاج لمزيد من التدريب! 🏃‍♂️";
             document.getElementById('rank-text').innerText = rText;
             document.getElementById('final-stats').innerText = `إجاباتك الصحيحة: ${score} من 50`;
+
+            let count = 5;
+            const countDisplay = document.getElementById('back-count');
+            const countdown = setInterval(() => {
+                count--;
+                countDisplay.innerText = count;
+                if(count <= 0) {
+                    clearInterval(countdown);
+                    window.location.href = 'index.html';
+                }
+            }, 1000);
         }
 
         window.onload = init;

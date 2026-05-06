@@ -45,32 +45,19 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
+        @keyframes shine { to { background-position: 200% center; } }
 
         .player-info h3 { 
-            margin: 5px 0; 
-            font-size: 32px; 
-            font-weight: 900; 
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin: 5px 0; font-size: 32px; font-weight: 900; 
+            color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        .encouragement { 
-            color: #00d2ff; 
-            font-weight: 900; 
-            font-size: 16px; 
-            display: block; 
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
+        .encouragement { color: #00d2ff; font-weight: 900; font-size: 16px; display: block; margin-bottom: 5px; letter-spacing: 1px; }
 
         .level-badge { 
-            background: #ffffff; color: #1e3c72; 
-            padding: 6px 25px; border-radius: 50px; font-size: 14px; font-weight: 900;
-            display: inline-block; margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            background: #ffffff; color: #1e3c72; padding: 6px 25px; 
+            border-radius: 50px; font-size: 14px; font-weight: 900;
+            display: inline-block; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
@@ -82,11 +69,8 @@
         .stat-value { font-size: 18px; font-weight: 900; }
 
         #game-area {
-            background: rgba(0,0,0,0.3);
-            border-radius: 30px;
-            padding: 25px 15px;
-            min-height: 380px;
-            margin-bottom: 50px;
+            background: rgba(0,0,0,0.3); border-radius: 30px;
+            padding: 25px 15px; min-height: 380px; margin-bottom: 50px;
         }
 
         #question { font-size: 19px; font-weight: 700; margin-bottom: 25px; min-height: 70px; line-height: 1.5; color: #bbe1fa; }
@@ -96,34 +80,20 @@
         button.answer-btn {
             background: #334756; color: white; border: 1px solid #455a64;
             padding: 16px 15px; font-size: 16px; font-weight: 700;
-            border-radius: 20px; cursor: pointer; transition: 0.2s;
-            width: 100%;
-            line-height: 1.3;
+            border-radius: 20px; cursor: pointer; transition: 0.2s; width: 100%;
         }
 
         .correct { background: #00d2ff !important; color: #0f2027 !important; font-weight: 900; }
         .wrong { background: #ff4b2b !important; }
 
         #skipBtn, #hintBtn { 
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #00d2ff;
-            color: #ffffff;
-            padding: 8px 15px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            position: absolute;
-            bottom: 20px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid #00d2ff;
+            color: #ffffff; padding: 8px 15px; border-radius: 12px;
+            font-weight: 700; cursor: pointer; position: absolute; bottom: 20px;
         }
 
         #skipBtn { left: 20px; }
-        #hintBtn { right: 20px; border-color: #00d2ff; color: #00d2ff; }
-        #hintBtn:disabled { opacity: 0.3; filter: grayscale(1); }
+        #hintBtn { right: 20px; color: #00d2ff; }
         
         .restart-btn {
             background: #00d2ff; color: #0f2027; padding: 15px 30px;
@@ -174,16 +144,39 @@
             </div>
         </div>
 
-        <button id="skipBtn" onclick="nextQuestion()">
-            <span>⏭</span>
-            <span>تخطي</span>
-        </button>
-
-        <button id="hintBtn" onclick="useHint()">
-            <span>تلميح</span>
-            <span>💡</span>
-        </button>
+        <button id="skipBtn" onclick="nextQuestion()">⏭ تخطي</button>
+        <button id="hintBtn" onclick="useHint()">تلميح 💡</button>
     </div>
+
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAEKcYJkl2mpGaM04ppixUnGeygKn3Nu_8",
+          authDomain: "champions-challenge-2a13a.firebaseapp.com",
+          projectId: "champions-challenge-2a13a",
+          storageBucket: "champions-challenge-2a13a.firebasestorage.app",
+          messagingSenderId: "267945781501",
+          appId: "1:267945781501:web:6be03f02151127aec0b694",
+          measurementId: "G-6EYLJ9SYJ0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.saveFinalScore = async function(playerName, score) {
+            try {
+                await addDoc(collection(db, "leaderboard"), {
+                    name: playerName,
+                    points: Number(score),
+                    level: "متوسط",
+                    timestamp: serverTimestamp()
+                });
+            } catch (e) { console.error("Error: ", e); }
+        };
+    </script>
 
     <script>
         const bank = [
@@ -254,7 +247,6 @@
         function init() {
             const savedName = localStorage.getItem('player_username') || "متحدي النخبة";
             document.getElementById('display-username').innerText = savedName;
-            
             questions = [...bank];
             shuffle(questions);
             showQuestion();
@@ -262,12 +254,9 @@
 
         function showQuestion() {
             if (currentIndex >= 50) return finish();
-
             document.getElementById('hintBtn').disabled = false;
-            document.getElementById('hintBtn').style.opacity = '1';
-
             clearInterval(timer);
-            let timeLeft = 20; // تعديل الوقت إلى 20 ثانية
+            let timeLeft = 20;
             document.getElementById('timer-val').innerText = timeLeft;
             timer = setInterval(() => {
                 timeLeft--;
@@ -278,13 +267,10 @@
             document.getElementById('progress-val').innerText = `${currentIndex + 1}/50`;
             const q = questions[currentIndex];
             document.getElementById('question').innerText = q.q;
-
             const ansBox = document.getElementById('answers');
             ansBox.innerHTML = '';
-            
             let options = [...q.a];
             shuffle(options);
-
             options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'answer-btn';
@@ -295,37 +281,30 @@
         }
 
         function useHint() {
-            const currentQuestion = questions[currentIndex];
+            const q = questions[currentIndex];
             const btns = document.querySelectorAll('.answer-btn');
             let removed = 0;
-
             btns.forEach(btn => {
-                if (btn.innerText !== currentQuestion.c && removed < 2) {
+                if (btn.innerText !== q.c && removed < 2) {
                     btn.style.visibility = 'hidden';
                     removed++;
                 }
             });
             document.getElementById('hintBtn').disabled = true;
-            document.getElementById('hintBtn').style.opacity = '0.3';
         }
 
         function checkAnswer(btn, selected, correct) {
             clearInterval(timer);
             const btns = document.querySelectorAll('.answer-btn');
             btns.forEach(b => b.style.pointerEvents = 'none');
-
             if (selected === correct) {
                 btn.classList.add('correct');
-                scoreInSession++; // زيادة نقطة واحدة للجلسة الحالية
+                scoreInSession += 2; // المستوى المتوسط يعطي نقطتين لكل سؤال
                 document.getElementById('session-points').innerText = scoreInSession;
-                
-                let total = parseInt(localStorage.getItem('user_total_points')) || 0;
-                localStorage.setItem('user_total_points', total + 1); // إضافة نقطة واحدة للمجموع الكلي
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
             }
-
             setTimeout(nextQuestion, 1200);
         }
 
@@ -336,25 +315,23 @@
 
         function finish() {
             clearInterval(timer);
+            const savedName = localStorage.getItem('player_username') || "متحدي النخبة";
+            if (window.saveFinalScore) window.saveFinalScore(savedName, scoreInSession);
+            
             document.getElementById('quiz-content').style.display = 'none';
-            document.getElementById('skipBtn').style.display = 'none';
-            document.getElementById('hintBtn').style.display = 'none';
             document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('result-box').style.display = 'block';
-            document.getElementById('final-score-text').innerText = `انتهى التحدي! سجلت ${scoreInSession} إجابة صحيحة من 50.`;
-
+            document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} نقطة!`;
             let count = 5;
-            const countDisplay = document.getElementById('countdown');
             const redirectTimer = setInterval(() => {
                 count--;
-                countDisplay.innerText = count;
+                document.getElementById('countdown').innerText = count;
                 if (count <= 0) {
                     clearInterval(redirectTimer);
                     window.location.href = 'index.html'; 
                 }
             }, 1000);
         }
-
         window.onload = init;
     </script>
 </body>

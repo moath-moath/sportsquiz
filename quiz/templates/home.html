@@ -66,7 +66,6 @@
             color: white;
         }
 
-        /* ألوان المستويات */
         .btn-beginner { background: #27ae60; }
         .btn-amateur { background: #2980b9; }
         .btn-medium { background: #8e44ad; }
@@ -78,8 +77,8 @@
 
         .level-btn:hover { transform: scale(1.03); filter: brightness(1.2); }
 
-        /* نوافذ التسجيل */
-        #auth-overlay {
+        /* نوافذ التسجيل واختيار الاسم */
+        .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); display: none;
             justify-content: center; align-items: center; z-index: 1000;
@@ -96,15 +95,32 @@
             font-family: 'Cairo'; font-weight: 700; cursor: pointer;
             margin-top: 15px;
         }
+
+        .name-input {
+            width: 100%; padding: 12px; border-radius: 10px;
+            border: 1px solid #ddd; margin-top: 15px;
+            font-family: 'Cairo'; text-align: center; font-size: 16px;
+        }
     </style>
 </head>
 <body>
 
-<div id="auth-overlay">
+<!-- نافذة تسجيل الدخول بجوجل -->
+<div id="auth-overlay" class="overlay">
     <div class="auth-card">
         <h2 style="margin-top:0">مرحباً بك 🏆</h2>
         <p>يجب تسجيل الدخول لحفظ نقاطك وتنافس الأبطال</p>
         <button class="google-btn" onclick="login()">الدخول بواسطة Google</button>
+    </div>
+</div>
+
+<!-- نافذة اختيار اسم الشهرة -->
+<div id="name-overlay" class="overlay" style="z-index: 1100; background: rgba(0,0,0,0.95);">
+    <div class="auth-card">
+        <h2 style="margin-top:0">اسم الشهرة 🏅</h2>
+        <p>اختر الاسمي الذي سيظهر للجميع في لوحة المتصدرين</p>
+        <input type="text" id="custom-name-input" class="name-input" placeholder="أدخل اسمك هنا...">
+        <button class="google-btn" style="background: #27ae60;" onclick="saveCustomName()">حفظ والبدء</button>
     </div>
 </div>
 
@@ -129,7 +145,6 @@
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // إعدادات Firebase الخاصة بك
     const firebaseConfig = {
         apiKey: "AIzaSyAEKcYJkl2mpGaM04ppixUnGeygKn3Nu_8",
         authDomain: "champions-challenge-2a13a.firebaseapp.com",
@@ -144,33 +159,65 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // جعل الدالة متاحة عالمياً
+    let tempUser = null; // لتخزين بيانات المستخدم مؤقتاً عند اختيار الاسم
+
     window.login = () => {
         signInWithPopup(auth, provider).catch(err => console.error(err));
     };
 
+    // دالة حفظ الاسم المخصص في قاعدة البيانات
+    window.saveCustomName = async () => {
+        const chosenName = document.getElementById("custom-name-input").value.trim();
+        if (chosenName.length < 3) {
+            alert("يرجى اختيار اسم مكون من 3 أحرف على الأقل");
+            return;
+        }
+
+        if (tempUser) {
+            const userRef = doc(db, "users", tempUser.uid);
+            await setDoc(userRef, {
+                name: chosenName,
+                email: tempUser.email,
+                totalPoints: 0,
+                hasSetCustomName: true // علامة لعدم إظهار النافذة مرة أخرى
+            });
+            
+            document.getElementById("name-overlay").style.display = "none";
+            document.getElementById("player-name").innerText = chosenName;
+            localStorage.setItem('player_username', chosenName);
+        }
+    };
+
     onAuthStateChanged(auth, async (user) => {
         if (user) {
+            tempUser = user;
             document.getElementById("auth-overlay").style.display = "none";
-            document.getElementById("player-name").innerText = user.displayName;
             
-            // جلب النقاط من Firestore
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
             
             if (userSnap.exists()) {
-                document.getElementById("total-points").innerText = `🏆 النقاط: ${userSnap.data().totalPoints || 0}`;
-                localStorage.setItem('player_username', user.displayName);
+                const userData = userSnap.data();
+                
+                // التأكد من أن المستخدم اختار اسماً مخصصاً سابقاً
+                if (userData.hasSetCustomName) {
+                    document.getElementById("player-name").innerText = userData.name;
+                    document.getElementById("total-points").innerText = `🏆 النقاط: ${userData.totalPoints || 0}`;
+                    localStorage.setItem('player_username', userData.name);
+                    document.getElementById("name-overlay").style.display = "none";
+                } else {
+                    // إذا دخل سابقاً ولم يختر اسماً
+                    document.getElementById("name-overlay").style.display = "flex";
+                    document.getElementById("custom-name-input").value = user.displayName;
+                }
             } else {
-                // إنشاء سجل للمستخدم الجديد
-                await setDoc(userRef, {
-                    name: user.displayName,
-                    email: user.email,
-                    totalPoints: 0
-                });
+                // مستخدم جديد تماماً: أظهر نافذة اختيار الاسم
+                document.getElementById("name-overlay").style.display = "flex";
+                document.getElementById("custom-name-input").value = user.displayName;
             }
         } else {
             document.getElementById("auth-overlay").style.display = "flex";
+            document.getElementById("name-overlay").style.display = "none";
         }
     });
 </script>

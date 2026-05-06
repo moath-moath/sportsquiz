@@ -77,7 +77,6 @@
 
         .level-btn:hover { transform: scale(1.03); filter: brightness(1.2); }
 
-        /* نوافذ التسجيل واختيار الاسم */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); display: none;
@@ -105,7 +104,6 @@
 </head>
 <body>
 
-<!-- نافذة تسجيل الدخول بجوجل -->
 <div id="auth-overlay" class="overlay">
     <div class="auth-card">
         <h2 style="margin-top:0">مرحباً بك 🏆</h2>
@@ -114,7 +112,6 @@
     </div>
 </div>
 
-<!-- نافذة اختيار اسم الشهرة -->
 <div id="name-overlay" class="overlay" style="z-index: 1100; background: rgba(0,0,0,0.95);">
     <div class="auth-card">
         <h2 style="margin-top:0">اسم الشهرة 🏅</h2>
@@ -143,7 +140,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAEKcYJkl2mpGaM04ppixUnGeygKn3Nu_8",
@@ -159,13 +156,12 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    let tempUser = null; // لتخزين بيانات المستخدم مؤقتاً عند اختيار الاسم
+    let tempUser = null;
 
     window.login = () => {
         signInWithPopup(auth, provider).catch(err => console.error(err));
     };
 
-    // دالة حفظ الاسم المخصص في قاعدة البيانات
     window.saveCustomName = async () => {
         const chosenName = document.getElementById("custom-name-input").value.trim();
         if (chosenName.length < 3) {
@@ -179,12 +175,10 @@
                 name: chosenName,
                 email: tempUser.email,
                 totalPoints: 0,
-                hasSetCustomName: true // علامة لعدم إظهار النافذة مرة أخرى
-            });
+                hasSetCustomName: true 
+            }, { merge: true });
             
             document.getElementById("name-overlay").style.display = "none";
-            document.getElementById("player-name").innerText = chosenName;
-            localStorage.setItem('player_username', chosenName);
         }
     };
 
@@ -194,27 +188,27 @@
             document.getElementById("auth-overlay").style.display = "none";
             
             const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
-            
-            if (userSnap.exists()) {
-                const userData = userSnap.data();
-                
-                // التأكد من أن المستخدم اختار اسماً مخصصاً سابقاً
-                if (userData.hasSetCustomName) {
-                    document.getElementById("player-name").innerText = userData.name;
-                    document.getElementById("total-points").innerText = `🏆 النقاط: ${userData.totalPoints || 0}`;
-                    localStorage.setItem('player_username', userData.name);
-                    document.getElementById("name-overlay").style.display = "none";
+
+            // استخدام onSnapshot لجعل تحديث النقاط لحظياً دون الحاجة لتحديث الصفحة
+            onSnapshot(userRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    
+                    if (userData.hasSetCustomName) {
+                        document.getElementById("player-name").innerText = userData.name;
+                        // التغيير المهم هنا: الربط مع totalPoints
+                        document.getElementById("total-points").innerText = `🏆 النقاط: ${userData.totalPoints || 0}`;
+                        document.getElementById("name-overlay").style.display = "none";
+                    } else {
+                        document.getElementById("name-overlay").style.display = "flex";
+                        document.getElementById("custom-name-input").value = user.displayName;
+                    }
                 } else {
-                    // إذا دخل سابقاً ولم يختر اسماً
                     document.getElementById("name-overlay").style.display = "flex";
                     document.getElementById("custom-name-input").value = user.displayName;
                 }
-            } else {
-                // مستخدم جديد تماماً: أظهر نافذة اختيار الاسم
-                document.getElementById("name-overlay").style.display = "flex";
-                document.getElementById("custom-name-input").value = user.displayName;
-            }
+            });
+
         } else {
             document.getElementById("auth-overlay").style.display = "flex";
             document.getElementById("name-overlay").style.display = "none";

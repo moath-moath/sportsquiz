@@ -6,92 +6,25 @@
     <title>تحدي الأبطال - المستوى الأسطوري</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            background: radial-gradient(circle at center, #000000 0%, #1a0a2e 100%);
-            font-family: 'Cairo', sans-serif;
-            color: white;
-            text-align: center;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: rgba(10, 10, 10, 0.95);
-            padding: 20px;
-            border-radius: 35px;
-            box-shadow: 0 20px 60px rgba(138, 43, 226, 0.3);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            position: relative;
-        }
-
-        .honor-board {
-            background: linear-gradient(110deg, #4b0082 20%, #8a2be2 40%, #4b0082 50%, #d4af37 70%, #4b0082 80%);
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-            padding: 25px 20px;
-            border-radius: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            position: relative;
-            border: 2px solid rgba(255, 215, 0, 0.5);
-        }
-
+        body { background: radial-gradient(circle at center, #000000 0%, #1a0a2e 100%); font-family: 'Cairo', sans-serif; color: white; text-align: center; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 480px; background: rgba(10, 10, 10, 0.95); padding: 20px; border-radius: 35px; box-shadow: 0 20px 60px rgba(138, 43, 226, 0.3); border: 1px solid rgba(255, 215, 0, 0.3); position: relative; }
+        .honor-board { background: linear-gradient(110deg, #4b0082 20%, #8a2be2 40%, #4b0082 50%, #d4af37 70%, #4b0082 80%); background-size: 200% auto; animation: shine 3s linear infinite; padding: 25px 20px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 2px solid rgba(255, 215, 0, 0.5); }
         @keyframes shine { to { background-position: 200% center; } }
-
-        .player-info h3 { 
-            margin: 5px 0; font-size: 28px; font-weight: 900; 
-            color: #ffffff; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-        }
-
-        .level-badge { 
-            background: #000; color: #ffd700; padding: 6px 25px; 
-            border-radius: 50px; font-size: 14px; font-weight: 900;
-            display: inline-block; margin-top: 10px; border: 1px solid #ffd700;
-        }
-
+        .player-info h3 { margin: 5px 0; font-size: 28px; font-weight: 900; color: #ffffff; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+        .level-badge { background: #000; color: #ffd700; padding: 6px 25px; border-radius: 50px; font-size: 14px; font-weight: 900; display: inline-block; margin-top: 10px; border: 1px solid #ffd700; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .stat-card { background: #121212; padding: 12px; border-radius: 20px; border: 1px solid #333; }
         .stat-card.timer { border-bottom: 4px solid #ff0000; }
         .stat-card.points { border-bottom: 4px solid #ffd700; }
-
-        #game-area {
-            background: rgba(255,255,255,0.02);
-            border-radius: 30px; padding: 25px 15px;
-            min-height: 380px; margin-bottom: 50px;
-        }
-
+        #game-area { background: rgba(255,255,255,0.02); border-radius: 30px; padding: 25px 15px; min-height: 380px; margin-bottom: 50px; }
         #question { font-size: 19px; font-weight: 700; margin-bottom: 25px; min-height: 70px; line-height: 1.5; }
-
         .answers-container { display: grid; gap: 12px; }
-        
-        button.answer-btn {
-            background: #1a1a1a; color: white; border: 1px solid #333;
-            padding: 16px 15px; font-size: 16px; font-weight: 700;
-            border-radius: 20px; cursor: pointer; width: 100%;
-        }
-
-        .correct { background: #ffd700 !important; color: #000 !important; }
+        button.answer-btn { background: #1a1a1a; color: white; border: 1px solid #333; padding: 16px 15px; font-size: 16px; font-weight: 700; border-radius: 20px; cursor: pointer; width: 100%; }
+        .correct { background: #ffd700 !important; color: #000 !important; font-weight: 900; }
         .wrong { background: #ff4b2b !important; }
-
-        .google-login-btn {
-            background: #4285F4; color: white; border: none; padding: 10px 20px;
-            border-radius: 15px; cursor: pointer; font-weight: 700; font-family: 'Cairo';
-        }
-
-        #skipBtn, #hintBtn { 
-            background: rgba(255, 255, 255, 0.05); border: 1px solid #ffd700;
-            color: #ffffff; padding: 8px 15px; border-radius: 12px;
-            font-weight: 700; cursor: pointer; position: absolute; bottom: 20px;
-        }
+        .google-login-btn { background: #4285F4; color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 700; font-family: 'Cairo'; }
+        #skipBtn, #hintBtn { background: rgba(255, 255, 255, 0.05); border: 1px solid #ffd700; color: #ffffff; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; position: absolute; bottom: 20px; }
         #skipBtn { left: 20px; }
         #hintBtn { right: 20px; color: #ffd700; }
     </style>
@@ -121,7 +54,7 @@
             <div id="result-box" style="display:none;">
                 <h2>👑 عرش الأساطير 👑</h2>
                 <div id="final-score-text" style="font-size:30px; font-weight:900; color:#ffd700; margin:20px;"></div>
-                <p id="redirect-msg" style="color: #888;">العودة للرئيسية خلال ثوانٍ...</p>
+                <button class="google-login-btn" onclick="location.reload()">🔄 تحدي جديد</button>
             </div>
         </div>
 
@@ -129,10 +62,10 @@
         <button id="hintBtn" onclick="useHint()">💡 تلميح</button>
     </div>
 
-    <!-- Firebase Logic -->
+    <!-- Firebase System -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, updateDoc, increment, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -141,8 +74,7 @@
           projectId: "champions-challenge-2a13a",
           storageBucket: "champions-challenge-2a13a.firebasestorage.app",
           messagingSenderId: "267945781501",
-          appId: "1:267945781501:web:6be03f02151127aec0b694",
-          measurementId: "G-6EYLJ9SYJ0"
+          appId: "1:267945781501:web:6be03f02151127aec0b694"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -151,6 +83,26 @@
         const provider = new GoogleAuthProvider();
 
         window.loginWithGoogle = () => signInWithPopup(auth, provider);
+
+        // وظيفة حفظ النقاط الفورية للمستوى الأسطوري (3 نقاط)
+        window.savePointToCloud = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            const userRef = doc(db, "users", user.uid);
+            try {
+                await updateDoc(userRef, {
+                    totalPoints: increment(3),
+                    lastActive: serverTimestamp()
+                });
+            } catch (e) {
+                await setDoc(userRef, {
+                    name: user.displayName,
+                    totalPoints: 3,
+                    lastActive: serverTimestamp(),
+                    email: user.email
+                }, { merge: true });
+            }
+        };
 
         onAuthStateChanged(auth, (user) => {
             const displayArea = document.getElementById('display-username');
@@ -163,29 +115,19 @@
             }
         });
 
-        window.saveFinalScore = async function(score) {
-            const user = auth.currentUser;
-            if(!user) return;
-            try {
-                await addDoc(collection(db, "leaderboard"), {
-                    name: user.displayName,
-                    email: user.email,
-                    points: Number(score),
-                    level: "أسطوري",
-                    timestamp: serverTimestamp()
-                });
-            } catch (e) { console.error(e); }
-        };
-    </script>
-
-    <script>
-        // دمج بنك الأسئلة الخاص بك هنا (تم استخدام الأسئلة التي وفرتها أنت)
+        // بنك الأسئلة الأسطوري
         const legendaryBank = [
             {q:"من هو اللاعب الوحيد الذي سجل في نهائي دوري الأبطال مع 3 أندية مختلفة؟", a:["كريستيانو رونالدو","ماريو ماندزوكيتش","كلارنس سيدورف","سامويل إيتو"], c:"كريستيانو رونالدو"},
             {q:"أي منتخب هو الوحيد الذي شارك في المونديال دون أن يستقبل أي هدف (خرج بركلات الترجيح)؟", a:["سويسرا 2006","إيطاليا 1990","فرنسا 1998","البرازيل 1986"], c:"سويسرا 2006"},
             {q:"من هو أول لاعب أفريقي يتوج بلقب هداف الدوري الإنجليزي؟", a:["توني بوييبوا","ديدييه دروغبا","إيمانويل أديبايور","محمد صلاح"], c:"توني بوييبوا"},
-            // ... (بقية الأسئلة التي أضفتها أنت في الكود السابق)
-            {q:"من هو اللاعب صاحب أكبر عدد من الأهداف في موسم واحد من دوري الأبطال (17 هدف)؟", a:["رونالدو","ميسي","ليفاندوفسكي","بنزيمة"], c:"رونالدو"}
+            {q:"من هو اللاعب صاحب أكبر عدد من الأهداف في موسم واحد من دوري الأبطال (17 هدف)؟", a:["رونالدو","ميسي","ليفاندوفسكي","بنزيمة"], c:"رونالدو"},
+            {q:"من هو المدرب الذي حقق السداسية التاريخية مع برشلونة عام 2009؟", a:["جوارديولا","إنريكي","فينجر","مورينيو"], c:"جوارديولا"},
+            {q:"من سجل أسرع هدف في تاريخ نهائيات كأس العالم؟", a:["هاكان شوكور","زيدان","بيليه","رونالدو"], c:"هاكان شوكور"},
+            {q:"لاعب فاز بكأس العالم، دوري الأبطال، والكرة الذهبية في نفس العام؟", a:["بوبي تشارلتون","زيدان","كاكا","باولو روسي"], c:"باولو روسي"},
+            {q:"أي نادٍ إيطالي هو الوحيد الذي حقق الثلاثية التاريخية؟", a:["إنتر ميلان","ميلان","يوفنتوس","روما"], c:"إنتر ميلان"},
+            {q:"من هو الهداف التاريخي لكأس العالم للمنتخبات؟", a:["ميروسلاف كلوزه","رونالدو الظاهرة","مولر","بيليه"], c:"ميروسلاف كلوزه"},
+            {q:"ما هو المنتخب الذي فاز بأول نسخة من بطولة أمم أوروبا 1960؟", a:["الاتحاد السوفيتي","يوغوسلافيا","ألمانيا","فرنسا"], c:"الاتحاد السوفيتي"}
+            // يمكنك إضافة المزيد من الأسئلة هنا حتى تصل لـ 50
         ];
 
         let questions = [];
@@ -201,10 +143,11 @@
         }
 
         window.initGame = function() {
-            questions = [...legendaryBank]; // نستخدم البنك الأسطوري
+            questions = [...legendaryBank];
             shuffle(questions);
             currentIndex = 0;
             scoreInSession = 0;
+            document.getElementById('session-points').innerText = "0";
             showQuestion();
         }
 
@@ -217,7 +160,7 @@
             timer = setInterval(() => {
                 timeLeft--;
                 document.getElementById('timer-val').innerText = timeLeft;
-                if (timeLeft <= 0) nextQuestion();
+                if (timeLeft <= 0) window.nextQuestion();
             }, 1000);
 
             document.getElementById('progress-val').innerText = `${currentIndex + 1}/50`;
@@ -236,7 +179,7 @@
             });
         }
 
-        function useHint() {
+        window.useHint = function() {
             const q = questions[currentIndex];
             const btns = document.querySelectorAll('.answer-btn');
             let removed = 0;
@@ -249,33 +192,34 @@
             document.getElementById('hintBtn').disabled = true;
         }
 
-        function checkAnswer(btn, sel, cor) {
+        async function checkAnswer(btn, sel, cor) {
             clearInterval(timer);
             const btns = document.querySelectorAll('.answer-btn');
             btns.forEach(b => b.style.pointerEvents = 'none');
+
             if (sel === cor) {
                 btn.classList.add('correct');
-                scoreInSession += 3; // 3 نقاط لكل إجابة في المستوى الأسطوري
+                scoreInSession += 3;
                 document.getElementById('session-points').innerText = scoreInSession;
+                await window.savePointToCloud();
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => { if(b.innerText === cor) b.classList.add('correct'); });
             }
-            setTimeout(nextQuestion, 1200);
+            setTimeout(window.nextQuestion, 1200);
         }
 
-        function nextQuestion() {
+        window.nextQuestion = function() {
             currentIndex++;
             showQuestion();
         }
 
         function finish() {
             clearInterval(timer);
-            window.saveFinalScore(scoreInSession);
             document.getElementById('quiz-content').style.display = 'none';
             document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('result-box').style.display = 'block';
-            document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} نقطة في عرش الأساطير!`;
+            document.getElementById('final-score-text').innerText = `انتهى التحدي! رصيدك الجديد زاد بمقدار ${scoreInSession} نقطة أسطورية.`;
             setTimeout(() => window.location.href = 'index.html', 5000);
         }
     </script>

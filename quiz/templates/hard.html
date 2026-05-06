@@ -6,94 +6,25 @@
     <title>تحدي الأبطال - المستوى الصعب</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
-            font-family: 'Cairo', sans-serif;
-            color: white;
-            text-align: center;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: rgba(26, 26, 46, 0.95);
-            padding: 20px;
-            border-radius: 35px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            position: relative;
-        }
-
-        .honor-board {
-            background: linear-gradient(110deg, #bf953f 20%, #fcf6ba 40%, #b38728 50%, #fcf6ba 70%, #aa771c 80%);
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-            padding: 25px 20px;
-            border-radius: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4);
-            position: relative;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
+        body { background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%); font-family: 'Cairo', sans-serif; color: white; text-align: center; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 480px; background: rgba(26, 26, 46, 0.95); padding: 20px; border-radius: 35px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255, 215, 0, 0.2); position: relative; }
+        .honor-board { background: linear-gradient(110deg, #bf953f 20%, #fcf6ba 40%, #b38728 50%, #fcf6ba 70%, #aa771c 80%); background-size: 200% auto; animation: shine 3s linear infinite; padding: 25px 20px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); border: 2px solid rgba(255, 255, 255, 0.3); }
         @keyframes shine { to { background-position: 200% center; } }
-
-        .player-info h3 { 
-            margin: 5px 0; font-size: 28px; font-weight: 900; 
-            color: #1a1a2e; text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-        }
-
-        .level-badge { 
-            background: #1a1a2e; color: #ffd700; padding: 6px 25px; 
-            border-radius: 50px; font-size: 14px; font-weight: 900;
-            display: inline-block; margin-top: 10px;
-        }
-
+        .player-info h3 { margin: 5px 0; font-size: 28px; font-weight: 900; color: #1a1a2e; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
+        .level-badge { background: #1a1a2e; color: #ffd700; padding: 6px 25px; border-radius: 50px; font-size: 14px; font-weight: 900; display: inline-block; margin-top: 10px; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .stat-card { background: #16213e; padding: 12px; border-radius: 20px; border: 1px solid #333; }
         .stat-card.timer { border-bottom: 4px solid #ffd700; }
         .stat-card.points { border-bottom: 4px solid #00ff88; }
-
-        #game-area {
-            background: rgba(0,0,0,0.2);
-            border-radius: 30px;
-            padding: 25px 15px;
-            min-height: 350px;
-            margin-bottom: 50px;
-        }
-
-        #question { font-size: 20px; font-weight: 700; margin-bottom: 25px; min-height: 60px; }
-
+        #game-area { background: rgba(0,0,0,0.2); border-radius: 30px; padding: 25px 15px; min-height: 350px; margin-bottom: 50px; }
+        #question { font-size: 20px; font-weight: 700; margin-bottom: 25px; min-height: 60px; line-height: 1.4; }
         .answers-container { display: grid; gap: 12px; }
-        
-        button.answer-btn {
-            background: #0f3460; color: white; border: 1px solid #16213e;
-            padding: 18px 15px; font-size: 17px; font-weight: 700;
-            border-radius: 20px; cursor: pointer; width: 100%;
-        }
-
-        .correct { background: #00ff88 !important; color: #000 !important; }
+        button.answer-btn { background: #0f3460; color: white; border: 1px solid #16213e; padding: 18px 15px; font-size: 17px; font-weight: 700; border-radius: 20px; cursor: pointer; width: 100%; transition: 0.2s; }
+        .correct { background: #00ff88 !important; color: #000 !important; font-weight: 900; }
         .wrong { background: #e94560 !important; }
-
-        .google-login-btn {
-            background: #4285F4; color: white; border: none; padding: 10px 20px;
-            border-radius: 15px; cursor: pointer; font-weight: 700; font-family: 'Cairo';
-        }
-
-        #skipBtn, #hintBtn { 
-            background: rgba(255, 255, 255, 0.05); border: 1px solid #bf953f;
-            color: #ffffff; padding: 8px 15px; border-radius: 12px;
-            font-weight: 700; cursor: pointer; position: absolute; bottom: 20px;
-        }
+        .google-login-btn { background: #4285F4; color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 700; font-family: 'Cairo'; }
+        #skipBtn, #hintBtn { background: rgba(255, 255, 255, 0.05); border: 1px solid #bf953f; color: #ffffff; padding: 8px 15px; border-radius: 12px; font-weight: 700; cursor: pointer; position: absolute; bottom: 20px; }
         #skipBtn { left: 20px; }
         #hintBtn { right: 20px; color: #ffd700; }
     </style>
@@ -109,7 +40,7 @@
         </div>
 
         <div class="stats-grid" id="stats-ui">
-            <div class="stat-card"><span>السؤال</span><br><span id="progress-val" class="stat-value">1/50</span></div>
+            <div class="stat-card"><span>السؤال</span><br><span id="progress-val" class="stat-value">1/30</span></div>
             <div class="stat-card timer"><span>الوقت</span><br><span id="timer-val" class="stat-value" style="color:#ffd700">20</span></div>
             <div class="stat-card points"><span>النقاط</span><br><span id="session-points" class="stat-value" style="color:#00ff88">0</span></div>
         </div>
@@ -134,7 +65,7 @@
     <!-- Firebase System -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, updateDoc, increment, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -143,8 +74,7 @@
           projectId: "champions-challenge-2a13a",
           storageBucket: "champions-challenge-2a13a.firebasestorage.app",
           messagingSenderId: "267945781501",
-          appId: "1:267945781501:web:6be03f02151127aec0b694",
-          measurementId: "G-6EYLJ9SYJ0"
+          appId: "1:267945781501:web:6be03f02151127aec0b694"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -152,7 +82,28 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
+        // ربط الدوال بالـ Window للوصول إليها من HTML
         window.loginWithGoogle = () => signInWithPopup(auth, provider);
+
+        window.savePointToCloud = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            const userRef = doc(db, "users", user.uid);
+            try {
+                // في المستوى الصعب، الإجابة الصحيحة تمنح نقطتين
+                await updateDoc(userRef, {
+                    totalPoints: increment(2),
+                    lastActive: serverTimestamp()
+                });
+            } catch (e) {
+                await setDoc(userRef, {
+                    name: user.displayName,
+                    totalPoints: 2,
+                    lastActive: serverTimestamp(),
+                    email: user.email
+                }, { merge: true });
+            }
+        };
 
         onAuthStateChanged(auth, (user) => {
             const displayArea = document.getElementById('display-username');
@@ -161,26 +112,11 @@
                 initGame();
             } else {
                 displayArea.innerHTML = `<button onclick="loginWithGoogle()" class="google-login-btn">دخول بجوجل</button>`;
-                document.getElementById('question').innerText = "سجل دخولك لحفظ ترتيبك العالمي في المستوى الصعب";
+                document.getElementById('question').innerText = "سجل دخولك لحفظ ترتيبك العالمي";
             }
         });
 
-        window.saveFinalScore = async function(score) {
-            const user = auth.currentUser;
-            if(!user) return;
-            try {
-                await addDoc(collection(db, "leaderboard"), {
-                    name: user.displayName,
-                    email: user.email,
-                    points: Number(score),
-                    level: "صعب",
-                    timestamp: serverTimestamp()
-                });
-            } catch (e) { console.error(e); }
-        };
-    </script>
-
-    <script>
+        // مصفوفة الأسئلة الصعبة
         const hardBank = [
             {q:"من هو المدرب الذي فاز بدوري أبطال أوروبا مع 3 أندية مختلفة؟", a:["أنشيلوتي","مورينيو","جوارديولا","هيدينك"], c:"أنشيلوتي"},
             {q:"أي نادٍ فاز بأول نسخة من الدوري الإنجليزي الممتاز عام 1992؟", a:["مان يونايتد","أرسنال","بلاكبيرن","ليفربول"], c:"مان يونايتد"},
@@ -231,11 +167,12 @@
             shuffle(questions);
             currentIndex = 0;
             scoreInSession = 0;
+            document.getElementById('session-points').innerText = "0";
             showQuestion();
         }
 
         function showQuestion() {
-            if (currentIndex >= 30) return finish(); // انتهى البنك المتاح
+            if (currentIndex >= 30) return finish();
             document.getElementById('hintBtn').disabled = false;
             clearInterval(timer);
             let timeLeft = 20;
@@ -243,7 +180,7 @@
             timer = setInterval(() => {
                 timeLeft--;
                 document.getElementById('timer-val').innerText = timeLeft;
-                if (timeLeft <= 0) nextQuestion();
+                if (timeLeft <= 0) window.nextQuestion();
             }, 1000);
 
             document.getElementById('progress-val').innerText = `${currentIndex + 1}/30`;
@@ -262,7 +199,7 @@
             });
         }
 
-        function useHint() {
+        window.useHint = function() {
             const q = questions[currentIndex];
             const btns = document.querySelectorAll('.answer-btn');
             let found = 0;
@@ -275,26 +212,30 @@
             document.getElementById('hintBtn').disabled = true;
         }
 
-        function checkAnswer(btn, selected, correct) {
+        async function checkAnswer(btn, selected, correct) {
             clearInterval(timer);
+            const btns = document.querySelectorAll('.answer-btn');
+            btns.forEach(b => b.style.pointerEvents = 'none');
+
             if (selected === correct) {
                 btn.classList.add('correct');
-                scoreInSession += 2; // نقاط مضاعفة للمستوى الصعب
+                scoreInSession += 2;
                 document.getElementById('session-points').innerText = scoreInSession;
+                await window.savePointToCloud();
             } else {
                 btn.classList.add('wrong');
+                btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
             }
-            setTimeout(nextQuestion, 800);
+            setTimeout(window.nextQuestion, 1000);
         }
 
-        function nextQuestion() {
+        window.nextQuestion = function() {
             currentIndex++;
             showQuestion();
         }
 
         function finish() {
             clearInterval(timer);
-            window.saveFinalScore(scoreInSession);
             document.getElementById('quiz-content').style.display = 'none';
             document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('result-box').style.display = 'block';

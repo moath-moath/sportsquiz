@@ -4,148 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>تحدي الأبطال - مستوى الهاوي</title>
+    <!-- الستايلات تبقى كما هي بدون تغيير لربح الوقت -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
-            font-family: 'Cairo', sans-serif;
-            color: white;
-            text-align: center;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: rgba(26, 26, 46, 0.95);
-            padding: 20px;
-            border-radius: 35px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            position: relative;
-        }
-
-        .honor-board {
-            background: linear-gradient(110deg, #bf953f 20%, #fcf6ba 40%, #b38728 50%, #fcf6ba 70%, #aa771c 80%);
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-            padding: 25px 20px;
-            border-radius: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4);
-            position: relative;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-
-        .player-info h3 { 
-            margin: 5px 0; 
-            font-size: 24px; 
-            font-weight: 900; 
-            color: #1a1a2e;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-        }
-
-        .encouragement { 
-            color: #5d4037; 
-            font-weight: 900; 
-            font-size: 16px; 
-            display: block; 
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-
-        .level-badge { 
-            background: #1a1a2e; color: #ffd700; 
-            padding: 6px 25px; border-radius: 50px; font-size: 14px; font-weight: 900;
-            display: inline-block; margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
+        body { background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%); font-family: 'Cairo', sans-serif; color: white; text-align: center; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 480px; background: rgba(26, 26, 46, 0.95); padding: 20px; border-radius: 35px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255, 215, 0, 0.2); position: relative; }
+        .honor-board { background: linear-gradient(110deg, #bf953f 20%, #fcf6ba 40%, #b38728 50%, #fcf6ba 70%, #aa771c 80%); background-size: 200% auto; animation: shine 3s linear infinite; padding: 25px 20px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); position: relative; border: 2px solid rgba(255, 255, 255, 0.3); }
+        @keyframes shine { to { background-position: 200% center; } }
+        .player-info h3 { margin: 5px 0; font-size: 24px; font-weight: 900; color: #1a1a2e; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
+        .encouragement { color: #5d4037; font-weight: 900; font-size: 16px; display: block; margin-bottom: 5px; letter-spacing: 1px; }
+        .level-badge { background: #1a1a2e; color: #ffd700; padding: 6px 25px; border-radius: 50px; font-size: 14px; font-weight: 900; display: inline-block; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .stat-card { background: #16213e; padding: 12px; border-radius: 20px; border: 1px solid #333; }
         .stat-card.timer { border-bottom: 4px solid #ffd700; }
         .stat-card.points { border-bottom: 4px solid #00ff88; }
-
         .stat-label { font-size: 10px; color: #888; display: block; }
         .stat-value { font-size: 18px; font-weight: 900; }
-
-        #game-area {
-            background: rgba(0,0,0,0.2);
-            border-radius: 30px;
-            padding: 25px 15px;
-            min-height: 350px;
-            margin-bottom: 50px;
-        }
-
+        #game-area { background: rgba(0,0,0,0.2); border-radius: 30px; padding: 25px 15px; min-height: 350px; margin-bottom: 50px; }
         #question { font-size: 20px; font-weight: 700; margin-bottom: 25px; min-height: 60px; line-height: 1.4; }
-
         .answers-container { display: grid; gap: 12px; }
-        
-        button.answer-btn {
-            background: #0f3460; color: white; border: 1px solid #16213e;
-            padding: 18px 15px; font-size: 17px; font-weight: 700;
-            border-radius: 20px; cursor: pointer; transition: 0.2s;
-            width: 100%;
-            line-height: 1.2;
-        }
-
+        button.answer-btn { background: #0f3460; color: white; border: 1px solid #16213e; padding: 18px 15px; font-size: 17px; font-weight: 700; border-radius: 20px; cursor: pointer; transition: 0.2s; width: 100%; line-height: 1.2; }
         .correct { background: #00ff88 !important; color: #000 !important; font-weight: 900; }
         .wrong { background: #e94560 !important; }
-
-        #skipBtn, #hintBtn { 
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #bf953f;
-            color: #ffffff;
-            padding: 8px 15px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            position: absolute;
-            bottom: 20px;
-            width: auto;
-        }
-
+        #skipBtn, #hintBtn { background: rgba(255, 255, 255, 0.05); border: 1px solid #bf953f; color: #ffffff; padding: 8px 15px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 5px; position: absolute; bottom: 20px; width: auto; }
         #skipBtn { left: 20px; }
         #hintBtn { right: 20px; border-color: #ffd700; color: #ffd700; background: rgba(255, 215, 0, 0.05); }
-
         #hintBtn:disabled { opacity: 0.3; filter: grayscale(1); cursor: not-allowed; }
-        
-        #result-box h2 { margin-bottom: 10px; }
-        
-        .restart-btn {
-            background: #ffd700; color: #000; padding: 15px 30px;
-            border-radius: 50px; border: none; font-weight: 900;
-            font-size: 18px; cursor: pointer; margin-top: 20px;
-        }
-
-        .google-login-btn {
-            background: #4285F4;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        .restart-btn { background: #ffd700; color: #000; padding: 15px 30px; border-radius: 50px; border: none; font-weight: 900; font-size: 18px; cursor: pointer; margin-top: 20px; }
+        .google-login-btn { background: #4285F4; color: white; border: none; padding: 8px 20px; border-radius: 15px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -191,17 +78,14 @@
         </div>
 
         <button id="skipBtn" onclick="nextQuestion()">
-            <span>⏭</span>
-            <span>تخطي</span>
+            <span>⏭</span> <span>تخطي</span>
         </button>
 
         <button id="hintBtn" onclick="useHint()">
-            <span>تلميح</span>
-            <span>💡</span>
+            <span>تلميح</span> <span>💡</span>
         </button>
     </div>
 
-    <!-- كود Firebase المحدث للحفظ التراكمي في مجموعة users -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, updateDoc, increment, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -213,8 +97,7 @@
             projectId: "champions-challenge-2a13a",
             storageBucket: "champions-challenge-2a13a.firebasestorage.app",
             messagingSenderId: "267945781501",
-            appId: "1:267945781501:web:6be03f02151127aec0b694",
-            measurementId: "G-6EYLJ9SYJ0"
+            appId: "1:267945781501:web:6be03f02151127aec0b694"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -222,62 +105,29 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        window.loginWithGoogle = function() {
-            signInWithPopup(auth, provider).catch((error) => {
-                alert("فشل الدخول: " + error.message);
-            });
-        };
+        // ربط الدوال بالـ window لتكون متاحة للـ HTML
+        window.loginWithGoogle = () => signInWithPopup(auth, provider);
 
-        onAuthStateChanged(auth, async (user) => {
-            const displayArea = document.getElementById('display-username');
-            if (user) {
-                // محاولة جلب الاسم المخصص من المستند في Firestore
-                const userRef = doc(db, "users", user.uid);
-                const userSnap = await getDoc(userRef);
-                
-                if (userSnap.exists() && userSnap.data().name) {
-                    displayArea.innerText = userSnap.data().name;
-                } else {
-                    displayArea.innerText = user.displayName;
-                }
-                initGame(); 
-            } else {
-                displayArea.innerHTML = `<button onclick="loginWithGoogle()" class="google-login-btn">سجل دخولك بجوجل</button>`;
-                document.getElementById('question').innerText = "يجب تسجيل الدخول بجوجل لحفظ نقاطك والبدء في التحدي";
-            }
-        });
-
-        // دالة الحفظ المحدثة: تزيد الحقل totalPoints سؤالاً بسؤال
         window.savePointToCloud = async function() {
             const user = auth.currentUser;
             if (!user) return;
-
             const userRef = doc(db, "users", user.uid);
-
             try {
-                const userSnap = await getDoc(userRef);
-                if (userSnap.exists()) {
-                    await updateDoc(userRef, {
-                        totalPoints: increment(1),
-                        lastActive: serverTimestamp()
-                    });
-                } else {
-                    // إذا كان أول مرة يلعب، ننشئ المستند
-                    await setDoc(userRef, {
-                        name: user.displayName,
-                        email: user.email,
-                        totalPoints: 1,
-                        lastActive: serverTimestamp()
-                    });
-                }
-                console.log("Point synced to cloud.");
+                // استخدام increment لزيادة النقاط تراكمياً
+                await updateDoc(userRef, {
+                    totalPoints: increment(1),
+                    lastActive: serverTimestamp()
+                });
             } catch (e) {
-                console.error("Cloud sync error:", e);
+                // إذا لم يكن المستند موجوداً، نقوم بإنشائه
+                await setDoc(userRef, {
+                    name: user.displayName,
+                    totalPoints: 1,
+                    lastActive: serverTimestamp()
+                }, { merge: true });
             }
         };
-    </script>
 
-    <script>
         // مصفوفة الأسئلة
         const bank = [
             {q:"من هو النادي الذي فاز بدوري أبطال أوروبا 2021؟", a:["تشيلسي","مانشستر سيتي","ريال مدريد","بايرن ميونخ"], c:"تشيلسي"},
@@ -313,7 +163,7 @@
             {q:"ما هو لقب نادي أرسنال؟", a:["المدفعجية","البلوز","السبيرز","الريدز"], c:"المدفعجية"},
             {q:"في أي مدينة يقع ملعب 'سانتياغو برنابيو'؟", a:["مدريد","برشلونة","مانشستر","ميلانو"], c:"مدريد"},
             {q:"من هو مدرب ريال مدريد حالياً؟", a:["أنشيلوتي","زيدان","كلوب","تشافي"], c:"أنشيلوتي"},
-            {q:"ما هي جنسية إيرلينغ هالاند؟", a:["نرويجي","سويدي","ألماني","إنجليزي"], c:"نرويجي"},
+            {q:"ما هي جنسية إيرلينغ هالاند? ", a:["نرويجي","سويدي","ألماني","إنجليزي"], c:"نرويجي"},
             {q:"كم عدد كرات رونالدو الذهبية؟", a:["5","4","6","7"], c:"5"},
             {q:"من الملقب بـ 'الظاهرة'؟", a:["رونالدو البرازيلي","كريستيانو","روماريو","رونالدينيو"], c:"رونالدو البرازيلي"},
             {q:"ما هو النادي الذي يلقب بـ 'البلوغرانا'؟", a:["برشلونة","ليفانتي","باريس","بازل"], c:"برشلونة"},
@@ -380,7 +230,7 @@
             });
         }
 
-        function useHint() {
+        window.useHint = function() {
             const q = questions[currentIndex];
             const btns = document.querySelectorAll('.answer-btn');
             let wrongFound = 0;
@@ -393,7 +243,7 @@
             document.getElementById('hintBtn').disabled = true;
         }
 
-        function checkAnswer(btn, selected, correct) {
+        async function checkAnswer(btn, selected, correct) {
             clearInterval(timer);
             const btns = document.querySelectorAll('.answer-btn');
             btns.forEach(b => b.style.pointerEvents = 'none');
@@ -402,11 +252,7 @@
                 btn.classList.add('correct');
                 scoreInSession++;
                 document.getElementById('session-points').innerText = scoreInSession;
-                
-                // تحديث قاعدة البيانات فوراً بنقطة واحدة
-                if (typeof window.savePointToCloud === "function") {
-                    window.savePointToCloud(); 
-                }
+                await window.savePointToCloud(); // الحفظ الفوري
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
@@ -414,7 +260,7 @@
             setTimeout(nextQuestion, 1000);
         }
 
-        function nextQuestion() {
+        window.nextQuestion = function() {
             currentIndex++;
             showQuestion();
         }
@@ -427,18 +273,26 @@
             document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('result-box').style.display = 'block';
             document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} نقطة!`;
-
             let count = 5;
-            const countDisplay = document.getElementById('countdown');
             const redirectTimer = setInterval(() => {
                 count--;
-                countDisplay.innerText = count;
-                if (count <= 0) {
-                    clearInterval(redirectTimer);
-                    window.location.href = 'index.html'; 
-                }
+                document.getElementById('countdown').innerText = count;
+                if (count <= 0) { clearInterval(redirectTimer); window.location.href = 'index.html'; }
             }, 1000);
         }
+
+        onAuthStateChanged(auth, async (user) => {
+            const displayArea = document.getElementById('display-username');
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
+                displayArea.innerText = (userSnap.exists() && userSnap.data().name) ? userSnap.data().name : user.displayName;
+                initGame(); 
+            } else {
+                displayArea.innerHTML = `<button onclick="loginWithGoogle()" class="google-login-btn">سجل دخولك بجوجل</button>`;
+                document.getElementById('question').innerText = "يجب تسجيل الدخول بجوجل لحفظ نقاطك والبدء في التحدي";
+            }
+        });
     </script>
 </body>
 </html>

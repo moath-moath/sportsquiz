@@ -6,29 +6,144 @@
     <title>تحدي الأبطال - مستوى المبتدئ</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: radial-gradient(circle at center, #0f2027 0%, #203a43 50%, #2c5364 100%); font-family: 'Cairo', sans-serif; color: white; text-align: center; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 480px; background: rgba(15, 32, 39, 0.95); padding: 20px; border-radius: 35px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid rgba(0, 255, 136, 0.2); position: relative; }
-        .honor-board { background: linear-gradient(110deg, #00b09b 20%, #96c93d 80%); padding: 25px 20px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0, 176, 155, 0.3); position: relative; border: 2px solid rgba(255, 255, 255, 0.3); }
-        .player-info h3 { margin: 5px 0; font-size: 26px; font-weight: 900; color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .encouragement { color: #1a1a2e; font-weight: 900; font-size: 14px; display: block; margin-bottom: 5px; background: rgba(255,255,255,0.8); width: fit-content; margin: 0 auto 10px; padding: 2px 15px; border-radius: 10px; }
-        .level-badge { background: #ffffff; color: #00b09b; padding: 6px 25px; border-radius: 50px; font-size: 14px; font-weight: 900; display: inline-block; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+        body {
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            font-family: 'Cairo', sans-serif;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 20px;
+            border-radius: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+
+        .honor-board {
+            background: linear-gradient(110deg, #bf953f 20%, #fcf6ba 40%, #b38728 50%, #fcf6ba 70%, #aa771c 80%);
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+            padding: 25px 20px;
+            border-radius: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4);
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .player-info h3 { 
+            margin: 5px 0; 
+            font-size: 32px; 
+            font-weight: 900; 
+            color: #1a1a2e;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .encouragement { 
+            color: #5d4037; 
+            font-weight: 900; 
+            font-size: 16px; 
+            display: block; 
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .level-badge { 
+            background: #1a1a2e; color: #ffd700; 
+            padding: 6px 25px; border-radius: 50px; font-size: 14px; font-weight: 900;
+            display: inline-block; margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .stat-card.timer { border-bottom: 4px solid #00ff88; }
-        .stat-card.points { border-bottom: 4px solid #00d2ff; }
-        .stat-label { font-size: 10px; color: #aaa; display: block; }
+        .stat-card { background: #16213e; padding: 12px; border-radius: 20px; border: 1px solid #333; }
+        .stat-card.timer { border-bottom: 4px solid #ffd700; }
+        .stat-card.points { border-bottom: 4px solid #00ff88; }
+
+        .stat-label { font-size: 10px; color: #888; display: block; }
         .stat-value { font-size: 18px; font-weight: 900; }
-        #game-area { background: rgba(0,0,0,0.2); border-radius: 30px; padding: 25px 15px; min-height: 350px; margin-bottom: 50px; }
+
+        #game-area {
+            background: rgba(0,0,0,0.2);
+            border-radius: 30px;
+            padding: 25px 15px;
+            min-height: 350px;
+            margin-bottom: 50px;
+        }
+
         #question { font-size: 20px; font-weight: 700; margin-bottom: 25px; min-height: 60px; line-height: 1.4; }
+
         .answers-container { display: grid; gap: 12px; }
-        button.answer-btn { background: #1c2e36; color: white; border: 1px solid #2c5364; padding: 18px 15px; font-size: 17px; font-weight: 700; border-radius: 20px; cursor: pointer; transition: 0.2s; width: 100%; }
+        
+        button.answer-btn {
+            background: #0f3460; color: white; border: 1px solid #16213e;
+            padding: 18px 15px; font-size: 17px; font-weight: 700;
+            border-radius: 20px; cursor: pointer; transition: 0.2s;
+            width: 100%;
+            line-height: 1.2;
+        }
+
         .correct { background: #00ff88 !important; color: #000 !important; font-weight: 900; }
         .wrong { background: #e94560 !important; }
-        #skipBtn, #hintBtn { background: rgba(255, 255, 255, 0.05); border: 1px solid #00b09b; color: #ffffff; padding: 8px 15px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; position: absolute; bottom: 20px; }
+
+        #skipBtn, #hintBtn { 
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #bf953f;
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: absolute;
+            bottom: 20px;
+            width: auto;
+        }
+
         #skipBtn { left: 20px; }
-        #hintBtn { right: 20px; border-color: #96c93d; }
-        .google-login-btn { background: #4285F4; color: white; border: none; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-weight: 700; font-family: 'Cairo'; }
+
+        #hintBtn { 
+            right: 20px; 
+            border-color: #ffd700; 
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        #hintBtn:disabled {
+            opacity: 0.3;
+            filter: grayscale(1);
+            cursor: not-allowed;
+        }
+        
+        #result-box h2 { margin-bottom: 10px; }
+        
+        .restart-btn {
+            background: #ffd700; color: #000; padding: 15px 30px;
+            border-radius: 50px; border: none; font-weight: 900;
+            font-size: 18px; cursor: pointer; margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -49,71 +164,42 @@
             </div>
             <div class="stat-card timer">
                 <span class="stat-label">الوقت</span>
-                <span id="timer-val" class="stat-value" style="color:#00ff88">20</span>
+                <span id="timer-val" class="stat-value" style="color:#ffd700">20</span>
             </div>
             <div class="stat-card points">
-                <span class="stat-label">النقاط</span>
-                <span id="session-points" class="stat-value" style="color:#00d2ff">0</span>
+                <span class="stat-label">نقاط الجولة</span>
+                <span id="session-points" class="stat-value" style="color:#00ff88">0</span>
             </div>
         </div>
 
         <div id="game-area">
             <div id="quiz-content">
-                <div id="question">برجاء تسجيل الدخول للبدء...</div>
+                <div id="question">جاري التحميل...</div>
                 <div id="answers" class="answers-container"></div>
             </div>
 
             <div id="result-box" style="display:none;">
                 <h2>🎊 أحسنت يا بطل! 🎊</h2>
-                <div id="final-score-text" style="font-size:35px; font-weight:900; color:#00ff88; margin:20px;"></div>
-                <button class="google-login-btn" onclick="location.reload()">🔄 إعادة التحدي</button>
+                <div id="final-score-text" style="font-size:35px; font-weight:900; color:#ffd700; margin:20px;"></div>
+                <button class="restart-btn" onclick="location.reload()">🔄 إعادة التحدي</button>
+                <p id="redirect-msg" style="margin-top: 25px; color: #888; font-size: 14px;">
+                    العودة للقائمة الرئيسية خلال <span id="countdown">5</span> ثوانٍ...
+                </p>
             </div>
         </div>
 
-        <button id="skipBtn" onclick="nextQuestion()">⏭ تخطي</button>
-        <button id="hintBtn" onclick="useHint()">💡 تلميح</button>
+        <button id="skipBtn" onclick="nextQuestion()">
+            <span>⏭</span>
+            <span>تخطي</span>
+        </button>
+
+        <button id="hintBtn" onclick="useHint()">
+            <span>تلميح</span>
+            <span>💡</span>
+        </button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, updateDoc, increment, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyAEKcYJkl2mpGaM04ppixUnGeygKn3Nu_8",
-          authDomain: "champions-challenge-2a13a.firebaseapp.com",
-          projectId: "champions-challenge-2a13a",
-          storageBucket: "champions-challenge-2a13a.firebasestorage.app",
-          messagingSenderId: "267945781501",
-          appId: "1:267945781501:web:6be03f02151127aec0b694"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-
-        // ربط الدوال بالـ Window
-        window.loginWithGoogle = () => signInWithPopup(auth, provider);
-
-        window.savePointToCloud = async function() {
-            const user = auth.currentUser;
-            if (!user) return;
-            const userRef = doc(db, "users", user.uid);
-            try {
-                await updateDoc(userRef, {
-                    totalPoints: increment(1),
-                    lastActive: serverTimestamp()
-                });
-            } catch (e) {
-                await setDoc(userRef, {
-                    name: user.displayName,
-                    totalPoints: 1,
-                    lastActive: serverTimestamp()
-                }, { merge: true });
-            }
-        };
-
+    <script>
         const bank = [
             {q:"ما هو لون قميص نادي ريال مدريد الأساسي؟", a:["أبيض","أحمر","أزرق","أسود"], c:"أبيض"},
             {q:"في أي مدينة يلعب نادي برشلونة؟", a:["مدريد","برشلونة","لندن","باريس"], c:"برشلونة"},
@@ -179,18 +265,21 @@
             }
         }
 
-        window.initGame = function() {
+        function init() {
+            const savedName = localStorage.getItem('player_username') || "بطل مبتدئ";
+            document.getElementById('display-username').innerText = savedName;
+            
             questions = [...bank];
             shuffle(questions);
-            currentIndex = 0;
-            scoreInSession = 0;
-            document.getElementById('session-points').innerText = "0";
             showQuestion();
         }
 
         function showQuestion() {
             if (currentIndex >= 50) return finish();
+
             document.getElementById('hintBtn').disabled = false;
+            document.getElementById('hintBtn').style.display = 'flex';
+
             clearInterval(timer);
             let timeLeft = 20;
             document.getElementById('timer-val').innerText = timeLeft;
@@ -203,10 +292,13 @@
             document.getElementById('progress-val').innerText = `${currentIndex + 1}/50`;
             const q = questions[currentIndex];
             document.getElementById('question').innerText = q.q;
+
             const ansBox = document.getElementById('answers');
             ansBox.innerHTML = '';
+            
             let options = [...q.a];
             shuffle(options);
+
             options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'answer-btn';
@@ -216,20 +308,22 @@
             });
         }
 
-        window.useHint = function() {
-            const q = questions[currentIndex];
+        function useHint() {
+            const currentQuestion = questions[currentIndex];
             const btns = document.querySelectorAll('.answer-btn');
-            let found = 0;
-            btns.forEach(b => {
-                if(b.innerText !== q.c && found < 2) {
-                    b.style.visibility = 'hidden';
-                    found++;
+            let wrongFound = 0;
+
+            btns.forEach(btn => {
+                if (btn.innerText !== currentQuestion.c && wrongFound < 2) {
+                    btn.style.visibility = 'hidden';
+                    wrongFound++;
                 }
             });
+
             document.getElementById('hintBtn').disabled = true;
         }
 
-        async function checkAnswer(btn, selected, correct) {
+        function checkAnswer(btn, selected, correct) {
             clearInterval(timer);
             const btns = document.querySelectorAll('.answer-btn');
             btns.forEach(b => b.style.pointerEvents = 'none');
@@ -238,15 +332,18 @@
                 btn.classList.add('correct');
                 scoreInSession++;
                 document.getElementById('session-points').innerText = scoreInSession;
-                await window.savePointToCloud();
+                
+                let total = parseInt(localStorage.getItem('user_total_points')) || 0;
+                localStorage.setItem('user_total_points', total + 1);
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
             }
+
             setTimeout(nextQuestion, 1000);
         }
 
-        window.nextQuestion = function() {
+        function nextQuestion() {
             currentIndex++;
             showQuestion();
         }
@@ -254,22 +351,25 @@
         function finish() {
             clearInterval(timer);
             document.getElementById('quiz-content').style.display = 'none';
+            document.getElementById('skipBtn').style.display = 'none';
+            document.getElementById('hintBtn').style.display = 'none';
             document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('result-box').style.display = 'block';
-            document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} نقطة!`;
-            setTimeout(() => window.location.href = 'index.html', 5000);
+            document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} من 50 نقطة!`;
+
+            let count = 5;
+            const countDisplay = document.getElementById('countdown');
+            const redirectTimer = setInterval(() => {
+                count--;
+                countDisplay.innerText = count;
+                if (count <= 0) {
+                    clearInterval(redirectTimer);
+                    window.location.href = 'index.html'; 
+                }
+            }, 1000);
         }
 
-        onAuthStateChanged(auth, (user) => {
-            const displayArea = document.getElementById('display-username');
-            if (user) {
-                displayArea.innerText = user.displayName;
-                initGame();
-            } else {
-                displayArea.innerHTML = `<button onclick="loginWithGoogle()" class="google-login-btn">دخول بجوجل</button>`;
-                document.getElementById('question').innerText = "سجل دخولك لحفظ ترتيبك العالمي";
-            }
-        });
+        window.onload = init;
     </script>
 </body>
 </html>

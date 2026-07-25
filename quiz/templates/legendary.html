@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تحدي الأبطال - المستوى الأسطوري</title>
+    <title>تحدي الأبطال - مستوى الاسطوري</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
 
@@ -73,13 +73,14 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: #16213e; padding: 12px; border-radius: 20px; border: 1px solid #333; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+        .stat-card { background: #16213e; padding: 10px 5px; border-radius: 15px; border: 1px solid #333; }
         .stat-card.timer { border-bottom: 4px solid #ffd700; }
         .stat-card.points { border-bottom: 4px solid #00ff88; }
+        .stat-card.total { border-bottom: 4px solid #3498db; }
 
-        .stat-label { font-size: 10px; color: #888; display: block; }
-        .stat-value { font-size: 18px; font-weight: 900; }
+        .stat-label { font-size: 9px; color: #888; display: block; }
+        .stat-value { font-size: 16px; font-weight: 900; }
 
         #game-area {
             background: rgba(0,0,0,0.2);
@@ -104,7 +105,7 @@
         .correct { background: #00ff88 !important; color: #000 !important; font-weight: 900; }
         .wrong { background: #e94560 !important; }
 
-        #skipBtn { 
+        #skipBtn, #hintBtn { 
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid #bf953f;
             color: #ffffff;
@@ -119,9 +120,25 @@
             gap: 5px;
             position: absolute;
             bottom: 20px;
-            left: 20px;
             width: auto;
         }
+
+        #skipBtn { left: 20px; }
+
+        #hintBtn { 
+            right: 20px; 
+            border-color: #ffd700; 
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        #hintBtn:disabled {
+            opacity: 0.3;
+            filter: grayscale(1);
+            cursor: not-allowed;
+        }
+        
+        #result-box h2 { margin-bottom: 10px; }
         
         .restart-btn {
             background: #ffd700; color: #000; padding: 15px 30px;
@@ -134,13 +151,13 @@
 
     <div class="container">
         <div class="honor-board">
-            <span class="encouragement">TOP CHAMPION</span>
+            <span class="encouragement">BEGINNER CHAMPION</span>
             <div class="player-info">
                 <h3 id="display-username">جاري التحميل...</h3>
             </div>
-            <span class="level-badge">المستوى الأسطوري</span>
+            <span class="level-badge">مستوى الاسطوري</span>
         </div>
-
+        
         <div class="stats-grid" id="stats-ui">
             <div class="stat-card">
                 <span class="stat-label">السؤال</span>
@@ -154,6 +171,10 @@
                 <span class="stat-label">نقاط الجولة</span>
                 <span id="session-points" class="stat-value" style="color:#00ff88">0</span>
             </div>
+            <div class="stat-card total">
+                <span class="stat-label">المجموع الكلي</span>
+                <span id="total-points-val" class="stat-value" style="color:#3498db">0</span>
+            </div>
         </div>
 
         <div id="game-area">
@@ -163,9 +184,9 @@
             </div>
 
             <div id="result-box" style="display:none;">
-                <h2>👑 المجد للأسطورة! 👑</h2>
+                <h2>🎊 أحسنت يا بطل! 🎊</h2>
                 <div id="final-score-text" style="font-size:35px; font-weight:900; color:#ffd700; margin:20px;"></div>
-                <button class="restart-btn" onclick="location.reload()">🔄 إعادة المحاولة</button>
+                <button class="restart-btn" onclick="location.reload()">🔄 إعادة التحدي</button>
                 <p id="redirect-msg" style="margin-top: 25px; color: #888; font-size: 14px;">
                     العودة للقائمة الرئيسية خلال <span id="countdown">5</span> ثوانٍ...
                 </p>
@@ -176,11 +197,16 @@
             <span>⏭</span>
             <span>تخطي</span>
         </button>
+
+        <button id="hintBtn" onclick="useHint()">
+            <span>تلميح</span>
+            <span>💡</span>
+        </button>
     </div>
 
     <script>
         const bank = [
-            {q:"من هو النادي الوحيد الذي فاز بلقب الدوري الإنجليزي 'الذهبي' دون خسارة؟", a:["أرسنال","مان سيتي","ليفربول","بريستون نورث إند"], c:"أرسنال"},
+             {q:"من هو النادي الوحيد الذي فاز بلقب الدوري الإنجليزي 'الذهبي' دون خسارة؟", a:["أرسنال","مان سيتي","ليفربول","بريستون نورث إند"], c:"أرسنال"},
             {q:"من هو اللاعب الذي سجل أكبر عدد من الأهداف في مباراة واحدة بكأس العالم؟", a:["أوليج سالينكو","جوست فونتين","بيليه","أوزيبيو"], c:"أوليج سالينكو"},
             {q:"أي منتخب خسر 3 نهائيات كأس عالم (1974, 1978, 2010) دون تحقيق اللقب؟", a:["هولندا","المجر","الأرجنتين","تشيكوسلوفاكيا"], c:"هولندا"},
             {q:"من هو الحارس الوحيد في التاريخ الذي فاز بالكرة الذهبية (Ballon d'Or)؟", a:["ليف ياشين","بوفون","نوير","دينو زوف"], c:"ليف ياشين"},
@@ -232,10 +258,11 @@
             {q:"من هو المنتخب الأكثر فوزاً بكأس أمم إفريقيا؟", a:["مصر","الكاميرون","غانا","نيجيريا"], c:"مصر"}
         ];
 
-        let questions = [];
+        let shuffledQuestions = [];
         let currentIndex = 0;
         let scoreInSession = 0;
         let timer;
+        let answered = false;
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -245,16 +272,30 @@
         }
 
         function init() {
-            const savedName = localStorage.getItem('player_username') || "بطل مجهول";
+            const savedName = localStorage.getItem('player_username') || "بطل مبتدئ";
             document.getElementById('display-username').innerText = savedName;
             
-            questions = [...bank];
-            shuffle(questions);
+            // تحديث عرض المجموع الكلي أول ما تفتح الصفحة
+            updateTotalPointsDisplay();
+
+            shuffledQuestions = [...bank];
+            shuffle(shuffledQuestions);
+            currentIndex = 0;
+            scoreInSession = 0;
             showQuestion();
+        }
+
+        function updateTotalPointsDisplay() {
+            let total = parseInt(localStorage.getItem('total_points')) || 0;
+            document.getElementById('total-points-val').innerText = total;
         }
 
         function showQuestion() {
             if (currentIndex >= 50) return finish();
+
+            answered = false;
+            document.getElementById('hintBtn').disabled = false;
+            document.getElementById('hintBtn').style.display = 'flex';
 
             clearInterval(timer);
             let timeLeft = 20;
@@ -262,11 +303,14 @@
             timer = setInterval(() => {
                 timeLeft--;
                 document.getElementById('timer-val').innerText = timeLeft;
-                if (timeLeft <= 0) nextQuestion();
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (!answered) nextQuestion();
+                }
             }, 1000);
 
             document.getElementById('progress-val').innerText = `${currentIndex + 1}/50`;
-            const q = questions[currentIndex];
+            const q = shuffledQuestions[currentIndex];
             document.getElementById('question').innerText = q.q;
 
             const ansBox = document.getElementById('answers');
@@ -284,8 +328,27 @@
             });
         }
 
+        function useHint() {
+            if (answered) return;
+            const currentQuestion = shuffledQuestions[currentIndex];
+            const btns = document.querySelectorAll('.answer-btn');
+            let wrongFound = 0;
+
+            btns.forEach(btn => {
+                if (btn.innerText !== currentQuestion.c && wrongFound < 2) {
+                    btn.style.visibility = 'hidden';
+                    wrongFound++;
+                }
+            });
+
+            document.getElementById('hintBtn').disabled = true;
+        }
+
         function checkAnswer(btn, selected, correct) {
+            if (answered) return;
+            answered = true;
             clearInterval(timer);
+            
             const btns = document.querySelectorAll('.answer-btn');
             btns.forEach(b => b.style.pointerEvents = 'none');
 
@@ -294,8 +357,11 @@
                 scoreInSession++;
                 document.getElementById('session-points').innerText = scoreInSession;
                 
-                let total = parseInt(localStorage.getItem('user_total_points')) || 0;
-                localStorage.setItem('user_total_points', total + 1);
+                // تحديث المجموع الكلي في الـ localStorage وعرضه مباشرة لحظياً
+                let total = parseInt(localStorage.getItem('total_points')) || 0;
+                total += 1;
+                localStorage.setItem('total_points', total);
+                updateTotalPointsDisplay(); // تحديث القيمة مباشرة على الشاشة
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
@@ -313,23 +379,26 @@
             clearInterval(timer);
             document.getElementById('quiz-content').style.display = 'none';
             document.getElementById('skipBtn').style.display = 'none';
+            document.getElementById('hintBtn').style.display = 'none';
             document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('result-box').style.display = 'block';
-            document.getElementById('final-score-text').innerText = `أنهيت المستوى الأسطوري بـ ${scoreInSession} نقطة!`;
+            document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} من 50 نقطة!`;
 
             let count = 5;
-            const countDisplay = document.getElementById('countdown');
             const redirectTimer = setInterval(() => {
                 count--;
-                countDisplay.innerText = count;
+                document.getElementById('countdown').innerText = count;
                 if (count <= 0) {
                     clearInterval(redirectTimer);
-                    window.location.href = 'index.html'; 
+                    window.location.href = './'; 
                 }
             }, 1000);
         }
 
-        window.onload = init;
+        // تحديث النقاط واسم المستخدم فور دخول أو عودة المتصفح للصفحة بدون حاجة لإعادة التحميل
+        window.addEventListener('pageshow', function() {
+            init();
+        });
     </script>
 </body>
 </html>

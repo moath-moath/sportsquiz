@@ -1,12 +1,11 @@
 """
 Django settings for sportsquiz project.
-Fixed Local Development Version
+Fixed Local Development & Production Version
 """
 
 from pathlib import Path
 import os
 
-# حاول استيراد dj_database_url وإذا مش موجود لا يعطل الكود
 try:
     import dj_database_url
 except ImportError:
@@ -76,8 +75,7 @@ DATABASES = {
     }
 }
 
-# 🛠️ إذا كنا على Render، نستخدم قاعدة بيانات احترافية إذا توفرت
-if IS_RENDER and os.environ.get('DATABASE_URL'):
+if IS_RENDER and os.environ.get('DATABASE_URL') and dj_database_url:
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 LANGUAGE_CODE = 'ar'
@@ -85,14 +83,15 @@ TIME_ZONE = 'Asia/Amman'
 USE_I18N = True
 USE_TZ = True
 
+# --- إدارة الملفات الثابتة ---
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+if (BASE_DIR / "static").exists():
+    STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# 🔒 الحماية من الـ SSL المزعج في التطوير المحلي
+# --- إعدادات الحماية والحسابات ---
 if DEBUG:
-    # إعدادات لتعطيل أي إجبار على HTTPS محلياً
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
@@ -100,7 +99,6 @@ if DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_HSTS_PRELOAD = False
 else:
-    # إعدادات الأمان العالية لـ Render
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True

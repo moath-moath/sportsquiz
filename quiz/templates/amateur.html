@@ -73,13 +73,14 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: #16213e; padding: 12px; border-radius: 20px; border: 1px solid #333; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+        .stat-card { background: #16213e; padding: 10px 5px; border-radius: 15px; border: 1px solid #333; }
         .stat-card.timer { border-bottom: 4px solid #ffd700; }
         .stat-card.points { border-bottom: 4px solid #00ff88; }
+        .stat-card.total { border-bottom: 4px solid #3498db; }
 
-        .stat-label { font-size: 10px; color: #888; display: block; }
-        .stat-value { font-size: 18px; font-weight: 900; }
+        .stat-label { font-size: 9px; color: #888; display: block; }
+        .stat-value { font-size: 16px; font-weight: 900; }
 
         #game-area {
             background: rgba(0,0,0,0.2);
@@ -137,6 +138,8 @@
             cursor: not-allowed;
         }
         
+        #result-box h2 { margin-bottom: 10px; }
+        
         .restart-btn {
             background: #ffd700; color: #000; padding: 15px 30px;
             border-radius: 50px; border: none; font-weight: 900;
@@ -148,13 +151,13 @@
 
     <div class="container">
         <div class="honor-board">
-            <span class="encouragement">TOP CHAMPION</span>
+            <span class="encouragement">BEGINNER CHAMPION</span>
             <div class="player-info">
                 <h3 id="display-username">جاري التحميل...</h3>
             </div>
             <span class="level-badge">مستوى الهاوي</span>
         </div>
-
+        
         <div class="stats-grid" id="stats-ui">
             <div class="stat-card">
                 <span class="stat-label">السؤال</span>
@@ -168,6 +171,10 @@
                 <span class="stat-label">نقاط الجولة</span>
                 <span id="session-points" class="stat-value" style="color:#00ff88">0</span>
             </div>
+            <div class="stat-card total">
+                <span class="stat-label">المجموع الكلي</span>
+                <span id="total-points-val" class="stat-value" style="color:#3498db">0</span>
+            </div>
         </div>
 
         <div id="game-area">
@@ -179,9 +186,9 @@
             <div id="result-box" style="display:none;">
                 <h2>🎊 أحسنت يا بطل! 🎊</h2>
                 <div id="final-score-text" style="font-size:35px; font-weight:900; color:#ffd700; margin:20px;"></div>
-                <button class="restart-btn" onclick="location.reload()">🔄 تحدي جديد</button>
+                <button class="restart-btn" onclick="location.reload()">🔄 إعادة التحدي</button>
                 <p id="redirect-msg" style="margin-top: 25px; color: #888; font-size: 14px;">
-                    العودة للقائمة خلال <span id="countdown">5</span> ثوانٍ...
+                    العودة للقائمة الرئيسية خلال <span id="countdown">5</span> ثوانٍ...
                 </p>
             </div>
         </div>
@@ -198,8 +205,8 @@
     </div>
 
     <script>
-        const amateurBank = [
-            {q:"كم عدد لاعبي فريق كرة القدم داخل الملعب؟", a:["11","10","12","9"], c:"11"},
+        const bank = [
+           {q:"كم عدد لاعبي فريق كرة القدم داخل الملعب؟", a:["11","10","12","9"], c:"11"},
             {q:"ما هو النادي الملقب بـ 'النادي الملكي'؟", a:["ريال مدريد","برشلونة","ليفربول","مانشستر يونايتد"], c:"ريال مدريد"},
             {q:"من هو اللاعب الملقب بـ 'البرغوث'؟", a:["ميسي","رونالدو","نيمار","صلاح"], c:"ميسي"},
             {q:"في أي دولة يلعب محمد صلاح حالياً؟", a:["إنجلترا","إسبانيا","إيطاليا","ألمانيا"], c:"إنجلترا"},
@@ -239,7 +246,7 @@
             {q:"ما هي جنسية المدرب كارلو أنشيلوتي؟", a:["إيطالي","إسباني","ألماني","فرنسي"], c:"إيطالي"},
             {q:"أي مدينة يقع فيها نادي مانشستر يونايتد؟", a:["مانشستر","لندن","ليفربول","برمنغهام"], c:"مانشستر"},
             {q:"كم دقيقة هي مدة الاستراحة بين الشوطين؟", a:["15 دقيقة","10 دقائق","20 دقيقة","5 دقائق"], c:"15 دقيقة"},
-            {q:"ما هو لقب نادي يوفنتوس؟", a:["السيدة العجوز","الأفاعي","الذئاب","النسور"], c:"السيدة العجوز"},
+            {q:"ما هو لقب نادي يوفنتوس؟", a:["السيدة العجوز","الأفاعي","الذئب","النسور"], c:"السيدة العجوز"},
             {q:"من هو اللاعب صاحب الرقم 10 في منتخب الأرجنتين؟", a:["ميسي","دي ماريا","ألفاريز","ديبالا"], c:"ميسي"},
             {q:"أي نادٍ يلقب بـ 'الميرينغي'؟", a:["ريال مدريد","إشبيلية","فالنسيا","أتلتيك بلباو"], c:"ريال مدريد"},
             {q:"ما هي الكرة الذهبية بالفرنسية؟", a:["بالون دور","البوت الذهبي","ديستني","الفيفا"], c:"بالون دور"},
@@ -251,10 +258,11 @@
             {q:"كم عدد ضربات الجزاء الترجيحية في البداية؟", a:["5","3","4","6"], c:"5"}
         ];
 
-        let questions = [];
+        let shuffledQuestions = [];
         let currentIndex = 0;
         let scoreInSession = 0;
         let timer;
+        let answered = false;
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -264,18 +272,30 @@
         }
 
         function init() {
-            const savedName = localStorage.getItem('player_username') || "بطل مجهول";
+            const savedName = localStorage.getItem('player_username') || "بطل مبتدئ";
             document.getElementById('display-username').innerText = savedName;
-            questions = [...amateurBank];
-            shuffle(questions);
+            
+            // تحديث عرض المجموع الكلي أول ما تفتح الصفحة
+            updateTotalPointsDisplay();
+
+            shuffledQuestions = [...bank];
+            shuffle(shuffledQuestions);
+            currentIndex = 0;
+            scoreInSession = 0;
             showQuestion();
+        }
+
+        function updateTotalPointsDisplay() {
+            let total = parseInt(localStorage.getItem('total_points')) || 0;
+            document.getElementById('total-points-val').innerText = total;
         }
 
         function showQuestion() {
             if (currentIndex >= 50) return finish();
 
+            answered = false;
             document.getElementById('hintBtn').disabled = false;
-            document.getElementById('hintBtn').style.opacity = '1';
+            document.getElementById('hintBtn').style.display = 'flex';
 
             clearInterval(timer);
             let timeLeft = 20;
@@ -283,15 +303,19 @@
             timer = setInterval(() => {
                 timeLeft--;
                 document.getElementById('timer-val').innerText = timeLeft;
-                if (timeLeft <= 0) nextQuestion();
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (!answered) nextQuestion();
+                }
             }, 1000);
 
             document.getElementById('progress-val').innerText = `${currentIndex + 1}/50`;
-            const q = questions[currentIndex];
+            const q = shuffledQuestions[currentIndex];
             document.getElementById('question').innerText = q.q;
 
             const ansBox = document.getElementById('answers');
             ansBox.innerHTML = '';
+            
             let options = [...q.a];
             shuffle(options);
 
@@ -305,21 +329,26 @@
         }
 
         function useHint() {
-            const currentQuestion = questions[currentIndex];
+            if (answered) return;
+            const currentQuestion = shuffledQuestions[currentIndex];
             const btns = document.querySelectorAll('.answer-btn');
             let wrongFound = 0;
+
             btns.forEach(btn => {
                 if (btn.innerText !== currentQuestion.c && wrongFound < 2) {
                     btn.style.visibility = 'hidden';
                     wrongFound++;
                 }
             });
+
             document.getElementById('hintBtn').disabled = true;
-            document.getElementById('hintBtn').style.opacity = '0.3';
         }
 
         function checkAnswer(btn, selected, correct) {
+            if (answered) return;
+            answered = true;
             clearInterval(timer);
+            
             const btns = document.querySelectorAll('.answer-btn');
             btns.forEach(b => b.style.pointerEvents = 'none');
 
@@ -327,12 +356,17 @@
                 btn.classList.add('correct');
                 scoreInSession++;
                 document.getElementById('session-points').innerText = scoreInSession;
-                let total = parseInt(localStorage.getItem('user_total_points')) || 0;
-                localStorage.setItem('user_total_points', total + 1);
+                
+                // تحديث المجموع الكلي في الـ localStorage وعرضه مباشرة لحظياً
+                let total = parseInt(localStorage.getItem('total_points')) || 0;
+                total += 1;
+                localStorage.setItem('total_points', total);
+                updateTotalPointsDisplay(); // تحديث القيمة مباشرة على الشاشة
             } else {
                 btn.classList.add('wrong');
                 btns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
             }
+
             setTimeout(nextQuestion, 1000);
         }
 
@@ -344,25 +378,27 @@
         function finish() {
             clearInterval(timer);
             document.getElementById('quiz-content').style.display = 'none';
-            document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('skipBtn').style.display = 'none';
             document.getElementById('hintBtn').style.display = 'none';
+            document.getElementById('stats-ui').style.display = 'none';
             document.getElementById('result-box').style.display = 'block';
-            document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} نقطة في مستوى الهاوي!`;
+            document.getElementById('final-score-text').innerText = `جمعت ${scoreInSession} من 50 نقطة!`;
 
             let count = 5;
-            const countDisplay = document.getElementById('countdown');
             const redirectTimer = setInterval(() => {
                 count--;
-                countDisplay.innerText = count;
+                document.getElementById('countdown').innerText = count;
                 if (count <= 0) {
                     clearInterval(redirectTimer);
-                    window.location.href = 'index.html'; 
+                    window.location.href = './'; 
                 }
             }, 1000);
         }
 
-        window.onload = init;
+        // تحديث النقاط واسم المستخدم فور دخول أو عودة المتصفح للصفحة بدون حاجة لإعادة التحميل
+        window.addEventListener('pageshow', function() {
+            init();
+        });
     </script>
 </body>
 </html>

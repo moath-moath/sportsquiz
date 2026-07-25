@@ -6,7 +6,6 @@
     <title>Sports Quiz - الرئيسية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* --- التصميم الأصلي الفاخر --- */
         body {
             margin: 0;
             font-family: 'Cairo', sans-serif;
@@ -78,7 +77,6 @@
             box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7);
         }
 
-        /* --- صناديق النوافذ المنبثقة --- */
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -90,14 +88,15 @@
         }
 
         .notice {
-            background: white;
-            color: black;
+            background: #1a1a1a;
+            color: white;
             padding: 30px;
             border-radius: 12px;
             width: 85%;
             max-width: 400px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             text-align: center;
+            direction: rtl;
         }
 
         .name-input {
@@ -112,11 +111,6 @@
         }
 
         .btn-save { background: #28a745 !important; color: white !important; }
-
-        @media screen and (max-width:480px) {
-            .user-header { padding: 10px; }
-            #player-name, #total-points { font-size: 14px; }
-        }
     </style>
 </head>
 <body>
@@ -138,6 +132,21 @@
     </div>
 </div>
 
+<!-- نافذة الإبلاغ المربوطة بالواتساب -->
+<div id="feedback-modal" class="overlay">
+    <div class="notice" style="border: 1px solid #25D366;">
+        <h3 style="margin-top: 0; color: #25D366;">💬 إبلاغ عن مشكلة عبر الواتساب</h3>
+        <p style="font-size: 13px; color: #ccc; margin-bottom: 15px;">اكتب ملاحظتك وسيتم إرسالها مباشرة عبر الواتساب:</p>
+        
+        <textarea id="whatsapp-msg" placeholder="اكتب مشكلتك أو اقتراحك هنا..." style="width: 100%; height: 100px; padding: 10px; margin-bottom: 15px; background: #222; border: 1px solid #444; color: #fff; border-radius: 8px; resize: none; box-sizing: border-box; font-family: 'Cairo';"></textarea>
+        
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="sendToWhatsApp()" style="background: #25D366; color: white; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo';">إرسال عبر الواتساب</button>
+            <button onclick="closeFeedbackModal()" style="background: #dc3545; color: white; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo';">إلغاء</button>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="user-header">
         <p id="player-name">اللاعب: جاري التحميل...</p>
@@ -146,9 +155,8 @@
 
     <h1>Sports Quiz</h1>
     <div class="subtitle">اختبر معلوماتك الرياضية</div>
-
     <div class="stats">
-        👥 الزوار: <span>124</span> | 🟢 أونلاين: <span>1</span>
+        👥 الزوار: <span>142</span> | 🟢 أونلاين: <span>5</span>
     </div>
 
     <a href="beginner.html" class="level-btn">⚽ المستوى المبتدئ</a>
@@ -156,41 +164,51 @@
     <a href="medium.html" class="level-btn">🔥 المستوى المتوسط</a>
     <a href="hard.html" class="level-btn">🏆 المستوى الصعب</a>
     <a href="legendary.html" class="level-btn">👑 المستوى الأسطوري</a>
+
+    <!-- زر الإبلاغ عن مشكلة تحت المستوى الأسطوري مباشرة -->
+    <button onclick="openWhatsAppFeedback()" class="level-btn" style="background: #333; color: #25D366; border: 2px solid #25D366; font-size: 16px; padding: 14px;">
+        💬 اقتراح أو إبلاغ عن مشكلة (واتساب)
+    </button>
 </div>
 
 <script>
-    // عند تحميل الصفحة
-    window.onload = function() {
+    function loadUserData() {
         const savedName = localStorage.getItem('player_username');
         const savedPoints = localStorage.getItem('total_points') || "0";
         const noticeSeen = sessionStorage.getItem('notice_seen');
 
-        // تحديث الواجهة فوراً إذا كان هناك بيانات
+        document.getElementById("total-points").innerText = `🏆 النقاط: ${savedPoints}`;
+
         if (savedName) {
             document.getElementById("player-name").innerText = `اللاعب: ${savedName}`;
-            document.getElementById("total-points").innerText = `🏆 النقاط: ${savedPoints}`;
+        } else {
+            document.getElementById("player-name").innerText = `اللاعب: زائر`;
         }
 
-        // التحكم في ظهور النوافذ المنبثقة
         if (!noticeSeen) {
             document.getElementById("notice-box").style.display = "flex";
         } else if (!savedName) {
             document.getElementById("name-box").style.display = "flex";
         }
+    }
+
+    window.onload = function() {
+        loadUserData();
     };
 
-    // إغلاق الملاحظة
+    window.addEventListener('pageshow', function() {
+        loadUserData();
+    });
+
     function skipNotice() {
-        sessionStorage.setItem('notice_seen', 'true'); // يختفي خلال الجلسة الحالية
+        sessionStorage.setItem('notice_seen', 'true');
         document.getElementById("notice-box").style.display = "none";
         
-        // إذا لم يكن قد سجل اسمه بعد، تظهر نافذة الاسم
         if (!localStorage.getItem('player_username')) {
             document.getElementById("name-box").style.display = "flex";
         }
     }
 
-    // حفظ الاسم في LocalStorage
     function saveFinalName() {
         const input = document.getElementById("custom-username");
         const name = input.value.trim();
@@ -205,12 +223,38 @@
             localStorage.setItem('total_points', '0');
         }
 
-        // تحديث الواجهة فوراً
         document.getElementById("player-name").innerText = `اللاعب: ${name}`;
         document.getElementById("total-points").innerText = `🏆 النقاط: ${localStorage.getItem('total_points')}`;
         
-        // إغلاق النافذة
         document.getElementById("name-box").style.display = "none";
+    }
+
+    function openWhatsAppFeedback() {
+        document.getElementById('whatsapp-msg').value = "";
+        document.getElementById('feedback-modal').style.display = 'flex';
+    }
+
+    function closeFeedbackModal() {
+        document.getElementById('feedback-modal').style.display = 'none';
+    }
+
+    function sendToWhatsApp() {
+        const userText = document.getElementById('whatsapp-msg').value.trim();
+        if(!userText) {
+            alert("الرجاء كتابة الرسالة أولاً!");
+            return;
+        }
+
+        const savedName = localStorage.getItem('player_username') || "زائر";
+        const myPhoneNumber = "962788851699";
+        
+        const message = `مرحباً، لدي ملاحظة بخصوص موقع Sports Quiz:\n\n👤 اسم اللاعب: ${savedName}\n💬 الرسالة: ${userText}`;
+        const encodedMessage = encodeURIComponent(message);
+        
+        const whatsappURL = `https://wa.me/${myPhoneNumber}?text=${encodedMessage}`;
+        
+        // الانتقال المباشر يمنع حظر النوافذ المنبثقة على الهواتف
+        window.location.href = whatsappURL;
     }
 </script>
 

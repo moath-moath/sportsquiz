@@ -19,12 +19,11 @@ def google_verification(request):
 
 
 urlpatterns = [
-    
     path('admin/', admin.site.urls),
 
     # الصفحة الرئيسية
     path('', views.home, name="home"),
-    path('index.html', views.home), # إضافة هذا المسار لمنع خطأ 404 عند استدعاء index.html
+    path('index.html', views.home),
 
     # صفحات المستويات
     path('beginner/', views.beginner, name="beginner"),
@@ -42,10 +41,10 @@ urlpatterns = [
     path('legendary/', views.legendary, name="legendary"),
     path('legendary.html', views.legendary),
 
-    # حفظ اسم اللاعب (لـ AJAX)
+    # حفظ اسم اللاعب
     path('save_player_name/', views.save_player_name, name="save_player_name"),
 
-    # تحقق Google
+    # توثيق قوقل
     path(
         'google088b0de6aac36d11.html',
         google_verification,
@@ -53,8 +52,6 @@ urlpatterns = [
     ),
 ]
 
-# إضافة مسارات الملفات الثابتة (Static & Media) بشكل أفضل
+# إضافة مسارات static حتى يقرأ ملفات CSS والـ JS بدون مشاكل
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    # إذا كنت تستخدم ملفات ميديا (صور مرفوعة)، يفضل إضافة السطر التالي أيضاً:
-    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

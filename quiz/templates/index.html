@@ -49,6 +49,25 @@
             margin: 0;
         }
 
+        /* تنسيق زر تغيير الاسم الصغير */
+        .change-name-btn {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 8px;
+            font-family: 'Cairo';
+            transition: 0.2s;
+        }
+
+        .change-name-btn:hover {
+            background: #ffd700;
+            color: #000;
+        }
+
         h1 { font-size: 32px; margin-bottom: 5px; color: #fff; }
         .subtitle { font-size: 18px; margin-bottom: 25px; opacity: 0.9; }
         .stats { margin-bottom: 25px; font-size: 14px; opacity: 0.7; line-height: 1.6; }
@@ -149,7 +168,10 @@
 
 <div class="container">
     <div class="user-header">
-        <p id="player-name">اللاعب: جاري التحميل...</p>
+        <div>
+            <span id="player-name">اللاعب: جاري التحميل...</span>
+            <button class="change-name-btn" onclick="openChangeNameBox()">تغيير</button>
+        </div>
         <p id="total-points">🏆 النقاط: 0</p>
     </div>
 
@@ -209,6 +231,11 @@
         }
     }
 
+    function openChangeNameBox() {
+        document.getElementById("custom-username").value = localStorage.getItem('player_username') || "";
+        document.getElementById("name-box").style.display = "flex";
+    }
+
     function saveFinalName() {
         const input = document.getElementById("custom-username");
         const name = input.value.trim();
@@ -216,6 +243,24 @@
         if (name.length < 3) {
             alert("الرجاء اختيار اسم مكون من 3 أحرف على الأقل");
             return;
+        }
+
+        // فحص الكلمات المسيئة أو الممنوعة بشكل عام
+      const restrictedPatterns = [
+    "زاني", "شتم", "قحب", "شرموط",
+    "منحرف", "زانية", "قحبة", "شرموطة",
+    "زب", "زبر", "منيك", "منيوكة",
+    "الله", "الملك", "كس", "كساس",
+    "اير", "مأير", "اله", "يلعن", "ملعون"
+];
+
+        const nameLower = name.toLowerCase();
+
+        for (let word of restrictedPatterns) {
+            if (nameLower.includes(word)) {
+                alert("لا يمكن تسجيل الدخول أو استخدام هذا الاسم.");
+                return;
+            }
         }
 
         localStorage.setItem('player_username', name);

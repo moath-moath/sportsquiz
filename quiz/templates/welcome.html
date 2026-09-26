@@ -7,7 +7,7 @@
     <style>
         body {
             margin: 0;
-            padding: 0;
+            padding: 15px;
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             color: white;
             font-family: 'Cairo', Tahoma, sans-serif;
@@ -17,35 +17,37 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            box-sizing: border-box;
         }
 
         .welcome-card {
             background: #161b22;
             border: 2px solid #30363d;
             border-radius: 15px;
-            padding: 40px 30px;
-            width: 90%;
-            max-width: 450px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 400px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-sizing: border-box;
         }
 
         /* تصميم أيقونة الكرة وعلامة السؤال */
         .icon-container {
             position: relative;
             display: inline-block;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .ball-img {
-            width: 100px;
-            height: 100px;
+            width: 85px;
+            height: 85px;
             object-fit: contain;
             animation: bounce 2s infinite;
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
 
         .question-badge {
@@ -55,9 +57,9 @@
             background: #f1c40f;
             color: #000;
             font-weight: bold;
-            font-size: 24px;
-            width: 35px;
-            height: 35px;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -66,54 +68,54 @@
         }
 
         h1 {
-            font-size: 26px;
+            font-size: 24px;
             color: #f1c40f;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            margin-top: 0;
         }
 
         p.subtitle {
             color: #b0c4de;
-            font-size: 15px;
-            margin-bottom: 30px;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
         }
 
         .buttons-group {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            gap: 12px;
             justify-content: center;
-            flex-wrap: wrap;
+        }
+
+        .main-btn, .secondary-btn {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+            text-align: center;
         }
 
         .main-btn {
             background: #f1c40f;
             color: #000;
             border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: 0.3s;
             box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
         }
 
         .main-btn:hover {
             background: #d4ac0d;
-            transform: scale(1.05);
         }
 
         .secondary-btn {
             background: transparent;
             color: #f1c40f;
             border: 2px solid #f1c40f;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
         }
 
         .secondary-btn:hover {
@@ -132,29 +134,34 @@
             background-color: rgba(0,0,0,0.7);
             justify-content: center;
             align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         .modal-content {
             background: #1b2838;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
-            width: 85%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 380px;
             border: 1px solid #f1c40f;
             text-align: right;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            box-sizing: border-box;
         }
 
         .modal-content h3 {
             color: #f1c40f;
             margin-top: 0;
             text-align: center;
+            font-size: 18px;
         }
 
         .modal-content ul {
             padding-right: 20px;
-            line-height: 1.8;
-            font-size: 14px;
+            line-height: 1.6;
+            font-size: 13px;
+            color: #ddd;
         }
 
         .close-btn {
@@ -166,7 +173,8 @@
             cursor: pointer;
             font-weight: bold;
             display: block;
-            margin: 20px auto 0 auto;
+            margin: 15px auto 0 auto;
+            width: 100%;
         }
     </style>
 </head>
@@ -175,7 +183,6 @@
     <div class="welcome-card">
         <!-- صورة الكرة وعلامة السؤال -->
         <div class="icon-container">
-            <!-- يمكنك وضع رابط صورة كرة قدم حقيقية هنا -->
             <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png" alt="كرة قدم" class="ball-img">
             <div class="question-badge">؟</div>
         </div>
@@ -183,9 +190,9 @@
         <h1>Sports Quiz</h1>
         <p class="subtitle">اختبر معلوماتك الرياضية ونافس أصدقاءك في تحدي الملاعب!</p>
 
-        <!-- الأزرار المطلوبة -->
+        <!-- الأزرار مرتبة تحت بعضها بشكل مريح جداً للموبايل -->
         <div class="buttons-group">
-           <a href="{% url 'home' %}" class="main-btn">ابدأ التحدي 🚀</a>
+            <a href="{% url 'home' %}" class="main-btn">ابدأ التحدي 🚀</a>
             <button onclick="openModal()" class="secondary-btn">طريقة اللعب 📖</button>
         </div>
     </div>

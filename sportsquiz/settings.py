@@ -15,16 +15,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-local-development-key')
 
-# ⚠️ كشف البيئة: إذا كان متغير RENDER موجود، فنحن في الإنتاج
-IS_RENDER = os.environ.get('RENDER', 'False') == 'True'
-DEBUG = not IS_RENDER
+# ⚠️ كشف البيئة: دعم منصتي Render و Railway للإنتاج
+IS_PRODUCTION = os.environ.get('RENDER', 'False') == 'True' or os.environ.get('RAILWAY_ENVIRONMENT') is not None
+DEBUG = not IS_PRODUCTION
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "sportsquiz-4pt3.onrender.com",
     "sportsquiz-1.onrender.com",
-    ".onrender.com"
+    ".onrender.com",
+    ".railway.app"
 ]
 
 INSTALLED_APPS = [
@@ -75,7 +76,7 @@ DATABASES = {
     }
 }
 
-if IS_RENDER and os.environ.get('DATABASE_URL') and dj_database_url:
+if IS_PRODUCTION and os.environ.get('DATABASE_URL') and dj_database_url:
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 LANGUAGE_CODE = 'ar'

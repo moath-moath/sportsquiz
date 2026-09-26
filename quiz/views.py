@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 # --- دالة صفحة الترحيب الجديدة ---
 def welcome(request):
@@ -60,5 +61,36 @@ def legendary(request):
 @csrf_exempt
 def save_player_name(request):
     if request.method == "POST":
-        return JsonResponse({"status": "success", "message": "Name received"})
-    return JsonResponse({"status": "error", "message": "Invalid request"}, status=400)
+        try:
+            data = json.loads(request.body)
+            name = data.get("name", "").strip()
+        except Exception:
+            name = request.POST.get("name", "").strip()
+
+        # قائمة الكلمات الممنوعة (يمكنك إضافة أو تعديل الكلمات هنا)
+        forbidden_words = ["قحب", "شتم", "مسبة"]  # أضف أي كلمات أخرى ممنوعة
+        
+        # التحقق مما إذا كان الاسم يحتوي على كلمات ممنوعة
+        name_lower = name.lower()
+        for word in forbidden_words:
+            if word in name_lower:
+                return JsonResponse({
+                    "status": "error", 
+                    "message": "عذراً، هذا الاسم غير مسموح به."
+                }, status=400)
+
+        if not name:
+            return JsonResponse({
+                "status": "error", 
+                "message": "الرجاء إدخال اسم صحيح."
+            }, status=400)
+
+        return JsonResponse({
+            "status": "success", 
+            "message": "Name received successfully"
+        })
+
+    return JsonResponse({
+        "status": "error", 
+        "message": "Invalid request"
+    }, status=400)

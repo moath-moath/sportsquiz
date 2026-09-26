@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sports Quiz - الترحيب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -31,7 +32,6 @@
             box-sizing: border-box;
         }
 
-        /* تصميم أيقونة الكرة وعلامة السؤال */
         .icon-container {
             position: relative;
             display: inline-block;
@@ -88,7 +88,7 @@
             justify-content: center;
         }
 
-        .main-btn, .secondary-btn {
+        .main-btn, .player-btn, .secondary-btn {
             width: 100%;
             padding: 12px 20px;
             font-size: 16px;
@@ -99,30 +99,31 @@
             transition: 0.3s;
             box-sizing: border-box;
             text-align: center;
+            font-family: 'Cairo', Tahoma, sans-serif;
+            border: none;
         }
 
         .main-btn {
             background: #f1c40f;
             color: #000;
-            border: none;
             box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
         }
+        .main-btn:hover { background: #d4ac0d; }
 
-        .main-btn:hover {
-            background: #d4ac0d;
+        .player-btn {
+            background: #00a884;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 168, 132, 0.3);
         }
+        .player-btn:hover { background: #008f6f; }
 
         .secondary-btn {
             background: transparent;
             color: #f1c40f;
             border: 2px solid #f1c40f;
         }
+        .secondary-btn:hover { background: rgba(241, 196, 15, 0.1); }
 
-        .secondary-btn:hover {
-            background: rgba(241, 196, 15, 0.1);
-        }
-
-        /* تصميم نافذة طريقة اللعب (Modal) */
         .modal {
             display: none;
             position: fixed;
@@ -145,7 +146,7 @@
             width: 100%;
             max-width: 380px;
             border: 1px solid #f1c40f;
-            text-align: right;
+            text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             box-sizing: border-box;
         }
@@ -153,35 +154,69 @@
         .modal-content h3 {
             color: #f1c40f;
             margin-top: 0;
-            text-align: center;
             font-size: 18px;
         }
+
+        .quiz-img-box {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px solid #30363d;
+            background: #000;
+        }
+
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .choice-btn {
+            background: #10171d;
+            color: white;
+            border: 2px solid #00a884;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Cairo', Tahoma, sans-serif;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .choice-btn:hover { background: #00a884; }
+        .choice-btn.correct { background: #27ae60 !important; border-color: #27ae60 !important; }
+        .choice-btn.wrong { background: #c0392b !important; border-color: #c0392b !important; }
 
         .modal-content ul {
             padding-right: 20px;
             line-height: 1.6;
             font-size: 13px;
             color: #ddd;
+            text-align: right;
         }
 
         .close-btn {
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 8px 20px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             display: block;
             margin: 15px auto 0 auto;
             width: 100%;
+            font-family: 'Cairo', Tahoma, sans-serif;
         }
     </style>
 </head>
 <body>
 
     <div class="welcome-card">
-        <!-- صورة الكرة وعلامة السؤال -->
         <div class="icon-container">
             <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png" alt="كرة قدم" class="ball-img">
             <div class="question-badge">؟</div>
@@ -190,20 +225,36 @@
         <h1>Sports Quiz</h1>
         <p class="subtitle">اختبر معلوماتك الرياضية ونافس أصدقاءك في تحدي الملاعب!</p>
 
-        <!-- الأزرار مرتبة تحت بعضها بشكل مريح جداً للموبايل -->
         <div class="buttons-group">
+            <!-- زر ابدأ التحدي يفتح الرابط الخاص بك مباشرة -->
             <a href="{% url 'home' %}" class="main-btn">ابدأ التحدي 🚀</a>
+            <button onclick="openPlayerQuiz()" class="player-btn">🌟 خمن اللاعب</button>
             <button onclick="openModal()" class="secondary-btn">طريقة اللعب 📖</button>
         </div>
     </div>
 
-    <!-- نافذة طريقة اللعب المنبثقة -->
+    <!-- نافذة خمن اللاعب (صور حقيقية واضحة ومستقرة تماماً) -->
+    <div id="playerQuizModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color: #f1c40f;">🌟 خمن اللاعب</h3>
+            <p id="progress-text" style="font-size: 12px; color: #b0c4de; margin: 5px 0;"></p>
+            
+            <img id="quiz-image" src="" alt="صورة اللاعب" class="quiz-img-box">
+            <p style="font-size: 14px; font-weight: bold; margin: 8px 0;">من هو هذا اللاعب؟</p>
+
+            <div id="image-choices" class="choices-container"></div>
+            
+            <button onclick="closePlayerQuiz()" class="close-btn">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة طريقة اللعب -->
     <div id="rulesModal" class="modal">
         <div class="modal-content">
             <h3>قواعد وطريقة اللعب ⚽</h3>
             <ul>
-                <li>كل إجابة صحيحة تزيد نقاطك نقطة واحدة! 🏆</li>
-                <li><strong>المساعدات المتاحة:</strong> حذف خيارين خاطئين أو تخطي السؤال.</li>
+                <li>كل إجابة صحيحة تزيد نقاطك نقطة واحدة (+1)! 🏆</li>
+                <li>اللعبة مقسمة إلى مستويات تزداد حماساً تدريجياً.</li>
                 <li>تصدّر قائمة الصدارة واثبت أنك أسطورة الرياضة! 🥇</li>
             </ul>
             <button onclick="closeModal()" class="close-btn">حسناً، فهمت</button>
@@ -211,18 +262,87 @@
     </div>
 
     <script>
-        const modal = document.getElementById('rulesModal');
-        function openModal() {
-            modal.style.display = 'flex';
-        }
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-        // إغلاق النافذة عند النقر خارجها
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
+        // صور حقيقية وموثوقة 100% لرونالدو وميسي ونيمار تظهر بشكل ثابت وطبيعي
+        const playersData = [
+            {
+                img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
+                answer: "كريستيانو رونالدو",
+                choices: ["كريستيانو رونالدو", "ليونيل ميسي", "نيمار جونيور"]
+            },
+            {
+                img: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Lionel_Messi_20180626.jpg",
+                answer: "ليونيل ميسي",
+                choices: ["كيليان مبابي", "ليونيل ميسي", "كريستيانو رونالدو"]
+            },
+            {
+                img: "https://upload.wikimedia.org/wikipedia/commons/b/b9/Neymar_Jr._in_2018.jpg",
+                answer: "نيمار جونيور",
+                choices: ["محمد صلاح", "نيمار جونيور", "كيفين دي بروين"]
             }
+        ];
+
+        let currentIdx = 0;
+        let isLocked = false;
+
+        const rulesModal = document.getElementById('rulesModal');
+        const playerQuizModal = document.getElementById('playerQuizModal');
+
+        function openModal() { rulesModal.style.display = 'flex'; }
+        function closeModal() { rulesModal.style.display = 'none'; }
+
+        function openPlayerQuiz() {
+            playerQuizModal.style.display = 'flex';
+            currentIdx = 0;
+            loadPlayerQuestion();
+        }
+
+        function closePlayerQuiz() { playerQuizModal.style.display = 'none'; }
+
+        function loadPlayerQuestion() {
+            isLocked = false;
+            if (currentIdx >= playersData.length) {
+                alert("أتممت تحدي خمن اللاعب بنجاح يا بطل! 🏆");
+                closePlayerQuiz();
+                return;
+            }
+
+            const currentQ = playersData[currentIdx];
+            document.getElementById('quiz-image').src = currentQ.img;
+            document.getElementById('progress-text').innerText = `اللاعب ${currentIdx + 1} من ${playersData.length}`;
+
+            let choicesBox = document.getElementById('image-choices');
+            choicesBox.innerHTML = "";
+
+            currentQ.choices.forEach(choiceText => {
+                let btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.innerText = choiceText;
+                btn.onclick = () => checkAnswer(choiceText, btn);
+                choicesBox.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedChoice, btnElement) {
+            if (isLocked) return;
+            isLocked = true;
+
+            const correctAns = playersData[currentIdx].answer;
+
+            if (selectedChoice === correctAns) {
+                btnElement.classList.add('correct');
+                setTimeout(() => { currentIdx++; loadPlayerQuestion(); }, 900);
+            } else {
+                btnElement.classList.add('wrong');
+                document.querySelectorAll('.choice-btn').forEach(b => {
+                    if (b.innerText === correctAns) b.classList.add('correct');
+                });
+                setTimeout(() => { currentIdx++; loadPlayerQuestion(); }, 1200);
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == rulesModal) closeModal();
+            if (event.target == playerQuizModal) closePlayerQuiz();
         }
     </script>
 

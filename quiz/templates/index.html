@@ -159,11 +159,11 @@
         👥 الزوار: <span>142</span> | 🟢 أونلاين: <span>5</span>
     </div>
 
-    <a href="beginner.html" class="level-btn">⚽ المستوى المبتدئ</a>
-    <a href="amateur.html" class="level-btn">🏃 المستوى الهاوي</a>
-    <a href="medium.html" class="level-btn">🔥 المستوى المتوسط</a>
-    <a href="hard.html" class="level-btn">🏆 المستوى الصعب</a>
-    <a href="legendary.html" class="level-btn">👑 المستوى الأسطوري</a>
+    <a href="/beginner.html" class="level-btn">⚽ المستوى المبتدئ</a>
+    <a href="/amateur.html" class="level-btn">🏃 المستوى الهاوي</a>
+    <a href="/medium.html" class="level-btn">🔥 المستوى المتوسط</a>
+    <a href="/hard.html" class="level-btn">🏆 المستوى الصعب</a>
+    <a href="/legendary.html" class="level-btn">👑 المستوى الأسطوري</a>
 
     <!-- زر الإبلاغ عن مشكلة تحت المستوى الأسطوري مباشرة -->
     <button onclick="openWhatsAppFeedback()" class="level-btn" style="background: #333; color: #25D366; border: 2px solid #25D366; font-size: 16px; padding: 14px;">
@@ -253,7 +253,6 @@
         
         const whatsappURL = `https://wa.me/${myPhoneNumber}?text=${encodedMessage}`;
         
-        // الانتقال المباشر يمنع حظر النوافذ المنبثقة على الهواتف
         window.location.href = whatsappURL;
     }
 </script>

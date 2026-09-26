@@ -5,6 +5,10 @@ from datetime import timedelta
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+# --- دالة صفحة الترحيب الجديدة ---
+def welcome(request):
+    return render(request, "welcome.html")
+
 # الحصول على IP الزائر
 def get_ip(request):
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")

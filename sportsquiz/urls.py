@@ -21,8 +21,11 @@ def google_verification(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # الصفحة الرئيسية
-    path('', views.home, name="home"),
+    # صفحة الترحيب الجديدة كواجهة أولى للموقع
+    path('', views.welcome, name="welcome"),
+
+    # الصفحة الرئيسية (قائمة المستويات)
+    path('home/', views.home, name="home"),
     path('index.html', views.home),
 
     # صفحات المستويات

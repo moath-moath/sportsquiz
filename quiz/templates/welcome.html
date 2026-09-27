@@ -149,6 +149,7 @@
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             box-sizing: border-box;
+            position: relative;
         }
 
         .modal-content h3 {
@@ -212,6 +213,24 @@
             width: 100%;
             font-family: 'Cairo', Tahoma, sans-serif;
         }
+
+        .quiz-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #10171d;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .trophy-badge {
+            color: #f1c40f;
+        }
+        .timer-badge {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
@@ -226,21 +245,26 @@
         <p class="subtitle">اختبر معلوماتك الرياضية ونافس أصدقاءك في تحدي الملاعب!</p>
 
         <div class="buttons-group">
-            <!-- زر ابدأ التحدي يفتح الرابط الخاص بك مباشرة -->
             <a href="{% url 'home' %}" class="main-btn">ابدأ التحدي 🚀</a>
             <button onclick="openPlayerQuiz()" class="player-btn">🌟 خمن اللاعب</button>
             <button onclick="openModal()" class="secondary-btn">طريقة اللعب 📖</button>
         </div>
     </div>
 
-    <!-- نافذة خمن اللاعب (صور حقيقية واضحة ومستقرة تماماً) -->
+    <!-- نافذة خمن اللاعب مع الوقت والكؤوس -->
     <div id="playerQuizModal" class="modal">
         <div class="modal-content">
-            <h3 style="color: #f1c40f;">🌟 خمن اللاعب</h3>
-            <p id="progress-text" style="font-size: 12px; color: #b0c4de; margin: 5px 0;"></p>
+            <h3 style="color: #f1c40f; margin-bottom: 5px;">🌟 خمن اللاعب</h3>
+            
+            <div class="quiz-header-info">
+                <span id="trophy-display" class="trophy-badge">🏆 الكؤوس: 0</span>
+                <span id="timer-display" class="timer-badge">⏳ 40 ثانية</span>
+            </div>
+
+            <p id="progress-text" style="font-size: 12px; color: #b0c4de; margin: 3px 0;"></p>
             
             <img id="quiz-image" src="" alt="صورة اللاعب" class="quiz-img-box">
-            <p style="font-size: 14px; font-weight: bold; margin: 8px 0;">من هو هذا اللاعب؟</p>
+            <p style="font-size: 14px; font-weight: bold; margin: 6px 0;">من هو هذا اللاعب؟</p>
 
             <div id="image-choices" class="choices-container"></div>
             
@@ -253,36 +277,117 @@
         <div class="modal-content">
             <h3>قواعد وطريقة اللعب ⚽</h3>
             <ul>
-                <li>كل إجابة صحيحة تزيد نقاطك نقطة واحدة (+1)! 🏆</li>
-                <li>اللعبة مقسمة إلى مستويات تزداد حماساً تدريجياً.</li>
-                <li>تصدّر قائمة الصدارة واثبت أنك أسطورة الرياضة! 🥇</li>
+                <li>كل إجابة صحيحة تقربك للحصول على كأس جديد! 🏆</li>
+                <li>كل 10 إجابات صحيحة تربحك كأسًا ويتصفر العداد لتبدأ من جديد.</li>
+                <li>لكل سؤال 40 ثانية كحد أقصى قبل الانتقال التلقائي للذي يليه! ⏳</li>
             </ul>
             <button onclick="closeModal()" class="close-btn">حسناً، فهمت</button>
         </div>
     </div>
 
     <script>
-        // صور حقيقية وموثوقة 100% لرونالدو وميسي ونيمار تظهر بشكل ثابت وطبيعي
-        const playersData = [
-            {
-                img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
-                answer: "كريستيانو رونالدو",
-                choices: ["كريستيانو رونالدو", "ليونيل ميسي", "نيمار جونيور"]
-            },
-            {
-                img: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Lionel_Messi_20180626.jpg",
-                answer: "ليونيل ميسي",
-                choices: ["كيليان مبابي", "ليونيل ميسي", "كريستيانو رونالدو"]
-            },
-            {
-                img: "https://upload.wikimedia.org/wikipedia/commons/b/b9/Neymar_Jr._in_2018.jpg",
-                answer: "نيمار جونيور",
-                choices: ["محمد صلاح", "نيمار جونيور", "كيفين دي بروين"]
-            }
-        ];
+        const originalPlayersData = [
+    {
+        img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg",
+        answer: "كريستيانو رونالدو",
+        choices: ["كريستيانو رونالدو", "ليونيل ميسي", "مبابي"]
+    },
+    {
+        img: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Lionel_Messi_20180626.jpg",
+        answer: "ليونيل ميسي",
+        choices: ["كيليان مبابي", "ليونيل ميسي", "كريستيانو رونالدو"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/d6/2a/df/d62adfa39a4cc5bf8c0bc527d476feea.jpg",
+        answer: "نيمار جونيور",
+        choices: ["نيمار جونيور", "تشيزني", "هاري كين"]
+    },
+    {
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNgbh4tJduqqYsypBJpx5zwGzYZg8ecA1bHaKvPqEEsfBwZxtIks-ga3h1&s=10",
+        answer: "نوير",
+        choices: ["نوير", "فينيسيوس", "كورتوا"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/a5/90/aa/a590aada91a2bc439c8b4ddf40bf66d4.jpg",
+        answer: "  هاري كين",
+        choices: [" داني أولمو", "  هالاند", "  هاري كين"]
+    },
+    {
+        img: "https://cdn.salla.sa/KjElrD/ac2bd584-e7c5-4152-9ec2-c1a65075a469-1000x1000-a9o02hWdyLOXOPK0TODq31WtFNKTD48xpodKg5Pf.jpg",
+        answer: "  قميص  برشلونة",
+        choices: ["  قميص  برشلونة", "  قميص فياريال", "  قميص ريال مدريد"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/d0/f2/04/d0f204dc4e8c0b16994335291618f339.jpg",
+        answer: "  هالاند",
+        choices: ["  هالاند", "  ماركينيوس", "  كريم أديمي"]
+    },
+    {
+        img: "https://www.aljazeera.net/wp-content/uploads/2025/01/UP1EL161J519X-1736194363.jpg?resize=1920%2C1440",
+        answer: "  لاوتارو مارتينيز",
+        choices: ["  لاوتارو مارتينيز", "  رياض محرز", "  أشرف حكيمي"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/ec/d6/2d/ecd62d61bab34a758904a1cd10798c74.jpg",
+        answer: "ليفاندوفسكي  ",
+        choices: ["ليفاندوفسكي  ", "  جيرارد مارتن", "  ويليام صليبا"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/72/71/1c/72711c099a726ceff0a0e4dcdc110f13.jpg",
+        answer: "  لامين يامال",
+        choices: ["  لامين يامال", "  رافينيا", "كوكوريا"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/6c/16/ec/6c16ecdee08687c3f637ed8ad6fdcc54.jpg",
+        answer: "  سالم الدوسري",
+        choices: ["  سالم الدوسري", "  نزار الرشدان", "  عبد الرحمن غريب"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/bf/1d/2f/bf1d2f0532a7e1c7d8ce5781a34f63fc.jpg",
+        answer: "  فيرمين لوبيز",
+        choices: ["  فيرمين لوبيز", "ديماريا", "  مودريتش"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/4e/e4/cb/4ee4cb7711a59366ce85b804183cffca.jpg",
+        answer: "  جاكبو",
+        choices: ["  جاكبو", "  سون", "  غاريث بيل"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/61/64/fa/6164faf67eb8a50dd260ac017782e0f3.jpg",
+        answer: "  زيد الدين زيدان",
+        choices: ["  زيد الدين زيدان", "  سوبوزلاي", "  مارتينيز"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/b7/75/90/b7759066f80dbc9e73ded23f321bd8f1.jpg",
+        answer: "إيميليانو مارتينيز",
+        choices: ["إيميليانو مارتينيز", "تيبو كورتوا", "مانويل نوير"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/7e/ec/06/7eec06ea887f6828f1e9401653314781.jpg",
+        answer: "جواو فيليكس",
+        choices: ["جواو فيليكس", "برونو فيرنانديز", "رافائيل لياو"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/aa/ac/75/aaac75a04e3fd012ceae33c3a9a5a2b3.jpg",
+        answer: "ديفيد ألابا",
+        choices: ["ديفيد ألابا", "أنطونيو روديغر", "داني كارفاخال"]
+    },
+    {
+        img: "https://i.pinimg.com/236x/d5/f5/80/d5f5806dd9ca2b3dc791ff5da6ac27f9.jpg",
+        answer: "جيرارد بيكيه",
+        choices: ["جيرارد بيكيه", "كارليس بويول", "سرخيو راموس"]
+    },
 
+];
+
+        let activePlayersData = [];
         let currentIdx = 0;
         let isLocked = false;
+        let timeLeft = 40;
+        let timerInterval = null;
+
+        let totalTrophies = parseInt(localStorage.getItem('totalTrophies')) || 0;
+        let currentStreak = parseInt(localStorage.getItem('currentStreak')) || 0;
 
         const rulesModal = document.getElementById('rulesModal');
         const playerQuizModal = document.getElementById('playerQuizModal');
@@ -290,25 +395,66 @@
         function openModal() { rulesModal.style.display = 'flex'; }
         function closeModal() { rulesModal.style.display = 'none'; }
 
+        // دالة لخلط مصفوفة عشوائياً (Fisher-Yates Shuffle)
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
         function openPlayerQuiz() {
             playerQuizModal.style.display = 'flex';
             currentIdx = 0;
+            // خلط الأسئلة والخيارات عند فتح النافذة عشوائياً
+            activePlayersData = shuffleArray(originalPlayersData).map(item => ({
+                ...item,
+                choices: shuffleArray(item.choices)
+            }));
+            updateTrophyDisplay();
             loadPlayerQuestion();
         }
 
-        function closePlayerQuiz() { playerQuizModal.style.display = 'none'; }
+        function closePlayerQuiz() {
+            clearInterval(timerInterval);
+            playerQuizModal.style.display = 'none';
+        }
+
+        function updateTrophyDisplay() {
+            document.getElementById('trophy-display').innerText = `🏆 الكؤوس: ${totalTrophies} (${currentStreak}/10)`;
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 40;
+            document.getElementById('timer-display').innerText = `⏳ ${timeLeft} ثانية`;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer-display').innerText = `⏳ ${timeLeft} ثانية`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    currentIdx++;
+                    loadPlayerQuestion();
+                }
+            }, 1000);
+        }
 
         function loadPlayerQuestion() {
+            clearInterval(timerInterval);
             isLocked = false;
-            if (currentIdx >= playersData.length) {
-                alert("أتممت تحدي خمن اللاعب بنجاح يا بطل! 🏆");
+
+            if (currentIdx >= activePlayersData.length) {
+                alert("أتممت الأسئلة المتاحة حالياً بنجاح يا بطل! 🏆");
                 closePlayerQuiz();
                 return;
             }
 
-            const currentQ = playersData[currentIdx];
+            const currentQ = activePlayersData[currentIdx];
             document.getElementById('quiz-image').src = currentQ.img;
-            document.getElementById('progress-text').innerText = `اللاعب ${currentIdx + 1} من ${playersData.length}`;
+            document.getElementById('progress-text').innerText = `اللاعب ${currentIdx + 1} من 50`;
 
             let choicesBox = document.getElementById('image-choices');
             choicesBox.innerHTML = "";
@@ -320,16 +466,30 @@
                 btn.onclick = () => checkAnswer(choiceText, btn);
                 choicesBox.appendChild(btn);
             });
+
+            startTimer();
         }
 
         function checkAnswer(selectedChoice, btnElement) {
             if (isLocked) return;
             isLocked = true;
+            clearInterval(timerInterval);
 
-            const correctAns = playersData[currentIdx].answer;
+            const correctAns = activePlayersData[currentIdx].answer;
 
             if (selectedChoice === correctAns) {
                 btnElement.classList.add('correct');
+                currentStreak++;
+                
+                if (currentStreak >= 10) {
+                    totalTrophies++;
+                    currentStreak = 0;
+                }
+
+                localStorage.setItem('totalTrophies', totalTrophies);
+                localStorage.setItem('currentStreak', currentStreak);
+                updateTrophyDisplay();
+
                 setTimeout(() => { currentIdx++; loadPlayerQuestion(); }, 900);
             } else {
                 btnElement.classList.add('wrong');

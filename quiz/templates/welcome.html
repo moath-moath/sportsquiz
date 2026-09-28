@@ -88,7 +88,7 @@
             justify-content: center;
         }
 
-        .main-btn, .player-btn, .secondary-btn {
+        .main-btn, .player-btn, .secondary-btn, .shop-small-btn {
             width: 100%;
             padding: 12px 20px;
             font-size: 16px;
@@ -123,6 +123,16 @@
             border: 2px solid #f1c40f;
         }
         .secondary-btn:hover { background: rgba(241, 196, 15, 0.1); }
+
+        /* ستايل زر المتجر الصغير والمميز */
+        .shop-small-btn {
+            background: transparent;
+            color: #00ffcc;
+            border: 2px solid #00ffcc;
+            font-size: 15px;
+            padding: 10px 20px;
+        }
+        .shop-small-btn:hover { background: rgba(0, 255, 204, 0.1); }
 
         .modal {
             display: none;
@@ -248,8 +258,13 @@
             <a href="{% url 'home' %}" class="main-btn">ابدأ التحدي 🚀</a>
             <button onclick="openPlayerQuiz()" class="player-btn">🌟 خمن اللاعب</button>
             <button onclick="openModal()" class="secondary-btn">طريقة اللعب 📖</button>
+            <!-- زر المتجر الصغير المضاف -->
+            <button onclick="openShopModal()" class="shop-small-btn">🛒 المتجر</button>
         </div>
     </div>
+
+</body>
+</html>
 
     <!-- نافذة خمن اللاعب مع الوقت والكؤوس -->
     <div id="playerQuizModal" class="modal">
@@ -552,6 +567,7 @@
         answer: "إدوارد كامافينغا",
         choices: ["إدوارد كامافينغا", "أوريليان تشواميني", "فيديريكو فالفيردي"]
     },
+
 
 
 

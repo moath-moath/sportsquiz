@@ -148,8 +148,7 @@
             padding: 15px;
             box-sizing: border-box;
         }
-
-        .modal-content {
+.modal-content {
             background: #1b2838;
             padding: 20px;
             border-radius: 12px;
@@ -160,6 +159,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             box-sizing: border-box;
             position: relative;
+            max-height: 80vh; /* أقصى ارتفاع للنافذة */
+            overflow-y: auto;  /* تفعيل النزول والصعود بالسكرول */
         }
 
         .modal-content h3 {
@@ -371,13 +372,57 @@
                     <button id="act-fire" class="activate-btn" onclick="activateTheme('fire')">تفعيل</button>
                 </div>
             </div>
+           <!-- أضف صناديق الاستثمار هنا -->
+            <div class="shop-item">
+                <span>🎁 صندوق الاستثمار السريع (ادفع 10 واكسب 20 كأس)</span>
+                <button class="buy-btn" onclick="investTrophies(10, 20)">استثمار 🚀</button>
+            </div>
+
+            <div class="shop-item">
+                <span>💎 صندوق التحدي الذهبي (ادفع 80 واكسب 120 كأس)</span>
+                <button class="buy-btn" onclick="investTrophies(80, 120)">استثمار 🚀</button>
+            </div>
+
+            <div class="shop-item">
+                <span>👑 صندوق الأساطير الخارق (ادفع 250 واكسب 350 كأس)</span>
+                <button class="buy-btn" onclick="investTrophies(250, 350)">استثمار 🚀</button>
+            </div>
+            
 
             <button onclick="closeShopModal()" class="close-btn">إغلاق</button>
         </div>
     </div>
+<script>
+       function investTrophies(cost, reward) {
+    // استخدمنا نفس المتجر والمفتاح المعتمد في اللعبة (totalTrophies)
+    let currentTrophies = typeof totalTrophies !== 'undefined' ? totalTrophies : (parseInt(localStorage.getItem('totalTrophies')) || 0);
+    
+    if (currentTrophies >= cost) {
+        currentTrophies = currentTrophies - cost + reward; // خصم التكلفة وإضافة المكافأة
+        
+        // تحديث المتغير العام في اللعبة
+        totalTrophies = currentTrophies;
+        
+        // حفظ القيمة الجديدة في الـ localStorage المعتمد
+        localStorage.setItem('totalTrophies', currentTrophies);
+        
+        // تحديث واجهة الكؤوس والمتجر فوراً بنفس دوال اللعبة الأصلية
+        if (typeof updateTrophyDisplay === 'function') {
+            updateTrophyDisplay();
+        }
+        if (typeof updateShopUI === 'function') {
+            updateShopUI();
+        } else {
+            location.reload(); 
+        }
+        
+        alert(`كفو يا وحش! نجح الاستثمار، وتم إضافة ${reward} كأس لرصيدك بنجاح! 🏆🔥`);
+    } else {
+        alert(`يا غالي رصيدك الحالي (${currentTrophies} كأس) ما بيكفي للاستثمار ده! العب وجيب كؤوس أكتر ⚽`);
+    }
+}
 
-    <script>
-            const originalPlayersData = [
+        const originalPlayersData = [
 
     {
 
@@ -1111,11 +1156,53 @@ window.onclick = function(event) {
             if (event.target == playerQuizModal) closePlayerQuiz();
             if (event.target == shopModal) closeShopModal();
         }
-
-        function startMainChallenge() {
-            alert("قريباً جداً سيتم إطلاق تحدي الأسئلة العامة يا وحش! انتظرنا 🚀");
+<script>
+        // دالة استثمار الكؤوس الجديدة في المتجر
+        function investTrophies(cost, reward) {
+            let currentTrophies = parseInt(localStorage.getItem('trophies')) || 0;
+            
+            if (currentTrophies >= cost) {
+                currentTrophies = currentTrophies - cost + reward; // خصم التكلفة وإضافة الرصيد الجديد
+                localStorage.setItem('trophies', currentTrophies);
+                
+                // تحديث عرض الكؤوس بالواجهة والمتاجر
+                if (typeof updateShopUI === 'function') {
+                    updateShopUI();
+                } else {
+                    location.reload(); // تحديث الصفحة لو دالة التحديث مش موجودة
+                }
+                
+                alert(`كفو يا وحش! نجح الاستثمار، وتم إضافة ${reward} كأس لرصيدك بنجاح! 🏆🔥`);
+            } else {
+                alert(`يا غالي رصيدك الحالي (${currentTrophies} كأس) ما بيكفي للاستثمار ده! العب وجيب كؤوس أكتر ⚽`);
+            }
         }
     </script>
+
+    <!-- نافذة المتجر الأسطوري وصناديق الاستثمار -->
+    <div id="shopModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>🛒 المتجر الأسطوري</h2>
+            <p>رصيدك: <span id="shopTrophies">0</span> 🏆 كأس</p>
+            
+            <div class="shop-item">
+                <span>🎁 صندوق الاستثمار السريع (ادفع 10 واكسب 20 كأس)</span>
+                <button class="buy-btn" onclick="investTrophies(10, 20)">استثمار 🚀</button>
+            </div>
+
+            <div class="shop-item">
+                <span>💎 صندوق التحدي الذهبي (ادفع 20 واكسب 40 كأس)</span>
+                <button class="buy-btn" onclick="investTrophies(20, 40)">استثمار 🚀</button>
+            </div>
+
+            <div class="shop-item">
+                <span>👑 صندوق الأساطير الخارق (ادفع 50 واكسب 100 كأس)</span>
+                <button class="buy-btn" onclick="investTrophies(50, 100)">استثمار 🚀</button>
+            </div>
+
+            <button onclick="closeShopModal()" class="close-btn">إغلاق</button>
+        </div>
+    </div>
 
 </body>
 </html>

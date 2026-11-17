@@ -37,7 +37,6 @@ def home(request):
         "visitors": visitors,
         "online_users": online_users
     }
-    # تعديل اسم الصفحة إلى index.html ليتوافق مع القالب الخاص بك
     return render(request, "index.html", context)
 
 # --- صفحات المستويات ---
@@ -57,6 +56,10 @@ def hard(request):
 def legendary(request):
     return render(request, "legendary.html")
 
+# --- دالة لوحة المتصدرين ---
+def leaderboard(request):
+    return render(request, "quiz/leaderboard.html")
+
 # --- دالة حفظ اسم اللاعب ---
 @csrf_exempt
 def save_player_name(request):
@@ -67,10 +70,9 @@ def save_player_name(request):
         except Exception:
             name = request.POST.get("name", "").strip()
 
-        # قائمة الكلمات الممنوعة (يمكنك إضافة أو تعديل الكلمات هنا)
-        forbidden_words = ["قحب", "شرموط", "منيك", "زاني", "زانية", "قحبة", "شرموطة", "منيوكة", "منيوك", "منيوكة", "الله", "رب", "اله", "الملك", "يلعن", "ملعون", "العذراء"]  # أضف أي كلمات أخرى ممنوعة
+        # قائمة الكلمات الممنوعة
+        forbidden_words = ["قحب", "شرموط", "منيك", "زاني", "زانية", "قحبة", "شرموطة", "منيوكة", "منيوك", "الله", "رب", "اله", "الملك", "يلعن", "ملعون", "العذراء"]
         
-        # التحقق مما إذا كان الاسم يحتوي على كلمات ممنوعة
         name_lower = name.lower()
         for word in forbidden_words:
             if word in name_lower:

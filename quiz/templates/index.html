@@ -49,7 +49,6 @@
             margin: 0;
         }
 
-        /* تنسيق زر تغيير الاسم الصغير */
         .change-name-btn {
             background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
@@ -94,6 +93,12 @@
         .level-btn:hover {
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7);
+        }
+
+        /* تنسيق خاص لزر لوحة الصدارة لتمييزه */
+        .leaderboard-btn {
+            background: linear-gradient(135deg, #f5af19, #f12711) !important;
+            color: white !important;
         }
 
         .overlay {
@@ -187,7 +192,10 @@
     <a href="/hard.html" class="level-btn">🏆 المستوى الصعب</a>
     <a href="/legendary.html" class="level-btn">👑 المستوى الأسطوري</a>
 
-    <!-- زر الإبلاغ عن مشكلة تحت المستوى الأسطوري مباشرة -->
+    <!-- زر لوحة المتصدرين الجديد -->
+    <a href="{% url 'leaderboard' %}" class="level-btn leaderboard-btn">🏆 لوحة المتصدرين</a>
+
+    <!-- زر الإبلاغ عن مشكلة تحت زر لوحة الصدارة مباشرة -->
     <button onclick="openWhatsAppFeedback()" class="level-btn" style="background: #333; color: #25D366; border: 2px solid #25D366; font-size: 16px; padding: 14px;">
         💬 اقتراح أو إبلاغ عن مشكلة (واتساب)
     </button>
@@ -245,14 +253,13 @@
             return;
         }
 
-        // فحص الكلمات المسيئة أو الممنوعة بشكل عام
-      const restrictedPatterns = [
-    "زاني", "شتم", "قحب", "شرموط",
-    "منحرف", "زانية", "قحبة", "شرموطة",
-    "زب", "زبر", "منيك", "منيوكة",
-    "الله", "الملك", "كس", "كساس",
-    "اير", "مأير", "اله", "يلعن", "ملعون"
-];
+        const restrictedPatterns = [
+            "زاني", "شتم", "قحب", "شرموط",
+            "منحرف", "زانية", "قحبة", "شرموطة",
+            "زب", "زبر", "منيك", "منيوكة",
+            "الله", "الملك", "كس", "كساس",
+            "اير", "مأير", "اله", "يلعن", "ملعون"
+        ];
 
         const nameLower = name.toLowerCase();
 

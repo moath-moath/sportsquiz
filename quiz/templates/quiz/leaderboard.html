@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Quiz - لوحة المتصدرين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(0,0,0,0.7);
+            padding: 30px;
+            border-radius: 18px;
+            width: 90%;
+            max-width: 500px;
+            margin: 40px auto;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 { color: #ffd700; margin-bottom: 20px; }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ffd700;
+            color: #111;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏆 لوحة المتصدرين</h1>
+    <p>جاري ربط لوحات الصدارة بتحديثات Firebase اللحظية...</p>
+    
+    <a href="{% url 'welcome' %}" class="back-btn">العودة للرئيسية</a>
+</div>
+
+</body>
+</html>

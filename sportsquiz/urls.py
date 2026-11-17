@@ -44,6 +44,10 @@ urlpatterns = [
     path('legendary/', views.legendary, name="legendary"),
     path('legendary.html', views.legendary),
 
+    # 🏆 مسار لوحة المتصدرين الجديد
+    path('leaderboard/', views.leaderboard, name="leaderboard"),
+    path('leaderboard.html', views.leaderboard),
+
     # حفظ اسم اللاعب
     path('save_player_name/', views.save_player_name, name="save_player_name"),
 

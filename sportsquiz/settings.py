@@ -117,3 +117,4 @@ else:
     CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

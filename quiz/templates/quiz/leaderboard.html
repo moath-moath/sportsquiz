@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sports Quiz - لوحة المتصدرين</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
         body {
             margin: 0;
@@ -17,18 +19,30 @@
         }
         .container {
             background: rgba(0,0,0,0.7);
-            padding: 30px;
+            padding: 25px;
             border-radius: 18px;
             width: 90%;
-            max-width: 500px;
-            margin: 40px auto;
+            max-width: 650px;
+            margin: 30px auto;
             box-shadow: 0 0 40px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.1);
         }
-        h1 { color: #ffd700; margin-bottom: 20px; }
+        h1 { color: #ffd700; }
+        h2 { color: #ffd700; margin-top: 30px; }
+        .player {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.08);
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 10px;
+        }
+        .rank { color: #ffd700; font-weight: bold; }
+        .score { color: #7CFC00; font-weight: bold; }
+        .message { color: #ddd; }
         .back-btn {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 10px 20px;
             background: #ffd700;
             color: #111;
@@ -42,10 +56,72 @@
 
 <div class="container">
     <h1>🏆 لوحة المتصدرين</h1>
-    <p>جاري ربط لوحات الصدارة بتحديثات Firebase اللحظية...</p>
-    
+
+    <h2>⭐ متصدرون النقاط - ابدأ التحدي</h2>
+    <div id="pointsBoard" class="message">جاري تحميل النقاط...</div>
+
+    <h2>🏆 متصدرون الكؤوس - خمن اللاعب</h2>
+    <div id="cupsBoard" class="message">جاري تحميل الكؤوس...</div>
+
     <a href="{% url 'welcome' %}" class="back-btn">العودة للرئيسية</a>
 </div>
+
+<script>
+async function loadLeaderboards() {
+    const pointsBoard = document.getElementById("pointsBoard");
+    const cupsBoard = document.getElementById("cupsBoard");
+
+    try {
+        const response = await fetch("/api/leaderboard/");
+        const data = await response.json();
+
+        if (!response.ok || data.status !== "success") {
+            throw new Error(data.message || "تعذر تحميل اللوحة");
+        }
+
+        function renderBoard(players, field, label) {
+            if (!players || players.length === 0) {
+                return '<p class="message">لا يوجد لاعبون حتى الآن</p>';
+            }
+
+            return players.map((player, index) => `
+                <div class="player">
+                    <span>
+                        <span class="rank">#${index + 1}</span>
+                        ${escapeHTML(player.displayName || "لاعب")}
+                    </span>
+                    <span class="score">${Number(player[field] || 0)} ${label}</span>
+                </div>
+            `).join("");
+        }
+
+        pointsBoard.innerHTML = renderBoard(
+            data.pointsLeaderboard, "totalPoints", "نقطة"
+        );
+
+        cupsBoard.innerHTML = renderBoard(
+            data.cupsLeaderboard, "totalCups", "كأس"
+        );
+
+    } catch (error) {
+        pointsBoard.textContent = "تعذر تحميل النقاط: " + error.message;
+        cupsBoard.textContent = "تعذر تحميل الكؤوس: " + error.message;
+    }
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+loadLeaderboards();
+setInterval(loadLeaderboards, 15000);
+</script>
 
 </body>
 </html>

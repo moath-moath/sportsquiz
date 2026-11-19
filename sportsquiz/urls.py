@@ -1,3 +1,4 @@
+
 """
 URL configuration for sportsquiz project.
 """
@@ -21,17 +22,17 @@ def google_verification(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # صفحة الترحيب الجديدة كواجهة أولى للموقع
+    # صفحة الترحيب
     path('', views.welcome, name="welcome"),
 
-    # الصفحة الرئيسية (قائمة المستويات)
+    # الصفحة الرئيسية
     path('home/', views.home, name="home"),
     path('index.html', views.home),
 
     # صفحات المستويات
     path('beginner/', views.beginner, name="beginner"),
     path('beginner.html', views.beginner),
-    
+
     path('amateur/', views.amateur, name="amateur"),
     path('amateur.html', views.amateur),
 
@@ -44,12 +45,23 @@ urlpatterns = [
     path('legendary/', views.legendary, name="legendary"),
     path('legendary.html', views.legendary),
 
-    # 🏆 مسار لوحة المتصدرين الجديد
+    # لوحة المتصدرين
     path('leaderboard/', views.leaderboard, name="leaderboard"),
     path('leaderboard.html', views.leaderboard),
 
     # حفظ اسم اللاعب
     path('save_player_name/', views.save_player_name, name="save_player_name"),
+
+    # مزامنة بيانات اللاعب مع Firebase
+    path('api/sync-player/', views.sync_player, name="sync_player"),
+
+    # جلب إحصائيات اللاعب
+    path('api/player-stats/', views.player_stats, name="player_stats"),
+    path('api/award-quiz-point/', views.award_quiz_point, name="award_quiz_point"),
+    path('api/award-player-guess/', views.award_player_guess, name="award_player_guess"),
+
+    # جلب لوحات المتصدرين
+    path('api/leaderboard/', views.leaderboard_data, name="leaderboard_data"),
 
     # توثيق قوقل
     path(
@@ -59,6 +71,9 @@ urlpatterns = [
     ),
 ]
 
-# إضافة مسارات static حتى يقرأ ملفات CSS والـ JS بدون مشاكل
+# ملفات static
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(
+        settings.STATIC_URL,
+        document_root=settings.STATIC_ROOT
+    )
